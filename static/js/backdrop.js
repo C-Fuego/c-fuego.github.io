@@ -21,6 +21,7 @@
   var FRAME = 1000 / 30;
 
   var SINW = Math.sin(WARP);
+  var ROWH = 0;
 
   /* 归一化 [-1,1] → [-1,1]，中心斜率 >1、边缘 <1 */
   function warp(n) {
@@ -36,6 +37,7 @@
     cy = H * 0.5;
 
     var rowH = CELL * 0.866;
+    ROWH = rowH;
     var cols = Math.ceil(W / CELL) + 3;
     var rows = Math.ceil(H / rowH) + 3;
 
@@ -50,6 +52,7 @@
         var nx = (px - W * 0.5) / (W * 0.5);
         var ny = (py - H * 0.5) / (H * 0.5);
         row.push({
+          px: px, py: py,
           bx: cx + warp(nx) * (W * 0.5) * 1.02,
           by: cy + warp(ny) * (H * 0.5) * 1.02,
           nx: nx, ny: ny,
@@ -73,8 +76,16 @@
   }
 
   function compute() {
+    /* 滚动量按三角网的行高取模：平移整数行图案完全重合，所以不会露缝 */
+    var vOff = ROWH ? (window.scrollY * 0.42) % ROWH : 0;
+    var halfH = H * 0.5;
+
     for (var i = 0; i < verts.length; i++) {
       var n = verts[i];
+      if (vOff) {
+        var ny2 = (n.py - vOff - halfH) / halfH;
+        n.by = cy + warp(ny2) * halfH * 1.02;
+      }
       var wob = Math.sin(t * 0.00026 * n.sp + n.ph) * 1.8
               + Math.cos(t * 0.00012 + n.ph) * 1.0;
       n.x = n.bx + wob;
@@ -184,5 +195,15 @@
 
   resize();
   still();
-  if (!reduce) requestAnimationFrame(draw);
+
+  if (reduce) {
+    /* 降级模式不做动画，但滚动跟随仍要有 */
+    var st;
+    window.addEventListener("scroll", function () {
+      clearTimeout(st);
+      st = setTimeout(function () { compute(); render(); }, 60);
+    }, { passive: true });
+  } else {
+    requestAnimationFrame(draw);
+  }
 })();
