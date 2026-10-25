@@ -11,7 +11,7 @@
   var ctx = canvas.getContext("2d", { alpha: false });
 
   var BG = "#121218";
-  var CELL = 148;        /* 三角形列宽：越大越稀 */
+  var CELL = 124;        /* 三角形列宽：越大越稀 */
   var WARP = 0.82;       /* sin 映射强度 */
   var EXTRA = 480;      /* 上下各多生成的高度，给滚动留余量 */
   var SCROLL_K = 0.16;   /* 背景滚动速度（相对页面） */
@@ -149,10 +149,11 @@
   function render() {
     drawBackground();
 
-    /* 色散幅度收小：偏移过大三条线会分成三根，看着像重叠 */
-    strokeChannel(1.0016, "rgba(255,52,66,0.32)", 1.1);
-    strokeChannel(1.0000, "rgba(52,255,126,0.26)", 1.1);
-    strokeChannel(0.9984, "rgba(58,112,255,0.32)", 1.1);
+    /* 主线：单色白，低透明度。三通道色散会在大面积上产生彩虹边，把页面弄脏 */
+    strokeChannel(1.0000, "rgba(255,255,255,0.050)", 1.0);
+
+    /* 极淡冷色描边：只给一点镜头感，半径方向偏 0.6px */
+    strokeChannel(1.0009, "rgba(120,200,255,0.012)", 1.0);
   }
 
   function draw(now) {
