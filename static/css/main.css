@@ -4,30 +4,23 @@
    ============================================================ */
 
 @font-face {
-  font-family: "Saira";
-  src: url("../fonts/saira-400.woff2") format("woff2");
+  font-family: "Phigros";
+  src: url("../fonts/phigros-regular.woff2") format("woff2");
   font-weight: 400;
   font-display: swap;
   font-style: normal;
 }
 @font-face {
-  font-family: "Saira";
-  src: url("../fonts/saira-600.woff2") format("woff2");
-  font-weight: 600;
+  font-family: "Phigros";
+  src: url("../fonts/phigros-medium.woff2") format("woff2");
+  font-weight: 500 600;
   font-display: swap;
   font-style: normal;
 }
 @font-face {
-  font-family: "Saira Cond";
-  src: url("../fonts/saira-cond-400.woff2") format("woff2");
+  font-family: "Saira ExtraCond";
+  src: url("../fonts/saira-extracond.woff2") format("woff2");
   font-weight: 400;
-  font-display: swap;
-  font-style: normal;
-}
-@font-face {
-  font-family: "Saira Cond";
-  src: url("../fonts/saira-cond-600.woff2") format("woff2");
-  font-weight: 600;
   font-display: swap;
   font-style: normal;
 }
@@ -46,9 +39,9 @@
   --hit: #ffd35c;
   --bad: #ff3b6b;
 
-  --font-display: "Saira Cond", "Saira", "Noto Sans SC", "Source Han Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
-  --font-ui: "Saira", "Noto Sans SC", "Source Han Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
-  --font-cn: "Noto Sans SC", "Source Han Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-display: "Saira ExtraCond", "Phigros", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-ui: "Phigros", "Saira ExtraCond", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-cn: "Phigros", "Noto Sans SC", "Source Han Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
   --font-mono: "JetBrains Mono", "SFMono-Regular", ui-monospace, Menlo, Consolas, monospace;
 
   --pad: clamp(18px, 4.5vw, 64px);
@@ -198,7 +191,7 @@ a:hover { color: var(--data); }
 
 .brand-name {
   font-family: var(--font-display);
-  font-weight: 600;
+  font-weight: 400;
   font-size: 20px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -292,7 +285,7 @@ a:hover { color: var(--data); }
 .hero-title {
   margin: clamp(20px, 3vh, 34px) 0 0;
   font-family: var(--font-display);
-  font-weight: 600;
+  font-weight: 400;
   font-size: clamp(40px, 7.6vw, 104px);
   line-height: 0.92;
   letter-spacing: 0.08em;
@@ -425,7 +418,7 @@ a:hover { color: var(--data); }
 .stat-value {
   font-family: var(--font-display);
   font-size: 26px;
-  font-weight: 600;
+  font-weight: 400;
   letter-spacing: 0.06em;
   color: var(--ink);
   line-height: 1;
@@ -664,7 +657,7 @@ a:hover { color: var(--data); }
 .page-title {
   margin: 16px 0 0;
   font-family: var(--font-display);
-  font-weight: 600;
+  font-weight: 400;
   font-size: clamp(40px, 8vw, 92px);
   line-height: 0.9;
   letter-spacing: 0.04em;

@@ -13,7 +13,7 @@
   var CELL = 88;              /* 网格边长（逻辑像素） */
   var BG = "#05070B";          /* 底色：近黑偏蓝 */
   var LINE = "53,224,255";     /* 网格线基色 */
-  var SWEEP_W = 340;           /* 光带半宽 */
+  var SWEEP_W = 250;           /* 光带半宽 */
 
   var W = 0, H = 0, cols = 0, rows = 0, dpr = 1;
   var pts = [];                /* 原始网格点 */
@@ -72,11 +72,11 @@
         var mx = (a.x + d.x) * 0.5;
         var glow = 1 - Math.abs(mx - sweepX) / SWEEP_W;
         if (glow < 0) glow = 0;
-        var alpha = 0.09 + glow * 0.42;
+        var alpha = 0.052 + glow * 0.20;
 
         /* 靠近光带的三角形填一层很淡的青 */
         if (glow > 0.18) {
-          ctx.fillStyle = "rgba(" + LINE + "," + (glow * 0.085).toFixed(3) + ")";
+          ctx.fillStyle = "rgba(" + LINE + "," + (glow * 0.05).toFixed(3) + ")";
           if ((i + j) % 2 === 0) {
             ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.lineTo(d.x, d.y); ctx.closePath(); ctx.fill();
             ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(d.x, d.y); ctx.lineTo(c.x, c.y); ctx.closePath(); ctx.fill();
@@ -97,7 +97,7 @@
 
         /* 光带上的边再描一层亮线 */
         if (glow > 0.55) {
-          ctx.strokeStyle = "rgba(255,255,255," + (glow * 0.26).toFixed(3) + ")";
+          ctx.strokeStyle = "rgba(255,255,255," + (glow * 0.18).toFixed(3) + ")";
           ctx.beginPath();
           ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
           ctx.moveTo(c.x, c.y); ctx.lineTo(d.x, d.y);
@@ -112,7 +112,7 @@
         var p = co[jj][ii];
         var g = 1 - Math.abs(p.x - sweepX) / (SWEEP_W * 0.9);
         if (g > 0.12) {
-          ctx.fillStyle = "rgba(255,255,255," + (g * 0.65).toFixed(3) + ")";
+          ctx.fillStyle = "rgba(255,255,255," + (g * 0.42).toFixed(3) + ")";
           ctx.fillRect(p.x - 0.8, p.y - 0.8, 1.6, 1.6);
         }
       }
