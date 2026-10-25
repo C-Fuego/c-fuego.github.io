@@ -6,6 +6,7 @@
 <body class="kind-{{ .Kind }}{{ with .Section }} sec-{{ . }}{{ end }}">
   <a class="skip" href="#main">跳到正文</a>
   <canvas id="backdrop" aria-hidden="true"></canvas>
+  <div class="vignette" aria-hidden="true"></div>
   <canvas id="noise" aria-hidden="true"></canvas>
   <div class="scanlines" aria-hidden="true"></div>
   {{ if .IsPage }}<div class="read-progress" aria-hidden="true"><span class="read-bar"></span><span class="read-note"></span></div>{{ end }}

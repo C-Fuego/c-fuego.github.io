@@ -26,9 +26,9 @@
 }
 
 :root {
-  --bg: #05070B;
-  --panel: #0A0E14;
-  --panel-2: #0E131A;
+  --bg: #080C12;
+  --panel: #0B1119;
+  --panel-2: #0F1620;
   --edge: #1A222D;
   --edge-hot: #2A3543;
   --ink: #ffffff;
@@ -98,6 +98,17 @@ body::before {
   pointer-events: none;
   opacity: 0.05;
   mix-blend-mode: screen;
+}
+
+/* 内容区暗化：让正文压在网格上仍然可读 */
+.vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 78% 62% at 50% 42%, rgba(8, 12, 18, 0.80) 0%, rgba(8, 12, 18, 0.55) 45%, rgba(8, 12, 18, 0.10) 78%, transparent 100%),
+    linear-gradient(180deg, rgba(8, 12, 18, 0.55) 0%, transparent 22%, transparent 78%, rgba(8, 12, 18, 0.55) 100%);
 }
 
 .scanlines {
@@ -370,7 +381,7 @@ a:hover { color: var(--data); }
   font-family: var(--font-cn);
   font-size: 14.5px;
   line-height: 1.95;
-  color: var(--dim);
+  color: #9098A6;
   letter-spacing: 0.02em;
 }
 .hero-body p { margin: 0 0 1em; }
