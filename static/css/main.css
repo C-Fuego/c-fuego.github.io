@@ -1568,6 +1568,31 @@ body.is-glitching .foot {
     -2.5px 0 rgba(255, 40, 84, 0.75),
     2.5px 0 rgba(60, 220, 255, 0.75);
 }
+
+/* 崩溃级：加大分离量 + 周期性白闪 */
+body.is-broken main,
+body.is-broken .topbar,
+body.is-broken .foot {
+  text-shadow:
+    -5px 0 rgba(255, 40, 84, 0.85),
+    5px 0 rgba(60, 220, 255, 0.85),
+    0 0 14px rgba(255, 255, 255, 0.12);
+  animation-duration: 0.11s;
+}
+body.is-broken::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 71;
+  pointer-events: none;
+  background: rgba(255, 255, 255, 0.07);
+  animation: broken-flash 0.16s steps(1) infinite;
+}
+@keyframes broken-flash {
+  0%, 46% { opacity: 1; }
+  47%, 100% { opacity: 0; }
+}
+
 body.is-glitching main img,
 body.is-glitching main .judge-note {
   filter: hue-rotate(18deg) saturate(1.6);
