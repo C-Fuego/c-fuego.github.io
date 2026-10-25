@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="{{ site.Language.Locale }}" data-world="{{ site.Params.worldName }}">
+<head>
+  {{ partial "head.html" . }}
+</head>
+<body class="kind-{{ .Kind }}{{ with .Section }} sec-{{ . }}{{ end }}">
+  <canvas id="bits" aria-hidden="true"></canvas>
+  <div class="scanlines" aria-hidden="true"></div>
+  {{ partial "nav.html" . }}
+  <main id="main">
+    {{ block "main" . }}{{ end }}
+  </main>
+  {{ partial "foot.html" . }}
+  <script src="{{ "js/binary.js" | relURL }}" defer></script>
+</body>
+</html>

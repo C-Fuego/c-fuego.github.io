@@ -1,0 +1,47 @@
+# orangepizero3 · Cloudflare Tunnel 的唯一入口
+# 站点根目录 /var/www/blog（Hugo 构建产物，由 ~/Projects/blog/bin/deploy.sh 同步）
+:8080 {
+	# 裸域一律 301 到 www
+	@apex host ignacio.dpdns.org
+	redir @apex https://www.ignacio.dpdns.org{uri} 301
+
+	root * /var/www/blog
+	encode zstd gzip
+
+	# 静态资源：文件名稳定，给较长缓存
+	@assets path /css/* /js/* /fonts/* /favicon.svg
+	header @assets Cache-Control "public, max-age=604800"
+
+	# 页面本身短缓存，改完立即生效
+	@docs path / *.html
+	header @docs Cache-Control "public, max-age=300"
+
+	header {
+		-Server
+		X-Content-Type-Options nosniff
+		Referrer-Policy strict-origin-when-cross-origin
+		X-Frame-Options SAMEORIGIN
+		Permissions-Policy "geolocation=(), camera=(), microphone=()"
+		Content-Security-Policy "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'self'"
+	}
+
+	try_files {path} {path}/ {path}.html =404
+	file_server
+
+	handle_errors {
+		@notfound expression {err.status_code} == 404
+		handle @notfound {
+			rewrite * /404.html
+			file_server
+		}
+		respond "{err.status_code} {err.status_text}"
+	}
+
+	log {
+		output file /var/log/caddy/access.log {
+			roll_size 5MiB
+			roll_keep 2
+		}
+		format console
+	}
+}

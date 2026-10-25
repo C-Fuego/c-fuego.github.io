@@ -1,0 +1,18 @@
+{{ define "main" }}
+{{ $posts := .Pages.ByDate.Reverse }}
+<header class="page-head">
+  <div class="page-kicker">
+    <span class="diamond diamond-sm" aria-hidden="true"></span>
+    <span>{{ .Title }}</span>
+  </div>
+  <h1 class="page-title glitch" data-text="{{ .Title }}">{{ .Title }}</h1>
+  {{ with .Content }}<div class="page-intro">{{ . }}</div>{{ end }}
+  <div class="judge-line judge-line-thin" aria-hidden="true"><span class="judge-bar"></span></div>
+</header>
+
+<div class="rows rows-full">
+  {{ range $i, $p := $posts }}
+    {{ partial "row.html" (dict "p" $p "i" (add $i 1)) }}
+  {{ end }}
+</div>
+{{ end }}

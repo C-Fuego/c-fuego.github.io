@@ -1,0 +1,15 @@
+{{ define "main" }}
+<section class="page-head lost">
+  <div class="page-kicker">
+    <span class="diamond diamond-sm" aria-hidden="true"></span>
+    <span>SEGMENT NOT FOUND</span>
+  </div>
+  <h1 class="page-title glitch" data-text="404">404</h1>
+  <div class="judge-line judge-line-thin" aria-hidden="true"><span class="judge-bar"></span></div>
+  <p class="lost-text">这一段地址没有被分配。它可能是被回收了，也可能从来没写过。</p>
+  <div class="lost-links">
+    <a class="lost-link" href="{{ "/" | relURL }}"><span class="k">RETURN</span><span class="v">回到层 0x00</span></a>
+    <a class="lost-link" href="{{ "/posts" | relURL }}"><span class="k">ARCHIVE</span><span class="v">查看全部条目</span></a>
+  </div>
+</section>
+{{ end }}

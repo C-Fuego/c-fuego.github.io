@@ -1,0 +1,21 @@
+<header class="topbar">
+  <a class="brand" href="{{ "/" | relURL }}" aria-label="{{ site.Title }}">
+    <span class="brand-mark" aria-hidden="true"></span>
+    <span class="brand-text">
+      <span class="brand-name glitch" data-text="{{ site.Title }}">{{ site.Title }}</span>
+      <span class="brand-sub">{{ site.Params.worldName }} // {{ site.Params.worldTagline }}</span>
+    </span>
+  </a>
+
+  <nav class="nav" aria-label="主导航">
+    {{ range site.Menus.main }}
+      <a href="{{ .URL | relURL }}" class="nav-link{{ if $.IsMenuCurrent "main" . }} is-active{{ end }}">{{ .Name }}</a>
+    {{ end }}
+  </nav>
+
+  <div class="topbar-status" aria-hidden="true">
+    <span class="status-dot"></span>
+    <span class="status-text">SYS</span>
+    <span class="status-clock" id="clock">--:--:--</span>
+  </div>
+</header>

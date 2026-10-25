@@ -1,0 +1,51 @@
+baseURL = "https://www.ignacio.dpdns.org/"
+locale = "zh-CN"
+defaultContentLanguage = "zh-cn"
+title = "IGNACIO"
+hasCJKLanguage = true
+enableRobotsTXT = true
+timeZone = "Asia/Shanghai"
+
+[params]
+  worldName = "0x00"
+  worldTagline = "由 0 与 1 构成的档案层"
+  author = "ignacio"
+  description = "数值世界的个人档案：0 与 1 构成的记述层。"
+  # 首页统计面板里的“最后同步”由构建时间生成
+
+[params.ui]
+  showToc = true
+  tocDepth = 3
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+  [markup.highlight]
+    noClasses = false
+    style = "monokai"
+    lineNos = false
+
+[outputs]
+  home = ["HTML", "RSS"]
+  section = ["HTML", "RSS"]
+
+[menu]
+  [[menu.main]]
+    name = "ARCHIVE"
+    pageRef = "/posts"
+    weight = 10
+  [[menu.main]]
+    name = "ABOUT"
+    pageRef = "/about"
+    weight = 20
+  [[menu.main]]
+    name = "TAGS"
+    pageRef = "/tags"
+    weight = 30
+
+[minify]
+  minifyOutput = false
+
+[taxonomies]
+  tag = "tags"

@@ -1,0 +1,80 @@
+{{ define "main" }}
+{{ $posts := where site.RegularPages "Section" "posts" }}
+{{ $chars := 0 }}
+{{ range $posts }}{{ $chars = add $chars .WordCount }}{{ end }}
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-kicker">
+      <span class="diamond diamond-sm" aria-hidden="true"></span>
+      <span>LAYER 00 / ARCHIVE INDEX</span>
+      <span class="hero-kicker-rule" aria-hidden="true"></span>
+    </div>
+
+    <h1 class="hero-title glitch" data-text="{{ site.Title }}">{{ site.Title }}</h1>
+
+    <div class="hero-sub">
+      <span class="hero-world">{{ site.Params.worldName }}</span>
+      <span class="hero-sep" aria-hidden="true"></span>
+      <span class="hero-tagline">{{ site.Params.worldTagline }}</span>
+    </div>
+
+    <div class="judge-line" aria-hidden="true">
+      <span class="judge-bar"></span>
+      <span class="judge-note"></span>
+      <span class="judge-tick judge-tick-a"></span>
+      <span class="judge-tick judge-tick-b"></span>
+    </div>
+
+    <div class="hero-body">
+      {{ .Content }}
+    </div>
+  </div>
+</section>
+
+<section class="stats" aria-label="档案统计">
+  <div class="stats-grid">
+  <div class="stat">
+    <span class="stat-label">ENTRIES</span>
+    <span class="stat-value">{{ printf "%03d" (len $posts) }}</span>
+  </div>
+  <div class="stat">
+    <span class="stat-label">CHARS</span>
+    <span class="stat-value">{{ $chars }}</span>
+  </div>
+  <div class="stat">
+    <span class="stat-label">LAST SYNC</span>
+    <span class="stat-value">{{ with index $posts 0 }}{{ .Date.Format "2006.01.02" }}{{ else }}----.--.--{{ end }}</span>
+  </div>
+  <div class="stat stat-wide">
+    <span class="stat-label">SIGNAL</span>
+    <span class="stat-value stat-signal"><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span></span>
+  </div>
+  </div>
+</section>
+
+<section class="block">
+  <header class="block-head">
+    <span class="tri" aria-hidden="true"></span>
+    <h2 class="block-title">LATEST TRANSMISSIONS</h2>
+    <a class="block-more" href="{{ "/posts" | relURL }}">ALL ENTRIES →</a>
+  </header>
+  <div class="rows">
+    {{ range $i, $p := first 6 $posts }}
+      {{ partial "row.html" (dict "p" $p "i" (add $i 1)) }}
+    {{ end }}
+  </div>
+</section>
+
+{{ with site.GetPage "/about" }}
+<section class="block block-about">
+  <header class="block-head">
+    <span class="tri" aria-hidden="true"></span>
+    <h2 class="block-title">IDENTITY FILE</h2>
+    <a class="block-more" href="{{ .RelPermalink }}">OPEN →</a>
+  </header>
+  <div class="about-teaser">
+    {{ with .Params.summary }}<p>{{ . }}</p>{{ else }}{{ .Summary }}{{ end }}
+  </div>
+</section>
+{{ end }}
+{{ end }}
