@@ -52,25 +52,6 @@
   </div>
 </section>
 
-{{ with site.Taxonomies.tags }}
-<section class="block">
-  <header class="block-head">
-    <span class="tri" aria-hidden="true"></span>
-    <h2 class="block-title">TAXONOMY</h2>
-    <a class="block-more" href="{{ "/tags" | relURL }}">ALL TAGS →</a>
-  </header>
-  <div class="tag-matrix">
-    {{ range .ByCount }}
-      <a class="tag-chip" href="{{ .Page.RelPermalink }}">
-        <span class="diamond diamond-xs" aria-hidden="true"></span>
-        <span class="tag-chip-name">{{ .Page.Title }}</span>
-        <span class="tag-chip-n">{{ printf "%02d" .Count }}</span>
-      </a>
-    {{ end }}
-  </div>
-</section>
-{{ end }}
-
 {{ with site.GetPage "/about" }}
 <section class="block block-about">
   <header class="block-head">
