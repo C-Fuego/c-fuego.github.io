@@ -7,6 +7,18 @@
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  /* ---------- 顶栏时钟 ---------- */
+  var clock = document.getElementById("clock");
+  if (clock) {
+    var pad = function (n) { return n < 10 ? "0" + n : "" + n; };
+    var tick = function () {
+      var d = new Date();
+      clock.textContent = pad(d.getHours()) + ":" + pad(d.getMinutes()) + ":" + pad(d.getSeconds());
+    };
+    tick();
+    setInterval(tick, 1000);
+  }
+
   /* ---------- 阅读进度（判定线形态） ---------- */
   var bar = $(".read-bar");
   var note = $(".read-note");

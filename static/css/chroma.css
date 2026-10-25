@@ -1,5 +1,5 @@
 /* Chroma 代码高亮 · 与全站黑金体系对齐（4 色：白/青/金/灰） */
-.chroma { color: #c8c8d2; background: #08080a; }
+.chroma { color: #c8c8d2; background: #0A0E14; }
 .chroma .err { color: #ff3b6b; }
 .chroma .lntd { vertical-align: top; padding: 0; margin: 0; border: 0; }
 .chroma .lntable { border-spacing: 0; padding: 0; margin: 0; border: 0; }
@@ -55,7 +55,7 @@
   font-size: 9px;
   letter-spacing: 0.16em;
   color: var(--dim);
-  background: #0d0d10;
+  background: #0E131A;
   border: 1px solid var(--edge);
   cursor: pointer;
   opacity: 0;

@@ -33,15 +33,15 @@
 }
 
 :root {
-  --bg: #000000;
-  --panel: #08080a;
-  --panel-2: #0d0d10;
-  --edge: #1b1b20;
-  --edge-hot: #2a2a33;
+  --bg: #05070B;
+  --panel: #0A0E14;
+  --panel-2: #0E131A;
+  --edge: #1A222D;
+  --edge-hot: #2A3543;
   --ink: #ffffff;
   --ink-2: #c8c8d2;
-  --dim: #74747f;
-  --dim-2: #4a4a53;
+  --dim: #6E7683;
+  --dim-2: #454C57;
   --data: #35e0ff;
   --hit: #ffd35c;
   --bad: #ff3b6b;
@@ -84,21 +84,27 @@ body::before {
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  background-image:
-    linear-gradient(to right, rgba(255, 255, 255, 0.028) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.028) 1px, transparent 1px);
-  background-size: 72px 72px;
-  mask-image: radial-gradient(ellipse 90% 60% at 50% 0%, #000 20%, transparent 78%);
+  background: radial-gradient(ellipse 80% 55% at 50% 0%, rgba(53, 224, 255, 0.055), transparent 70%);
 }
 
-#bits {
+#backdrop {
   position: fixed;
   inset: 0;
   width: 100%;
   height: 100%;
   z-index: 0;
-  opacity: 0.55;
   pointer-events: none;
+}
+
+#noise {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 4;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: screen;
 }
 
 .scanlines {
@@ -178,7 +184,7 @@ a:hover { color: var(--data); }
   height: 11px;
   background: var(--ink);
   transform: rotate(45deg);
-  box-shadow: 0 0 0 1px #000, 0 0 14px rgba(53, 224, 255, 0.5);
+  box-shadow: 0 0 0 1px var(--bg), 0 0 14px rgba(53, 224, 255, 0.5);
   flex: none;
   animation: mark-pulse 4s ease-in-out infinite;
 }
@@ -284,12 +290,12 @@ a:hover { color: var(--data); }
 }
 
 .hero-title {
-  margin: clamp(18px, 3vh, 30px) 0 0;
+  margin: clamp(20px, 3vh, 34px) 0 0;
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: clamp(64px, 15vw, 190px);
-  line-height: 0.82;
-  letter-spacing: 0.04em;
+  font-size: clamp(40px, 7.6vw, 104px);
+  line-height: 0.92;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--ink);
 }
@@ -1377,8 +1383,8 @@ a:hover { color: var(--data); }
 
 * { scrollbar-width: thin; scrollbar-color: #26262c transparent; }
 ::-webkit-scrollbar { width: 9px; height: 9px; }
-::-webkit-scrollbar-track { background: #000; }
-::-webkit-scrollbar-thumb { background: #26262c; border: 2px solid #000; }
+::-webkit-scrollbar-track { background: #05070B; }
+::-webkit-scrollbar-thumb { background: #232A35; border: 2px solid #05070B; }
 ::-webkit-scrollbar-thumb:hover { background: #3a3a44; }
 
 /* ---------- 页面过渡 ---------- */
@@ -1494,7 +1500,7 @@ a:hover { color: var(--data); }
 /* ---------- 打印 ---------- */
 
 @media print {
-  #bits, .scanlines, .topbar, .foot, .to-top, .search, .read-progress,
+  #backdrop, #noise, .scanlines, .topbar, .foot, .to-top, .search, .read-progress,
   .toc, .entry-nav, .related, .pager, .skip, .code-copy { display: none !important; }
   html, body { background: #fff; color: #111; }
   body::before { display: none; }

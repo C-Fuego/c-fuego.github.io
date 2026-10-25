@@ -22,7 +22,9 @@ layouts/
   partials/            head / nav / foot / row
 static/
   css/main.css         全部样式（约 1000 行，无框架）
-  js/binary.js         二进制雨 canvas + 时钟 + 载入 glitch
+  js/backdrop.js       三角网格背景（顶点缓动 + 扫光带）
+  js/noise.js          噪点层，15Hz 随机刷新
+  js/ui.js             搜索/进度/TOC/灯箱/回顶/代码复制
   fonts/               Saira / Saira Condensed（latin 子集，各 ~14KB）
   favicon.svg
 deploy/Caddyfile       板上 Caddy 配置源（改这里，别改板上的）
@@ -39,6 +41,18 @@ Phigros 语汇 + 二进制世界，四条硬规则：
 4. 强调色只有两个：`--data #35E0FF`（数据/青）、`--hit #FFD35C`（判定/金）
 
 判定线出现在 hero 和文章页头，`judge-note` 会沿线的位置漂移。
+
+背景分三层，都在页面最底层，纯 canvas：
+
+1. `js/backdrop.js`：规则三角网格（边长 88px），每个顶点按不同相位做正弦漂移，
+   一条光带沿 x 轴缓慢扫过，光带附近的边变白、三角形填一层淡青。
+   底色 `#05070B`（近黑偏蓝），不是纯黑。
+2. `js/noise.js`：噪点层。预生成 6 张 128px 颗粒 tile，15Hz 随机换 tile + 随机平移，
+   视觉上是连续沙沙的颗粒，每帧只有一次 fillRect。
+3. `body::before`：顶部一层极淡的青色径向光。
+
+两层 canvas 的成本：网格约 500 条边 / 30fps，噪点 15 次/秒单次填充。
+`prefers-reduced-motion` 下两者都只画静态首帧。
 
 字体说明：Phigros 中文界面是思源黑体，英文 HUD 是 Saira 系（社区重制版称
 "Saira Hybrid"）。这里自托管 Saira/Saira Condensed 的 latin 子集，中文走系统栈
