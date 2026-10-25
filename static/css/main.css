@@ -376,7 +376,7 @@ a:hover { color: var(--data); }
 .judge-tick-b { left: 78%; }
 
 .hero-body {
-  max-width: 640px;
+  max-width: 700px;
   margin-top: 34px;
   font-family: var(--font-cn);
   font-size: 14.5px;
@@ -1606,6 +1606,183 @@ body.is-glitching main .judge-note {
   72%  { transform: translate3d(3px, 1px, 0); }
   88%  { transform: translate3d(-2px, -1px, 0); }
   100% { transform: translate3d(0, 0, 0); }
+}
+
+/* ============================================================
+   UI 整改（覆盖层）
+   依据 APK 实机素材：按钮是圆角胶囊（Button_738x90）、
+   面板底是三角网格贴图（PopupBG1）、强调色 #10C0C8 系。
+   ============================================================ */
+
+/* ---------- 顶栏 ---------- */
+
+.topbar {
+  height: 58px;
+  padding: 0 var(--pad);
+  background: rgba(12, 12, 18, 0.72);
+  border-bottom: 1px solid rgba(53, 224, 255, 0.10);
+  backdrop-filter: blur(14px) saturate(130%);
+}
+.topbar::after {
+  content: "";
+  position: absolute;
+  left: var(--pad);
+  right: var(--pad);
+  bottom: -1px;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(53,224,255,.42), rgba(53,224,255,0) 55%);
+}
+.brand-name { font-size: 19px; letter-spacing: 0.26em; }
+.brand-sub { font-size: 8.5px; letter-spacing: 0.16em; color: #6C7480; }
+
+/* 导航：底部短线代替菱形 */
+.nav-link { padding: 8px 13px; font-size: 10.5px; letter-spacing: 0.22em; }
+.nav-link::before {
+  left: 13px; right: 13px; top: auto; bottom: 2px;
+  width: auto; height: 1.5px;
+  background: var(--data);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.2s ease;
+}
+.nav-link:hover::before, .nav-link.is-active::before {
+  transform: scaleX(1);
+  border-radius: 1px;
+}
+
+/* ---------- 统计面板：加竖分隔 + 更大数值 ---------- */
+
+.stats-grid {
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 4px;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(20,22,30,0.72), rgba(12,12,18,0.72));
+  backdrop-filter: blur(8px);
+}
+.stat {
+  background: none;
+  padding: 18px 20px 20px;
+  border-right: 1px solid rgba(255,255,255,0.055);
+}
+.stat:last-child { border-right: 0; }
+.stat::after { display: none; }
+.stat-label { font-size: 8.5px; letter-spacing: 0.26em; color: #5E6674; }
+.stat-value { font-size: 30px; letter-spacing: 0.04em; color: #F2F6FA; }
+.stat-signal .bar { width: 4px; border-radius: 1px; }
+
+/* ---------- 列表行：编号做成方框 ---------- */
+
+.rows {
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 4px;
+  overflow: hidden;
+  background: rgba(10,10,16,0.62);
+  backdrop-filter: blur(10px);
+}
+.row {
+  grid-template-columns: 46px 12px minmax(0,1fr) auto 86px;
+  gap: 16px;
+  padding: 17px 16px 17px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.row:last-child { border-bottom: 0; }
+.row-idx {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px; height: 22px;
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 2px;
+  font-size: 10px;
+  color: #7C8492;
+  transition: border-color .18s, color .18s;
+}
+.row:hover .row-idx { border-color: rgba(53,224,255,.55); color: var(--data); }
+.row::before { left: 0; width: 2px; border-radius: 0 2px 2px 0; }
+.row-title { font-size: 15px; letter-spacing: 0.02em; }
+.row-date { font-size: 10px; color: #5E6674; }
+
+/* ---------- 标签 ---------- */
+
+.tag {
+  border-radius: 2px;
+  border-color: rgba(255,255,255,0.09);
+  padding: 2.5px 7px;
+  font-size: 8.5px;
+  letter-spacing: 0.14em;
+}
+.row:hover .tag { border-color: rgba(53,224,255,.32); color: #CBD4E0; }
+
+/* ---------- 文章页头：元数据条 ---------- */
+
+.entry-meta {
+  gap: 12px;
+  margin-top: 20px;
+  padding: 9px 14px;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 3px;
+  background: rgba(10,10,16,0.5);
+  backdrop-filter: blur(8px);
+  display: inline-flex;
+}
+.entry-title { letter-spacing: 0.01em; }
+
+/* ---------- 面板（TOC / 搜索 / 404 卡片） ---------- */
+
+.toc {
+  border: 1px solid rgba(255,255,255,0.07);
+  border-left: 2px solid rgba(53,224,255,.6);
+  border-radius: 0 4px 4px 0;
+  background: rgba(10,10,16,0.62);
+  backdrop-filter: blur(10px);
+  padding: 14px 16px 16px;
+}
+.toc-head { font-size: 8.5px; letter-spacing: 0.28em; color: #5E6674; }
+.toc nav a { font-size: 12px; padding: 4px 0; }
+
+.search-panel {
+  border: 1px solid rgba(255,255,255,0.10);
+  border-left: 2px solid rgba(53,224,255,.7);
+  border-radius: 0 4px 4px 0;
+  background: rgba(12,12,18,0.94);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 24px 80px rgba(0,0,0,0.7);
+}
+
+/* ---------- 按钮：圆角胶囊（照 Button_738x90） ---------- */
+
+.to-top {
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  border: 1px solid rgba(53,224,255,.45);
+  background: rgba(12,12,18,0.86);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 0 0 3px rgba(53,224,255,.06), 0 6px 22px rgba(0,0,0,.55);
+}
+.to-top:hover {
+  border-color: var(--data);
+  box-shadow: 0 0 0 4px rgba(53,224,255,.14), 0 8px 26px rgba(0,0,0,.6);
+}
+.to-top::before { border-color: currentColor; }
+
+.search-close {
+  border-radius: 3px;
+  padding: 4px 9px;
+}
+
+/* ---------- 正文页容器：给阅读区一层薄底 ---------- */
+
+.prose {
+  padding: 4px 0 0;
+}
+
+/* ---------- 页脚 ---------- */
+
+.foot-inner {
+  padding-top: 16px;
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  color: #5E6674;
 }
 
 /* ---------- 响应式 ---------- */

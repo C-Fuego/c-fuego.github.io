@@ -12,9 +12,9 @@
 
   var BG = "#121218";
   var CELL = 148;        /* 三角形列宽：越大越稀 */
-  var WARP = 1.08;       /* sin 映射强度 */
-  var EXTRA = 1100;      /* 上下各多生成的高度，给滚动留余量 */
-  var SCROLL_K = 0.28;   /* 背景滚动速度（相对页面） */
+  var WARP = 0.82;       /* sin 映射强度 */
+  var EXTRA = 480;      /* 上下各多生成的高度，给滚动留余量 */
+  var SCROLL_K = 0.16;   /* 背景滚动速度（相对页面） */
 
   var W = 0, H = 0, dpr = 1;
   var verts = [], edges = [];
@@ -42,6 +42,14 @@
 
     verts = [];
     edges = [];
+    var seen = {};
+    function addEdge(p, q) {
+      if (!p || !q) return;
+      var key = p.id < q.id ? p.id + "_" + q.id : q.id + "_" + p.id;
+      if (seen[key]) return;
+      seen[key] = 1;
+      edges.push([p, q]);
+    }
 
     for (var r = 0; r < rows; r++) {
       var row = [];
@@ -51,6 +59,7 @@
         var nx = (px - cx) / (W * 0.5);
         var ny = (py - cy) / (H * 0.5);
         row.push({
+          id: verts.length + row.length,
           bx: cx + warp(nx) * (W * 0.5) * 1.04,
           by: cy + warp(ny) * (H * 0.5) * 1.04,
           ph: Math.random() * Math.PI * 2,
@@ -62,11 +71,9 @@
         var base = (r - 1) * cols;
         for (var k = 0; k < cols; k++) {
           var a = verts[base + k], b = row[k];
-          var bl = row[k - 1];
-          var an = verts[base + k + 1];
-          if (a && b) edges.push([a, b]);          /* 斜向右下 */
-          if (a && bl) edges.push([a, bl]);        /* 斜向左下 */
-          if (a && an) edges.push([a, an]);        /* 水平 */
+          addEdge(a, b);                       /* 斜向右下 */
+          addEdge(a, row[k - 1]);              /* 斜向左下 */
+          addEdge(a, verts[base + k + 1]);     /* 水平 */
         }
       }
       for (var q = 0; q < row.length; q++) verts.push(row[q]);
@@ -143,9 +150,9 @@
     drawBackground();
 
     /* 色散幅度收小：偏移过大三条线会分成三根，看着像重叠 */
-    strokeChannel(1.0032, "rgba(255,52,66,0.50)", 1.1);
-    strokeChannel(1.0000, "rgba(52,255,126,0.42)", 1.1);
-    strokeChannel(0.9968, "rgba(58,112,255,0.50)", 1.1);
+    strokeChannel(1.0016, "rgba(255,52,66,0.32)", 1.1);
+    strokeChannel(1.0000, "rgba(52,255,126,0.26)", 1.1);
+    strokeChannel(0.9984, "rgba(58,112,255,0.32)", 1.1);
   }
 
   function draw(now) {
