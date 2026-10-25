@@ -1,7 +1,9 @@
 {{ $p := .p }}
-{{ $i := .i }}
+{{ $num := "" }}
+{{ with $p.File }}{{ $num = replaceRE "^([0-9]+).*$" "$1" .ContentBaseName }}{{ end }}
+{{ if not $num }}{{ $num = printf "%03d" .i }}{{ end }}
 <a class="row" href="{{ $p.RelPermalink }}">
-  <span class="row-idx">{{ printf "%03d" $i }}</span>
+  <span class="row-idx">{{ $num }}</span>
   <span class="row-mark" aria-hidden="true"></span>
   <span class="row-main">
     <span class="row-title">{{ $p.Title }}</span>

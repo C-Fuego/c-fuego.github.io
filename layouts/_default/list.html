@@ -1,18 +1,22 @@
 {{ define "main" }}
-{{ $posts := .Pages.ByDate.Reverse }}
+{{ $isTerm := eq .Kind "term" }}
+{{ $paginator := .Paginate .Pages.ByDate.Reverse }}
 <header class="page-head">
   <div class="page-kicker">
     <span class="diamond diamond-sm" aria-hidden="true"></span>
-    <span>{{ .Title }}</span>
+    <span>{{ if $isTerm }}TAG{{ else }}{{ .Section | upper }}{{ end }}</span>
+    {{ if $isTerm }}<span class="page-kicker-rule" aria-hidden="true"></span><span>0x{{ printf "%02X" (len .Pages) }} ENTRIES</span>{{ end }}
   </div>
   <h1 class="page-title glitch" data-text="{{ .Title }}">{{ .Title }}</h1>
   {{ with .Content }}<div class="page-intro">{{ . }}</div>{{ end }}
-  <div class="judge-line judge-line-thin" aria-hidden="true"><span class="judge-bar"></span></div>
+  <div class="judge-line judge-line-thin" aria-hidden="true"><span class="judge-bar"></span><span class="judge-note"></span></div>
 </header>
 
 <div class="rows rows-full">
-  {{ range $i, $p := $posts }}
+  {{ range $i, $p := $paginator.Pages }}
     {{ partial "row.html" (dict "p" $p "i" (add $i 1)) }}
   {{ end }}
 </div>
+
+{{ partial "pager.html" $paginator }}
 {{ end }}

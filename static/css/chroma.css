@@ -1,0 +1,66 @@
+/* Chroma 代码高亮 · 与全站黑金体系对齐（4 色：白/青/金/灰） */
+.chroma { color: #c8c8d2; background: #08080a; }
+.chroma .err { color: #ff3b6b; }
+.chroma .lntd { vertical-align: top; padding: 0; margin: 0; border: 0; }
+.chroma .lntable { border-spacing: 0; padding: 0; margin: 0; border: 0; }
+
+/* 注释 */
+.chroma .c, .chroma .ch, .chroma .cm, .chroma .c1, .chroma .cs,
+.chroma .cp, .chroma .cpf { color: #4a4a53; font-style: italic; }
+
+/* 关键字 */
+.chroma .k, .chroma .kc, .chroma .kd, .chroma .kn, .chroma .kp, .chroma .kr, .chroma .kt { color: #ffffff; font-weight: 600; }
+
+/* 字符串 */
+.chroma .s, .chroma .sa, .chroma .sb, .chroma .sc, .chroma .dl, .chroma .sd,
+.chroma .s2, .chroma .se, .chroma .sh, .chroma .si, .chroma .sx, .chroma .sr,
+.chroma .s1, .chroma .ss { color: #35e0ff; }
+
+/* 数字 / 常量 */
+.chroma .m, .chroma .mb, .chroma .mf, .chroma .mh, .chroma .mi, .chroma .il,
+.chroma .mo, .chroma .na, .chroma .nb, .chroma .bp, .chroma .no, .chroma .nd { color: #ffd35c; }
+
+/* 函数 / 类 */
+.chroma .nf, .chroma .fm, .chroma .nc, .chroma .nn, .chroma .nv, .chroma .vc,
+.chroma .vg, .chroma .vi, .chroma .vm { color: #ffffff; }
+
+/* 运算符 / 标点 */
+.chroma .o, .chroma .ow, .chroma .p { color: #9a9aa6; }
+
+/* 变量 / 属性 */
+.chroma .nt, .chroma .nl, .chroma .py, .chroma .nx { color: #c8c8d2; }
+.chroma .gd { color: #ff3b6b; }
+.chroma .gi { color: #35e0ff; }
+.chroma .gh { color: #ffd35c; font-weight: 600; }
+.chroma .gu { color: #74747f; }
+.chroma .gs { font-weight: 600; }
+.chroma .ge { font-style: italic; }
+.chroma .gt { color: #ff3b6b; }
+.chroma .w { color: #4a4a53; }
+
+/* 行号 */
+.chroma .ln, .chroma .lnt { color: #3a3a42; margin-right: 1em; user-select: none; }
+
+/* 高亮行 */
+.chroma .hl { background: rgba(53, 224, 255, 0.07); display: block; }
+
+/* 复制按钮 */
+.code-wrap { position: relative; }
+.code-copy {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 4px 9px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  color: var(--dim);
+  background: #0d0d10;
+  border: 1px solid var(--edge);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s, color 0.15s, border-color 0.15s;
+}
+.code-wrap:hover .code-copy { opacity: 1; }
+.code-copy:hover { color: var(--data); border-color: var(--data); }
+.code-copy.is-done { color: var(--data); border-color: var(--data); }

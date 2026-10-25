@@ -43,6 +43,25 @@
   </div>
 
   {{ if $isPost }}
+  {{ $tags := $p.Params.tags }}
+  {{ $related := first 4 (where (where site.RegularPages "Section" "posts") "Params.tags" "intersect" $tags) }}
+  {{ if gt (len $related) 1 }}
+  <section class="related">
+    <div class="related-head"><span class="tri" aria-hidden="true"></span>RELATED / 同一标签</div>
+    <div class="related-list">
+      {{ range $related }}
+        {{ if ne .Permalink $p.Permalink }}
+        <a class="related-item" href="{{ .RelPermalink }}">
+          <span class="diamond diamond-sm" aria-hidden="true"></span>
+          <span>{{ .Title }}</span>
+          <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006.01.02" }}</time>
+        </a>
+        {{ end }}
+      {{ end }}
+    </div>
+  </section>
+  {{ end }}
+
   <footer class="entry-foot">
     <div class="entry-foot-line" aria-hidden="true"></div>
     <nav class="entry-nav">

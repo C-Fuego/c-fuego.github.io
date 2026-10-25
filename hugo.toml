@@ -27,8 +27,11 @@ timeZone = "Asia/Shanghai"
     lineNos = false
 
 [outputs]
-  home = ["HTML", "RSS"]
+  home = ["HTML", "RSS", "JSON"]
   section = ["HTML", "RSS"]
+
+[pagination]
+  pagerSize = 12
 
 [menu]
   [[menu.main]]

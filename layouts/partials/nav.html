@@ -11,6 +11,10 @@
     {{ range site.Menus.main }}
       <a href="{{ .URL | relURL }}" class="nav-link{{ if $.IsMenuCurrent "main" . }} is-active{{ end }}">{{ .Name }}</a>
     {{ end }}
+    <button class="nav-link nav-search" type="button" data-search-open aria-label="搜索（快捷键 斜杠）">
+      <span class="nav-search-icon" aria-hidden="true"></span>
+      <span class="nav-search-text">SEARCH</span>
+    </button>
   </nav>
 
   <div class="topbar-status" aria-hidden="true">
