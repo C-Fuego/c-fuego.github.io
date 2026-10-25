@@ -1,6 +1,6 @@
-/* 背景：穹顶式球面网格（对齐 Phigros 第九章封面 TriGrid）
-   tan 投影 → 中心密、边缘疏、经线向中心收敛
-   环线 + 交错斜线构成三角网；光带绕中心扫；边缘带 RGB 色散 */
+/* 背景：穹顶三角网（对齐 Phigros 第九章 TriGrid 实机画面）
+   平面等边三角网格 → sin 映射（中心拉伸、边缘压缩）
+   线条 RGB 三通道分离绘制，lighter 叠加：中心白线、边缘彩虹 */
 (function () {
   "use strict";
 
@@ -10,172 +10,143 @@
 
   var ctx = canvas.getContext("2d", { alpha: false });
 
-  var BG = "#080C12";
-  var RINGS = 13;                    /* 同心环层数 */
-  var SEGS = 40;                     /* 每环分段 */
-  var MAXPHI = 80 * Math.PI / 180;   /* 穹顶张角半角 */
-  var PHI0 = 11 * Math.PI / 180;      /* 跳过正中心，避免糊死 */
+  var BG = "#0A0C10";
+  var CELL = 104;      /* 三角形列宽 */
+  var WARP = 1.10;     /* sin 映射强度：越大中心越鼓、边缘越压 */
 
   var W = 0, H = 0, dpr = 1;
-  var nodes = [], deco = [];
-  var cx = 0, cy = 0, R = 1;
+  var verts = [], edges = [];
+  var cx = 0, cy = 0;
   var t = 0, last = 0;
   var FRAME = 1000 / 30;
 
-  function rnd(a, b) { return a + Math.random() * (b - a); }
+  var SINW = Math.sin(WARP);
+
+  /* 归一化 [-1,1] → [-1,1]，中心斜率 >1、边缘 <1 */
+  function warp(n) {
+    /* clamp：超过 π/2 区 sin 会回折，网格边缘会被压成椭圆 */
+    var v = n * WARP;
+    if (v > 1.52) v = 1.52;
+    if (v < -1.52) v = -1.52;
+    return Math.sin(v) / SINW;
+  }
 
   function build() {
     cx = W * 0.5;
-    cy = H * 0.46;
-    R = Math.hypot(W, H) * 0.62;
+    cy = H * 0.5;
 
-    var kMax = Math.tan(MAXPHI / 2);
-    nodes = [];
-    deco = [];
+    var rowH = CELL * 0.866;
+    var cols = Math.ceil(W / CELL) + 3;
+    var rows = Math.ceil(H / rowH) + 3;
 
-    for (var i = 0; i <= RINGS; i++) {
-      var tt = i / RINGS;
-      var rr = Math.pow(tt, 1.7) * R;
-      var stagger = (i % 2) * (Math.PI / SEGS);
-      var ring = [];
-      for (var j = 0; j < SEGS; j++) {
-        var th = (j / SEGS) * Math.PI * 2 + stagger;
-        ring.push({
-          bx: cx + Math.cos(th) * rr,
-          by: cy + Math.sin(th) * rr * 0.94,
-          th: th,
+    verts = [];
+    edges = [];
+
+    for (var r = 0; r < rows; r++) {
+      var row = [];
+      for (var c = 0; c < cols; c++) {
+        var px = (c + (r % 2) * 0.5) * CELL - CELL;
+        var py = r * rowH - rowH;
+        var nx = (px - W * 0.5) / (W * 0.5);
+        var ny = (py - H * 0.5) / (H * 0.5);
+        row.push({
+          bx: cx + warp(nx) * (W * 0.5) * 1.02,
+          by: cy + warp(ny) * (H * 0.5) * 1.02,
+          nx: nx, ny: ny,
           ph: Math.random() * Math.PI * 2,
-          sp: 0.5 + Math.random() * 0.9,
+          sp: 0.5 + Math.random() * 0.8,
           x: 0, y: 0
         });
-        if (i > 1 && Math.random() < 0.03 + tt * 0.05) {
-          deco.push({
-            ring: i, seg: j,
-            size: rnd(3, 6.5) * (0.6 + tt * 0.8),
-            rot: rnd(0, Math.PI * 2),
-            a: rnd(0.12, 0.32)
-          });
+      }
+      if (r > 0) {
+        var base = (r - 1) * cols;
+        for (var k = 0; k < cols; k++) {
+          var a = verts[base + k], b = row[k];
+          if (a && b) edges.push([a, b]);
+          if (a && row[k + 1]) edges.push([a, row[k + 1]]);
+          var an = verts[base + k + 1];
+          if (an && b) edges.push([an, b]);
         }
       }
-      nodes.push(ring);
+      for (var q = 0; q < row.length; q++) verts.push(row[q]);
     }
   }
 
   function compute() {
-    for (var i = 0; i < nodes.length; i++) {
-      var ring = nodes[i];
-      for (var j = 0; j < ring.length; j++) {
-        var n = ring[j];
-        var wob = Math.sin(t * 0.00035 * n.sp + n.ph) * 2.6
-                + Math.cos(t * 0.00017 + n.ph) * 1.8;
-        n.x = n.bx + Math.cos(n.th) * wob;
-        n.y = n.by + Math.sin(n.th) * wob;
-      }
+    for (var i = 0; i < verts.length; i++) {
+      var n = verts[i];
+      var wob = Math.sin(t * 0.00026 * n.sp + n.ph) * 1.8
+              + Math.cos(t * 0.00012 + n.ph) * 1.0;
+      n.x = n.bx + wob;
+      n.y = n.by + wob * 0.8;
     }
   }
 
-  function angDist(a, b) {
-    var d = Math.abs(a - b) % (Math.PI * 2);
-    return d > Math.PI ? Math.PI * 2 - d : d;
-  }
-
-  function tri(x, y, size, rot, alpha) {
-    var r = size * 0.75;
-    ctx.beginPath();
-    ctx.moveTo(x + Math.cos(rot) * r, y + Math.sin(rot) * r);
-    ctx.lineTo(x + Math.cos(rot + 2.094) * r, y + Math.sin(rot + 2.094) * r);
-    ctx.lineTo(x + Math.cos(rot + 4.188) * r, y + Math.sin(rot + 4.188) * r);
-    ctx.closePath();
-    ctx.fillStyle = "rgba(255,255,255," + alpha.toFixed(3) + ")";
-    ctx.fill();
-  }
-
-  function render() {
+  function drawBackground() {
     ctx.fillStyle = BG;
     ctx.fillRect(0, 0, W, H);
 
-    /* 穹顶中心冷光 + 边缘自然衰减 */
-    var g1 = ctx.createRadialGradient(cx, cy, 0, cx, cy, R * 1.15);
-    g1.addColorStop(0, "rgba(120,170,200,0.10)");
-    g1.addColorStop(0.45, "rgba(40,70,95,0.045)");
+    var R = Math.max(W, H);
+    /* 右上暖光团 */
+    var g1 = ctx.createRadialGradient(W * 0.75, H * 0.15, 0, W * 0.75, H * 0.15, R * 0.52);
+    g1.addColorStop(0, "rgba(255,152,96,0.32)");
+    g1.addColorStop(0.28, "rgba(200,96,76,0.13)");
     g1.addColorStop(1, "rgba(0,0,0,0)");
     ctx.fillStyle = g1;
     ctx.fillRect(0, 0, W, H);
 
-    var sweepAng = (t * 0.00018) % (Math.PI * 2);
-    var FOCAL = Math.PI * 0.55;
+    /* 左上冷光 */
+    var g2 = ctx.createRadialGradient(W * 0.18, H * 0.10, 0, W * 0.18, H * 0.10, R * 0.75);
+    g2.addColorStop(0, "rgba(112,148,184,0.12)");
+    g2.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.fillStyle = g2;
+    ctx.fillRect(0, 0, W, H);
 
-    /* 每环的亮度先算一次，三种描边复用 */
-    var glowOf = [];
-    for (var i0 = 0; i0 < nodes.length; i0++) {
-      var ringL = nodes[i0], gmax = 0;
-      for (var s = 0; s < 8; s++) {
-        var smp = ringL[(s * Math.floor(ringL.length / 8)) % ringL.length];
-        var gv = 1 - angDist(smp.th, sweepAng) / FOCAL;
-        if (gv > gmax) gmax = gv;
-      }
-      glowOf.push(gmax < 0 ? 0 : gmax);
+    /* 中心压暗，四周留亮 */
+    var g3 = ctx.createRadialGradient(cx, cy, Math.min(W, H) * 0.06, cx, cy, R * 0.75);
+    g3.addColorStop(0, "rgba(0,0,0,0.36)");
+    g3.addColorStop(0.55, "rgba(0,0,0,0.18)");
+    g3.addColorStop(1, "rgba(0,0,0,0.40)");
+    ctx.fillStyle = g3;
+    ctx.fillRect(0, 0, W, H);
+  }
+
+  function strokeChannel(scale, style, width) {
+    ctx.save();
+    ctx.globalCompositeOperation = "lighter";
+    ctx.translate(cx, cy);
+    ctx.scale(scale, scale);
+    ctx.translate(-cx, -cy);
+    ctx.beginPath();
+    for (var i = 0; i < edges.length; i++) {
+      var e = edges[i];
+      ctx.moveTo(e[0].x, e[0].y);
+      ctx.lineTo(e[1].x, e[1].y);
     }
+    ctx.lineWidth = width;
+    ctx.strokeStyle = style;
+    ctx.stroke();
+    ctx.restore();
+  }
 
-    for (var pass = 0; pass < 3; pass++) {
-      for (var i = 0; i < nodes.length; i++) {
-        var ring = nodes[i];
-        var glow = glowOf[i];
-        var outer = i / RINGS;
+  function render() {
+    drawBackground();
 
-        ctx.beginPath();
-        var nxt = nodes[i + 1];
-        if (nxt) {
-          /* 三角带：本环 j/j+1 与外环 j/j+1 组成两个三角面 */
-          for (var j = 0; j < ring.length; j++) {
-            var jj = (j + 1) % ring.length;
-            var a = ring[j], b = ring[jj];
-            var c = nxt[j], e = nxt[jj];
-            ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.lineTo(c.x, c.y); ctx.closePath();
-            ctx.moveTo(b.x, b.y); ctx.lineTo(e.x, e.y); ctx.lineTo(c.x, c.y); ctx.closePath();
-          }
-        } else {
-          for (var j3 = 0; j3 <= ring.length; j3++) {
-            var n3 = ring[j3 % ring.length];
-            if (j3 === 0) ctx.moveTo(n3.x, n3.y); else ctx.lineTo(n3.x, n3.y);
-          }
-        }
+    strokeChannel(1.0055, "rgba(255,45,60,0.52)", 1.1);
+    strokeChannel(1.0000, "rgba(45,255,120,0.45)", 1.1);
+    strokeChannel(0.9945, "rgba(55,110,255,0.52)", 1.1);
 
-        if (pass === 0) {
-          ctx.lineWidth = 2.8;
-          ctx.strokeStyle = "rgba(255,255,255," + (0.008 + glow * 0.06).toFixed(3) + ")";
-          ctx.stroke();
-        } else if (pass === 1) {
-          ctx.lineWidth = 1;
-          ctx.strokeStyle = "rgba(255,255,255," + (0.014 + glow * 0.13 + outer * 0.008).toFixed(3) + ")";
-          ctx.stroke();
-        } else if (glow > 0.42) {
-          ctx.lineWidth = 1;
-          ctx.save();
-          ctx.translate(-1.1, 0);
-          ctx.strokeStyle = "rgba(90,220,255," + (glow * 0.18).toFixed(3) + ")";
-          ctx.stroke();
-          ctx.restore();
-          ctx.save();
-          ctx.translate(1.1, 0);
-          ctx.strokeStyle = "rgba(255,90,120," + (glow * 0.14).toFixed(3) + ")";
-          ctx.stroke();
-          ctx.restore();
-        }
-      }
+    ctx.save();
+    ctx.globalCompositeOperation = "lighter";
+    ctx.beginPath();
+    for (var i = 0; i < edges.length; i++) {
+      ctx.moveTo(edges[i][0].x, edges[i][0].y);
+      ctx.lineTo(edges[i][1].x, edges[i][1].y);
     }
-
-    /* 顶点小三角装饰 */
-    for (var k = 0; k < deco.length; k++) {
-      var d = deco[k];
-      var ring2 = nodes[d.ring];
-      if (!ring2) continue;
-      var p = ring2[d.seg];
-      if (!p) continue;
-      var gw = 1 - angDist(p.th, sweepAng) / FOCAL;
-      if (gw < 0) gw = 0;
-      tri(p.x, p.y, d.size, d.rot + t * 0.00005, Math.min(0.8, d.a + gw * 0.35));
-    }
+    ctx.lineWidth = 3.4;
+    ctx.strokeStyle = "rgba(130,160,200,0.035)";
+    ctx.stroke();
+    ctx.restore();
   }
 
   function draw(now) {
