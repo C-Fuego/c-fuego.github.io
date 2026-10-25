@@ -531,7 +531,7 @@ a:hover { color: var(--data); }
 .row-mark {
   width: 6px;
   height: 6px;
-  background: var(--dim-2);
+  background: #6E7A88;
   transform: rotate(45deg);
   transition: background 0.18s, box-shadow 0.18s;
 }
@@ -1667,7 +1667,7 @@ body.is-glitching main .judge-note {
 .stat:last-child { border-right: 0; }
 .stat::after { display: none; }
 .stat-label { font-size: 8.5px; letter-spacing: 0.26em; color: #5E6674; }
-.stat-value { font-size: 28px; letter-spacing: 0.01em; color: #F2F6FA; }
+.stat-value { font-size: 28px; letter-spacing: 0; color: #F2F6FA; }
 .stat-signal .bar { width: 4px; border-radius: 1px; }
 
 /* ---------- 列表行：编号做成方框 ---------- */
@@ -1783,6 +1783,149 @@ body.is-glitching main .judge-note {
   font-size: 9.5px;
   letter-spacing: 0.16em;
   color: #5E6674;
+}
+
+
+/* ============================================================
+   斜切几何层：去掉圆角，回到平行四边形 / 三角形语言
+   Phigros 的科技崩坏感来自斜切和锐角，圆角是相反的方向。
+   ============================================================ */
+
+/* 全部去圆角 */
+.stats-grid, .rows, .row-idx, .tag, .toc, .search-panel, .search-close,
+.to-top, .entry-meta, .tag-chip, .pager a, .pager span, .entry-nav-link,
+.lost-link, .glitch-layer, .code-copy {
+  border-radius: 0 !important;
+}
+
+/* 列表容器：右上切掉一角 */
+.rows {
+  position: relative;
+  clip-path: polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 0 100%);
+  border-color: rgba(255, 255, 255, 0.10);
+}
+.rows::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 24px;
+  height: 24px;
+  background: linear-gradient(225deg, transparent 47%, rgba(53,224,255,0.35) 48%, rgba(53,224,255,0.35) 52%, transparent 53%);
+  pointer-events: none;
+}
+
+/* 统计面板：右下切角 */
+.stats-grid {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
+  border-color: rgba(255, 255, 255, 0.10);
+}
+
+/* TOC：左上切角 */
+.toc {
+  clip-path: polygon(18px 0, 100% 0, 100% 100%, 0 100%, 0 18px);
+  border-left-width: 2px;
+}
+
+/* 搜索面板：右上切角 */
+.search-panel {
+  clip-path: polygon(0 0, calc(100% - 26px) 0, 100% 26px, 100% 100%, 0 100%);
+}
+
+/* 编号：平行四边形（实心，无描边） */
+.row-idx {
+  width: 40px;
+  height: 22px;
+  border: 0;
+  background: rgba(255, 255, 255, 0.10);
+  clip-path: polygon(9px 0, 100% 0, calc(100% - 9px) 100%, 0 100%);
+  color: #AFB9C6;
+  letter-spacing: 0.06em;
+}
+.row:hover .row-idx {
+  background: rgba(53, 224, 255, 0.18);
+  color: #35E0FF;
+}
+
+/* 标签：平行四边形 */
+.tag {
+  border: 0;
+  background: rgba(255, 255, 255, 0.10);
+  clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+  padding: 3px 10px;
+  color: #AFB9C6;
+}
+.row:hover .tag, .tag-chip:hover .tag {
+  background: rgba(53, 224, 255, 0.16);
+  color: #CBEDFA;
+}
+
+/* 首屏标签矩阵的 chip 也切斜 */
+.tag-chip {
+  clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+  border: 0;
+  background: rgba(255,255,255,0.05);
+}
+.tag-chip:hover {
+  background: rgba(53, 224, 255, 0.14);
+  transform: none;
+}
+
+/* 回顶：菱形（Phigros 的 note 形状） */
+.to-top {
+  width: 46px;
+  height: 46px;
+  border: 0;
+  background: rgba(53, 224, 255, 0.13);
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+  box-shadow: none;
+}
+.to-top:hover {
+  background: rgba(53, 224, 255, 0.26);
+  box-shadow: none;
+}
+.to-top::before {
+  border-color: rgba(255,255,255,0.9);
+}
+
+/* 区块三角：加大、上色 */
+.tri {
+  width: 11px;
+  height: 10px;
+  background: var(--data);
+  box-shadow: 0 0 10px rgba(53, 224, 255, 0.55);
+}
+
+/* 统计格子：恢复左上角切口三角 */
+.stat::after {
+  display: block;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 13px;
+  height: 13px;
+  background: var(--bg);
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+  border-top: 1px solid rgba(53, 224, 255, 0.30);
+  border-left: 1px solid rgba(53, 224, 255, 0.30);
+}
+
+/* 文章元数据条：左端斜切 */
+.entry-meta {
+  clip-path: polygon(14px 0, 100% 0, 100% 100%, 0 100%);
+}
+
+/* 上下篇卡片：右上切角 */
+.entry-nav-link {
+  clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%);
+}
+
+/* 分页按钮：切斜 */
+.pager a, .pager span {
+  clip-path: polygon(7px 0, 100% 0, calc(100% - 7px) 100%, 0 100%);
+  border: 0;
+  background: rgba(255,255,255,0.05);
 }
 
 /* ---------- 响应式 ---------- */
