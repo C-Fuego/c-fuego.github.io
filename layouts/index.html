@@ -52,19 +52,6 @@
   </div>
 </section>
 
-<section class="block">
-  <header class="block-head">
-    <span class="tri" aria-hidden="true"></span>
-    <h2 class="block-title">LATEST TRANSMISSIONS</h2>
-    <a class="block-more" href="{{ "/posts" | relURL }}">ALL ENTRIES →</a>
-  </header>
-  <div class="rows">
-    {{ range $i, $p := first 6 $posts }}
-      {{ partial "row.html" (dict "p" $p "i" (add $i 1)) }}
-    {{ end }}
-  </div>
-</section>
-
 {{ with site.Taxonomies.tags }}
 <section class="block">
   <header class="block-head">
