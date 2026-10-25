@@ -10,7 +10,7 @@
 
   var ctx = canvas.getContext("2d", { alpha: false });
 
-  var BG = "#0A0C10";
+  var BG = "#121218";
   var CELL = 104;      /* 三角形列宽 */
   var WARP = 1.10;     /* sin 映射强度：越大中心越鼓、边缘越压 */
 
@@ -98,26 +98,34 @@
     ctx.fillRect(0, 0, W, H);
 
     var R = Math.max(W, H);
-    /* 右上暖光团 */
-    var g1 = ctx.createRadialGradient(W * 0.75, H * 0.15, 0, W * 0.75, H * 0.15, R * 0.52);
-    g1.addColorStop(0, "rgba(255,152,96,0.32)");
-    g1.addColorStop(0.28, "rgba(200,96,76,0.13)");
+
+    /* 中央大光晕：启动界面最明显的特征 */
+    var g0 = ctx.createRadialGradient(cx, cy * 0.90, 0, cx, cy * 0.90, R * 0.50);
+    g0.addColorStop(0, "rgba(154,162,190,0.16)");
+    g0.addColorStop(0.32, "rgba(120,126,152,0.08)");
+    g0.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.fillStyle = g0;
+    ctx.fillRect(0, 0, W, H);
+
+    /* 右上雾团 */
+    var g1 = ctx.createRadialGradient(W * 0.74, H * 0.10, 0, W * 0.74, H * 0.10, R * 0.52);
+    g1.addColorStop(0, "rgba(140,145,172,0.10)");
     g1.addColorStop(1, "rgba(0,0,0,0)");
     ctx.fillStyle = g1;
     ctx.fillRect(0, 0, W, H);
 
-    /* 左上冷光 */
-    var g2 = ctx.createRadialGradient(W * 0.18, H * 0.10, 0, W * 0.18, H * 0.10, R * 0.75);
-    g2.addColorStop(0, "rgba(112,148,184,0.12)");
+    /* 左下雾团 */
+    var g2 = ctx.createRadialGradient(W * 0.10, H * 0.44, 0, W * 0.10, H * 0.44, R * 0.48);
+    g2.addColorStop(0, "rgba(112,117,146,0.08)");
     g2.addColorStop(1, "rgba(0,0,0,0)");
     ctx.fillStyle = g2;
     ctx.fillRect(0, 0, W, H);
 
-    /* 中心压暗，四周留亮 */
-    var g3 = ctx.createRadialGradient(cx, cy, Math.min(W, H) * 0.06, cx, cy, R * 0.75);
-    g3.addColorStop(0, "rgba(0,0,0,0.36)");
-    g3.addColorStop(0.55, "rgba(0,0,0,0.18)");
-    g3.addColorStop(1, "rgba(0,0,0,0.40)");
+    /* 四角暗角，压住边缘让穹顶收口 */
+    var g3 = ctx.createRadialGradient(cx, cy, Math.min(W, H) * 0.30, cx, cy, R * 0.92);
+    g3.addColorStop(0, "rgba(14,14,18,0)");
+    g3.addColorStop(0.65, "rgba(10,10,14,0.28)");
+    g3.addColorStop(1, "rgba(10,10,14,0.70)");
     ctx.fillStyle = g3;
     ctx.fillRect(0, 0, W, H);
   }
@@ -143,9 +151,9 @@
   function render() {
     drawBackground();
 
-    strokeChannel(1.0055, "rgba(255,45,60,0.52)", 1.1);
-    strokeChannel(1.0000, "rgba(45,255,120,0.45)", 1.1);
-    strokeChannel(0.9945, "rgba(55,110,255,0.52)", 1.1);
+    strokeChannel(1.0055, "rgba(255,45,60,0.44)", 1.1);
+    strokeChannel(1.0000, "rgba(45,255,120,0.38)", 1.1);
+    strokeChannel(0.9945, "rgba(55,110,255,0.44)", 1.1);
 
     ctx.save();
     ctx.globalCompositeOperation = "lighter";
