@@ -1521,6 +1521,68 @@ a:hover { color: var(--data); }
   .entry-title, .page-title, .hero-title { color: #111; }
 }
 
+/* ---------- 全站故障特效 ---------- */
+
+.glitch-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.05s steps(2);
+  mix-blend-mode: screen;
+}
+body.is-glitching .glitch-layer { opacity: 1; }
+
+.glitch-scan {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.075) 0px,
+    rgba(255, 255, 255, 0.075) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  animation: scan-roll 0.32s linear infinite;
+}
+@keyframes scan-roll {
+  from { transform: translateY(0); }
+  to { transform: translateY(3px); }
+}
+
+.glitch-band {
+  position: absolute;
+  left: -6%;
+  right: -6%;
+  filter: blur(0.6px);
+  will-change: transform, top;
+}
+
+/* 整页抖动 + 文字 RGB 分离 */
+body.is-glitching main,
+body.is-glitching .topbar,
+body.is-glitching .foot {
+  animation: glitch-jitter 0.17s steps(2) infinite;
+  text-shadow:
+    -2.5px 0 rgba(255, 40, 84, 0.75),
+    2.5px 0 rgba(60, 220, 255, 0.75);
+}
+body.is-glitching main img,
+body.is-glitching main .judge-note {
+  filter: hue-rotate(18deg) saturate(1.6);
+}
+
+@keyframes glitch-jitter {
+  0%   { transform: translate3d(0, 0, 0); }
+  18%  { transform: translate3d(-3px, 1px, 0); }
+  36%  { transform: translate3d(2px, -2px, 0); }
+  54%  { transform: translate3d(-1px, 2px, 0); }
+  72%  { transform: translate3d(3px, 1px, 0); }
+  88%  { transform: translate3d(-2px, -1px, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+
 /* ---------- 响应式 ---------- */
 
 @media (max-width: 860px) {
