@@ -1,10 +1,7 @@
 {{ $n := len (where site.RegularPages "Section" "posts") }}
-<footer class="foot">
-  <div class="foot-line" aria-hidden="true"></div>
-  <div class="foot-inner">
-    <span class="foot-item"><span class="diamond diamond-sm" aria-hidden="true"></span> {{ site.Title }} / {{ site.Params.worldName }}</span>
-    <span class="foot-item foot-dim">BUILD {{ now.Format "2006.01.02" }}</span>
-    <span class="foot-item foot-dim">0x{{ printf "%02X" $n }} ENTRIES</span>
-    <span class="foot-item"><a href="{{ "index.xml" | relURL }}">RSS</a></span>
-  </div>
+<footer class="site-foot">
+  <span>{{ site.Title }} / {{ site.Params.worldName }}</span>
+  <span>{{ now.Format "2006.01.02" }} 构建</span>
+  <span>{{ printf "%02d" $n }} 篇记录</span>
+  <a href="{{ "index.xml" | relURL }}">RSS</a>
 </footer>

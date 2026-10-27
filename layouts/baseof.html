@@ -1,38 +1,25 @@
 <!DOCTYPE html>
-<html lang="{{ site.Language.Locale }}" data-world="{{ site.Params.worldName }}">
+<html lang="{{ site.Language.Locale }}" data-theme="light">
 <head>
   {{ partial "head.html" . }}
+  <script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
 </head>
-<body class="kind-{{ .Kind }}{{ with .Section }} sec-{{ . }}{{ end }}">
+<body class="ef ef-contours">
   <a class="skip" href="#main">跳到正文</a>
-  <canvas id="backdrop" aria-hidden="true"></canvas>
-  <div class="vignette" aria-hidden="true"></div>
-  <canvas id="noise" aria-hidden="true"></canvas>
-  <div class="scanlines" aria-hidden="true"></div>
-  {{ if .IsPage }}<div class="read-progress" aria-hidden="true"><span class="read-bar"></span><span class="read-note"></span></div>{{ end }}
+  <div class="ef-tri" aria-hidden="true"><i></i><i></i><i></i></div>
   {{ partial "nav.html" . }}
   <main id="main">
     {{ block "main" . }}{{ end }}
   </main>
   {{ partial "foot.html" . }}
-
-  <button class="to-top" type="button" aria-label="回到顶部"></button>
-
-  <div class="search" data-json="{{ "index.json" | relURL }}" role="dialog" aria-modal="true" aria-label="站内搜索">
-    <div class="search-panel">
-      <div class="search-head">
-        <span class="search-kicker">SEARCH //</span>
-        <input class="search-input" type="search" placeholder="关键词…" autocomplete="off" spellcheck="false">
-        <button class="search-close" type="button">ESC</button>
-      </div>
-      <div class="search-hint">输入关键词：标题、摘要、正文都会匹配</div>
-      <div class="search-results"></div>
-    </div>
-  </div>
-
-  <script src="{{ "js/backdrop.js" | relURL }}?v={{ now.Unix }}" defer></script>
-  <script src="{{ "js/noise.js" | relURL }}?v={{ now.Unix }}" defer></script>
+  {{ partial "search.html" . }}
   <script src="{{ "js/ui.js" | relURL }}?v={{ now.Unix }}" defer></script>
-  <script src="{{ "js/glitch.js" | relURL }}?v={{ now.Unix }}" defer></script>
+  <script type="module">
+    import { wireTheme, wireReadouts, wireParallax } from "{{ "ef/fx.js" | relURL }}?v={{ now.Unix }}";
+    wireTheme();
+    wireReadouts(document);
+    var hero = document.querySelector("[data-hero]");
+    if (hero) wireParallax(hero);
+  </script>
 </body>
 </html>

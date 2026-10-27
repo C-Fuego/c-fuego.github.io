@@ -1,67 +1,91 @@
 {{ define "main" }}
-{{ $posts := where site.RegularPages "Section" "posts" }}
-{{ $chars := 0 }}
-{{ range $posts }}{{ $chars = add $chars .WordCount }}{{ end }}
-<section class="hero">
-  <div class="hero-inner">
-    <div class="hero-kicker">
-      <span class="diamond diamond-sm" aria-hidden="true"></span>
-      <span>LAYER 00 / ARCHIVE INDEX</span>
-      <span class="hero-kicker-rule" aria-hidden="true"></span>
+{{ $posts := (where site.RegularPages "Section" "posts").ByDate.Reverse }}
+{{ $n := len $posts }}
+{{ $chars := 0 }}{{ range $posts }}{{ $chars = add $chars .WordCount }}{{ end }}
+{{ $latest := index $posts 0 }}
+
+<section class="hero" data-hero>
+  <p class="meta ef-field">
+    <time datetime="{{ now.Format "2006-01-02" }}">{{ now.Format "2006.01.02" }}</time>
+    <span><b>{{ $n }}</b> 篇</span>
+    <span><b>{{ lang.FormatNumber 0 $chars }}</b> 字</span>
+  </p>
+
+  <h1 class="ef-wordmark">
+    <span class="solid ef-in-drive">{{ site.Title }}</span>
+    <span class="hollow ef-in-drive" style="animation-delay:140ms" aria-hidden="true">{{ site.Params.worldName }}</span>
+  </h1>
+
+  <div class="copy">
+    <p class="claim"><span class="ef-marker ef-in-stroke">{{ site.Params.worldTagline }}</span></p>
+    <p class="bio">{{ site.Params.description }}</p>
+    <p class="ef-actions">
+      {{ with $latest }}<a class="ef-btn go" href="{{ .RelPermalink }}">读最新一篇 <span class="sub">No.{{ printf "%03d" $n }}</span></a>{{ end }}
+      <a class="ef-btn" href="{{ "/posts/" | relURL }}">全部记录</a>
+      <a class="ef-btn" href="{{ "/about/" | relURL }}">关于</a>
+    </p>
+  </div>
+
+  <figure class="ef-frame">
+    <div class="window">
+      <svg viewBox="0 0 420 470" fill="none" stroke="currentColor" stroke-width="1.4" role="img" aria-label="三层档案层的等轴测线稿">
+        <g transform="translate(210 330)">
+          <path d="M0 -25 L115 42 L0 109 L-115 42 Z" opacity=".28"/>
+          <path d="M-115 42 L-115 56 M115 42 L115 56" opacity=".28"/>
+          <path d="M0 -105 L115 -38 L0 29 L-115 -38 Z"/>
+          <path d="M-115 -38 L-115 42 L0 109 L115 42 L115 -38"/>
+          <path d="M0 29 L0 109" opacity=".55"/>
+          <path d="M0 -185 L115 -118 L0 -51 L-115 -118 Z" opacity=".75"/>
+          <path d="M-115 -118 L-115 -66 M115 -118 L115 -66" opacity=".45"/>
+          <path d="M0 -51 L0 -20" opacity=".45" stroke-dasharray="4 5"/>
+        </g>
+        <text x="24" y="446" font-family="Saira, sans-serif" font-stretch="125%" font-size="11" letter-spacing="2.4" fill="currentColor" stroke="none">LAYER 0x00</text>
+      </svg>
     </div>
+    <figcaption class="ef-plate">写下来的部分变成序列，没写下来的部分变成噪声。</figcaption>
+  </figure>
 
-    <h1 class="hero-title glitch" data-text="{{ site.Params.worldName }}">{{ site.Params.worldName }}</h1>
-
-    <div class="hero-sub">
-      <span class="hero-world">{{ site.Params.worldName }}</span>
-      <span class="hero-sep" aria-hidden="true"></span>
-      <span class="hero-tagline">{{ site.Params.worldTagline }}</span>
-    </div>
-
-    <div class="judge-line" aria-hidden="true">
-      <span class="judge-bar"></span>
-      <span class="judge-note"></span>
-      <span class="judge-tick judge-tick-a"></span>
-      <span class="judge-tick judge-tick-b"></span>
-    </div>
-
-    <div class="hero-body">
-      {{ .Content }}
+  <div class="ef-ticker" aria-label="最近的记录">
+    <div class="track">
+      <ul>
+        {{ range first 4 $posts }}
+        <li><a href="{{ .RelPermalink }}"><b>No.{{ replaceRE "^([0-9]+).*$" "$1" .File.ContentBaseName }}</b>{{ .Title }}</a></li>
+        {{ end }}
+      </ul>
+      <ul aria-hidden="true">
+        {{ range first 4 $posts }}
+        <li><a href="{{ .RelPermalink }}" tabindex="-1"><b>No.{{ replaceRE "^([0-9]+).*$" "$1" .File.ContentBaseName }}</b>{{ .Title }}</a></li>
+        {{ end }}
+      </ul>
     </div>
   </div>
 </section>
 
-<section class="stats" aria-label="档案统计">
-  <div class="stats-grid">
-    <div class="stat">
-      <span class="stat-label">ENTRIES</span>
-      <span class="stat-value">{{ printf "%03d" (len $posts) }}</span>
-    </div>
-    <div class="stat">
-      <span class="stat-label">CHARS</span>
-      <span class="stat-value">{{ $chars }}</span>
-    </div>
-    <div class="stat">
-      <span class="stat-label">LAST SYNC</span>
-      <span class="stat-value">{{ with index $posts 0 }}{{ .Date.Format "2006.01.02" }}{{ else }}----.--.--{{ end }}</span>
-    </div>
-    <div class="stat">
-      <span class="stat-label">SIGNAL</span>
-      <span class="stat-value stat-signal"><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span></span>
-    </div>
-  </div>
-</section>
-
-{{ with site.GetPage "/about" }}
-<section class="block block-about">
-  <header class="block-head">
-    <span class="tri" aria-hidden="true"></span>
-    <h2 class="block-title">IDENTITY FILE</h2>
-    <a class="block-more" href="{{ .RelPermalink }}">OPEN →</a>
-  </header>
-  <div class="about-teaser">
-    {{ with .Params.summary }}<p>{{ . }}</p>{{ else }}{{ .Summary }}{{ end }}
-  </div>
+{{ with $latest }}
+<section class="latest">
+  <a href="{{ .RelPermalink }}" data-fx-host>
+    <span class="ef-hollow-no" aria-hidden="true" data-fx>{{ printf "%03d" $n }}</span>
+    <span class="body">
+      <span class="ef-field"><span class="flag">最新</span> {{ .Date.Format "2006.01.02" }} | {{ .WordCount }} 字 | 约 {{ .ReadingTime }} 分钟</span>
+      <span class="title">{{ .Title }}</span>
+      <span class="excerpt">{{ with .Params.summary }}{{ . }}{{ else }}{{ .Summary | plainify | truncate 140 }}{{ end }}</span>
+      <span class="ef-btn go">阅读全文</span>
+    </span>
+  </a>
 </section>
 {{ end }}
+
+<section class="index-block">
+  <p class="ef-eyebrow slash">Index</p>
+  <h2 class="ef-bar-title">全部记录</h2>
+  <ol class="ef-records">
+    {{ range $i, $p := $posts }}
+      {{ partial "record.html" (dict "p" $p "i" (add $i 1)) }}
+    {{ end }}
+  </ol>
+  <p class="index-more">
+    <a class="ef-btn" href="{{ "/posts/" | relURL }}">按归档查看</a>
+    <a class="ef-btn" href="{{ "/about/" | relURL }}">关于这个站</a>
+  </p>
+</section>
 {{ end }}

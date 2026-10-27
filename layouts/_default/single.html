@@ -1,74 +1,69 @@
 {{ define "main" }}
 {{ $p := . }}
 {{ $isPost := eq $p.Section "posts" }}
-<article class="entry{{ if not $isPost }} entry-page{{ end }}">
-  <header class="{{ if $isPost }}entry-head{{ else }}page-head{{ end }}">
-    <div class="{{ if $isPost }}entry-kicker{{ else }}page-kicker{{ end }}">
-      <span class="diamond diamond-sm" aria-hidden="true"></span>
-      <span>{{ if $isPost }}{{ $p.Section | upper }}{{ else }}IDENTITY{{ end }}</span>
-      <span class="{{ if $isPost }}entry-kicker-rule{{ else }}page-kicker-rule{{ end }}" aria-hidden="true"></span>
-      {{ if $isPost }}<time datetime="{{ $p.Date.Format "2006-01-02" }}">{{ $p.Date.Format "2006.01.02" }}</time>{{ end }}
-    </div>
+{{ $num := "" }}
+{{ with $p.File }}{{ $raw := replaceRE "^([0-9]+).*$" "$1" .ContentBaseName }}{{ if findRE "^[0-9]+$" $raw }}{{ $num = printf "%03d" (int $raw) }}{{ end }}{{ end }}
+<article class="ef-spread">
+  <div class="ef-sheet">
+    <p class="ef-eyebrow slash">{{ if $isPost }}Posts / 记录{{ else }}Page / 页面{{ end }}</p>
+    <p class="ef-crumb ef-field">
+      <a href="{{ "/posts/" | relURL }}">全部记录</a>
+      <span>{{ if $isPost }}记录{{ else }}{{ $p.Title }}{{ end }}</span>
+    </p>
 
-    <h1 class="{{ if $isPost }}entry-title{{ else }}page-title{{ end }} glitch" data-text="{{ $p.Title }}">{{ $p.Title }}</h1>
-
-    {{ if $isPost }}
-    <div class="entry-meta">
-      <span class="meta-item">BY {{ $p.Params.author | default site.Params.author | upper }}</span>
-      <span class="meta-dot" aria-hidden="true"></span>
-      <span class="meta-item">{{ $p.WordCount }} CHARS</span>
-      <span class="meta-dot" aria-hidden="true"></span>
-      <span class="meta-item">{{ $p.ReadingTime }} MIN</span>
-      {{ with $p.Params.tags }}
-        <span class="meta-dot" aria-hidden="true"></span>
-        <span class="meta-item meta-tags">{{ range . }}<span class="tag">{{ . }}</span>{{ end }}</span>
+    <p class="ids">
+      {{ if $num }}<span class="ef-tag is-current">No.{{ $num }}</span>{{ end }}
+      {{ range $p.Params.tags }}
+        <a class="ef-kv" href="{{ "/tags/" | relURL }}{{ . | urlize }}/"><span>标签</span><span>{{ . }}</span></a>
       {{ end }}
-    </div>
-    {{ end }}
+    </p>
 
-    <div class="judge-line judge-line-thin" aria-hidden="true"><span class="judge-bar"></span><span class="judge-note"></span></div>
-  </header>
+    <ul class="ef-facts ef-field">
+      <li><time datetime="{{ $p.Date.Format "2006-01-02" }}">{{ $p.Date.Format "2006.01.02" }}</time></li>
+      <li>{{ $p.WordCount }} 字</li>
+      <li>约 {{ $p.ReadingTime }} 分钟</li>
+    </ul>
 
-  <div class="entry-body">
-    <div class="prose">
+    <h1 class="title ef-read">{{ $p.Title }}</h1>
+    <div class="ef-tri" aria-hidden="true"><i></i><i></i><i></i></div>
+
+    {{ with $p.Params.summary }}<p class="ef-lede ef-read">{{ . }}</p>{{ end }}
+
+    <div class="ef-prose">
       {{ $p.Content }}
     </div>
 
-    {{ if and site.Params.ui.showToc $p.TableOfContents }}
-    <aside class="toc" aria-label="目录">
-      <div class="toc-head"><span class="tri" aria-hidden="true"></span>INDEX</div>
-      {{ $p.TableOfContents }}
-    </aside>
+    {{ if $isPost }}
+    {{ $tags := $p.Params.tags }}
+    {{ $related := first 4 (where (where site.RegularPages "Section" "posts") "Params.tags" "intersect" $tags) }}
+    {{ $related = where $related "Permalink" "ne" $p.Permalink }}
+    {{ if $related }}
+    <h2 class="ef-group-head ef-read"><span>相关记录</span><span class="ef-field">{{ len $related }} 篇</span></h2>
+    <ol class="ef-records">
+      {{ range $i, $r := $related }}
+        {{ partial "record.html" (dict "p" $r "i" (add $i 1)) }}
+      {{ end }}
+    </ol>
+    {{ end }}
+
+    <p class="ef-actions" style="margin-top:2rem">
+      {{ with $p.PrevInSection }}<a class="ef-btn" href="{{ .RelPermalink }}">上一篇 <span class="sub">{{ .Title | truncate 18 }}</span></a>{{ end }}
+      {{ with $p.NextInSection }}<a class="ef-btn" href="{{ .RelPermalink }}">下一篇 <span class="sub">{{ .Title | truncate 18 }}</span></a>{{ end }}
+    </p>
     {{ end }}
   </div>
 
-  {{ if $isPost }}
-  {{ $tags := $p.Params.tags }}
-  {{ $related := first 4 (where (where site.RegularPages "Section" "posts") "Params.tags" "intersect" $tags) }}
-  {{ if gt (len $related) 1 }}
-  <section class="related">
-    <div class="related-head"><span class="tri" aria-hidden="true"></span>RELATED / 同一标签</div>
-    <div class="related-list">
-      {{ range $related }}
-        {{ if ne .Permalink $p.Permalink }}
-        <a class="related-item" href="{{ .RelPermalink }}">
-          <span class="diamond diamond-sm" aria-hidden="true"></span>
-          <span>{{ .Title }}</span>
-          <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006.01.02" }}</time>
-        </a>
-        {{ end }}
-      {{ end }}
-    </div>
-  </section>
-  {{ end }}
-
-  <footer class="entry-foot">
-    <div class="entry-foot-line" aria-hidden="true"></div>
-    <nav class="entry-nav">
-      {{ with $p.PrevInSection }}<a class="entry-nav-link" href="{{ .RelPermalink }}"><span class="k">PREV</span><span class="v">{{ .Title }}</span></a>{{ end }}
-      {{ with $p.NextInSection }}<a class="entry-nav-link entry-nav-next" href="{{ .RelPermalink }}"><span class="k">NEXT</span><span class="v">{{ .Title }}</span></a>{{ end }}
-    </nav>
-  </footer>
-  {{ end }}
+  <aside class="ef-margin">
+    {{ if $p.TableOfContents }}
+    <h2 class="margin-h">目录</h2>
+    <div class="toc">{{ $p.TableOfContents }}</div>
+    {{ end }}
+    <h2 class="margin-h">这篇</h2>
+    <ul class="ef-ledger">
+      <li><span>字数</span><span class="ef-field">{{ $p.WordCount }}</span></li>
+      <li><span>阅读</span><span class="ef-field">约 {{ $p.ReadingTime }} 分钟</span></li>
+      {{ if $num }}<li><span>编号</span><span class="ef-field">No.{{ $num }}</span></li>{{ end }}
+    </ul>
+  </aside>
 </article>
 {{ end }}

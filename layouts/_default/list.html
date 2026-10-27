@@ -1,22 +1,20 @@
 {{ define "main" }}
 {{ $isTerm := eq .Kind "term" }}
 {{ $paginator := .Paginate .Pages.ByDate.Reverse }}
-<header class="page-head">
-  <div class="page-kicker">
-    <span class="diamond diamond-sm" aria-hidden="true"></span>
-    <span>{{ if $isTerm }}TAG{{ else }}{{ .Section | upper }}{{ end }}</span>
-    {{ if $isTerm }}<span class="page-kicker-rule" aria-hidden="true"></span><span>0x{{ printf "%02X" (len .Pages) }} ENTRIES</span>{{ end }}
-  </div>
-  <h1 class="page-title glitch" data-text="{{ .Title }}">{{ .Title }}</h1>
-  {{ with .Content }}<div class="page-intro">{{ . }}</div>{{ end }}
-  <div class="judge-line judge-line-thin" aria-hidden="true"><span class="judge-bar"></span><span class="judge-note"></span></div>
-</header>
-
-<div class="rows rows-full">
-  {{ range $i, $p := $paginator.Pages }}
-    {{ partial "row.html" (dict "p" $p "i" (add $i 1)) }}
-  {{ end }}
-</div>
-
-{{ partial "pager.html" $paginator }}
+<section class="archive">
+  <header class="archive-head">
+    <div>
+      <p class="ef-eyebrow slash">{{ if $isTerm }}Tag / 标签{{ else }}Archive / 归档{{ end }}</p>
+      <h1 class="title">{{ .Title }}</h1>
+    </div>
+    <p class="ef-field">{{ len .Pages }} 篇</p>
+  </header>
+  {{ with .Content }}<div class="ef-lede ef-read" style="max-width:40rem;margin:1.1rem 0 0">{{ . }}</div>{{ end }}
+  <ol class="ef-records">
+    {{ range $i, $p := $paginator.Pages }}
+      {{ partial "record.html" (dict "p" $p "i" (add $i 1)) }}
+    {{ end }}
+  </ol>
+  {{ partial "pager.html" $paginator }}
+</section>
 {{ end }}

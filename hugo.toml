@@ -23,7 +23,7 @@ timeZone = "Asia/Shanghai"
       unsafe = true
   [markup.highlight]
     noClasses = false
-    style = "monokai"
+    style = "github"
     lineNos = false
 
 [outputs]
@@ -35,15 +35,15 @@ timeZone = "Asia/Shanghai"
 
 [menu]
   [[menu.main]]
-    name = "ARCHIVE"
+    name = "归档"
     pageRef = "/posts"
     weight = 10
   [[menu.main]]
-    name = "ABOUT"
+    name = "关于"
     pageRef = "/about"
     weight = 20
   [[menu.main]]
-    name = "TAGS"
+    name = "标签"
     pageRef = "/tags"
     weight = 30
 

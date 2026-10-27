@@ -1,25 +1,13 @@
-<header class="topbar">
-  <a class="brand" href="{{ "/" | relURL }}" aria-label="{{ site.Title }}">
-    <span class="brand-mark" aria-hidden="true"></span>
-    <span class="brand-text">
-      <span class="brand-name glitch" data-text="{{ site.Title }}">{{ site.Title }}</span>
-      <span class="brand-sub">{{ site.Params.worldName }} // {{ site.Params.worldTagline }}</span>
-    </span>
+<header class="ef-topbar site-topbar">
+  <a class="brand" href="{{ "/" | relURL }}">
+    <span class="ef-eyebrow slash">Layer 00</span>
+    <strong>{{ site.Title }}</strong>
   </a>
-
-  <nav class="nav" aria-label="主导航">
+  <nav class="site-nav" aria-label="主导航">
     {{ range site.Menus.main }}
-      <a href="{{ .URL | relURL }}" class="nav-link{{ if $.IsMenuCurrent "main" . }} is-active{{ end }}">{{ .Name }}</a>
+      <a href="{{ .URL | relURL }}"{{ if $.IsMenuCurrent "main" . }} aria-current="page"{{ end }}>{{ .Name }}</a>
     {{ end }}
-    <button class="nav-link nav-search" type="button" data-search-open aria-label="搜索（快捷键 斜杠）">
-      <span class="nav-search-icon" aria-hidden="true"></span>
-      <span class="nav-search-text">SEARCH</span>
-    </button>
+    <button class="nav-search" type="button" data-search-open aria-label="搜索（快捷键 斜杠）">Search</button>
   </nav>
-
-  <div class="topbar-status" aria-hidden="true">
-    <span class="status-dot"></span>
-    <span class="status-text">SYS</span>
-    <span class="status-clock" id="clock">--:--:--</span>
-  </div>
+  <button class="ef-btn small" type="button" data-theme-toggle>深浅</button>
 </header>

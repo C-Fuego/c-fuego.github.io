@@ -1,15 +1,11 @@
 {{ define "main" }}
-<section class="page-head lost">
-  <div class="page-kicker">
-    <span class="diamond diamond-sm" aria-hidden="true"></span>
-    <span>SEGMENT NOT FOUND</span>
-  </div>
-  <h1 class="page-title glitch" data-text="404">404</h1>
-  <div class="judge-line judge-line-thin" aria-hidden="true"><span class="judge-bar"></span></div>
-  <p class="lost-text">这一段地址没有被分配。它可能是被回收了，也可能从来没写过。</p>
-  <div class="lost-links">
-    <a class="lost-link" href="{{ "/" | relURL }}"><span class="k">RETURN</span><span class="v">回到层 0x00</span></a>
-    <a class="lost-link" href="{{ "/posts" | relURL }}"><span class="k">ARCHIVE</span><span class="v">查看全部条目</span></a>
-  </div>
+<section class="lost">
+  <span class="ef-hollow-no" aria-hidden="true">404</span>
+  <h1>这个地址没有对应的记录</h1>
+  <p>可能是链接变了，或者这条记录被移走了。可以从归档里重新找。</p>
+  <p class="ef-actions">
+    <a class="ef-btn go" href="{{ "/posts/" | relURL }}">全部记录</a>
+    <a class="ef-btn" href="{{ "/" | relURL }}">回首页</a>
+  </p>
 </section>
 {{ end }}

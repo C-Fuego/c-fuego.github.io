@@ -1,0 +1,10 @@
+{{ $p := .p }}
+{{ $num := "" }}
+{{ with $p.File }}{{ $num = replaceRE "^([0-9]+).*$" "$1" .ContentBaseName }}{{ end }}
+{{ if $num }}{{ $num = printf "%03d" (int $num) }}{{ else }}{{ $num = printf "%03d" .i }}{{ end }}
+<li><a class="ef-record" href="{{ $p.RelPermalink }}">
+  <span class="ef-tag">No.{{ $num }}</span>
+  <time class="ef-field" datetime="{{ $p.Date.Format "2006-01-02" }}">{{ $p.Date.Format "2006.01.02" }}</time>
+  <span class="name ef-read">{{ $p.Title }}</span>
+  <span class="ef-field">{{ $p.WordCount }} 字</span>
+</a></li>
