@@ -8,7 +8,7 @@ timeZone = "Asia/Shanghai"
 
 [params]
   author = "1GN4CI0"
-  description = "1GN4CI0 的技术笔记：Linux、自建服务、硬件，以及踩过的坑。"
+  description = "Linux、自建服务、硬件，以及踩过的坑。"
 
 [params.ui]
   showToc = true
@@ -46,11 +46,6 @@ timeZone = "Asia/Shanghai"
     en = "Tags"
     pageRef = "/tags"
     weight = 30
-  [[menu.main]]
-    name = "关于"
-    en = "About"
-    pageRef = "/about"
-    weight = 40
 
 [taxonomies]
   tag = "tags"
