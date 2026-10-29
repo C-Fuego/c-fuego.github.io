@@ -833,3 +833,157 @@ body.is-locked { overflow: hidden; }
   .tag-table .share { width: 34%; padding-right: 3.2rem; }
   .tag-table .num { width: 3.5rem; }
 }
+
+/* ---------- 工业图形（参照 rahoo.online/design-tool 的模板） ---------- */
+
+.shape { pointer-events: none; color: var(--ef-ink); z-index: 0; }
+.shape svg { display: block; width: 100%; height: 100%; }
+
+/* 首页：右上角同心圆，只做纸的质感 */
+.intro-block {
+  position: relative;
+  overflow: hidden;
+}
+
+.shape-concentric {
+  position: absolute;
+  top: 50%;
+  right: -7rem;
+  width: 26rem;
+  height: 26rem;
+  transform: translateY(-50%);
+  opacity: 0.1;
+}
+
+.intro-block > .plaque,
+.intro-block > .lede-line,
+.intro-block > .intro-facts {
+  position: relative;
+  z-index: 1;
+}
+
+/* 文章页：标题右侧一条档案条形码 */
+.post { position: relative; }
+
+.shape-barcode {
+  position: absolute;
+  top: 6.2rem;
+  right: 0;
+  width: 10.5rem;
+  height: 4.2rem;
+  opacity: 0.42;
+}
+
+/* 空状态：点阵铺底 */
+.empty-plate {
+  position: relative;
+  overflow: hidden;
+}
+
+.shape-dots {
+  position: absolute;
+  inset: 0;
+  opacity: 0.18;
+}
+
+.empty-plate > p { position: relative; z-index: 1; }
+
+/* 404：同心圆 + 射线 */
+.lost {
+  position: relative;
+  overflow: hidden;
+}
+
+.shape-404 {
+  position: absolute;
+  top: 50%;
+  right: -7rem;
+  width: 26rem;
+  height: 26rem;
+  transform: translateY(-50%);
+  opacity: 0.15;
+}
+
+.shape-404 > span {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+.lost > .ef-hollow-no,
+.lost > h1,
+.lost > p {
+  position: relative;
+  z-index: 1;
+}
+
+/* 页脚：一条带刻度的 HUD 线压在页脚上沿 */
+.site-foot {
+  position: relative;
+  padding-top: 2.7rem;
+}
+
+.shape-hud {
+  position: relative;
+  display: block;
+  height: 1.5rem;
+  opacity: 0.85;
+  color: var(--ef-ink-2);
+}
+
+/* 页脚那条：压在页脚上沿、通宽 */
+.site-foot .shape-hud {
+  position: absolute;
+  top: 0.45rem;
+  left: var(--ef-pad);
+  right: var(--ef-pad);
+  height: 1.5rem;
+  opacity: 0.9;
+}
+
+/* 首页：区块底边就是一把尺 */
+.intro-block {
+  border-bottom: 0;
+  padding-bottom: clamp(2.2rem, 4vw, 3rem);
+}
+
+.intro-hud {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.35rem;
+  height: 1.55rem;
+  opacity: 0.9;
+}
+
+/* 文章页：正文与上下篇之间 */
+.post-hud {
+  max-width: 44rem;
+  margin: clamp(2.5rem, 5vw, 3.5rem) 0 0;
+  opacity: 0.8;
+}
+
+.post-nav {
+  margin-top: 0.9rem;
+  padding-top: 0;
+  border-top: 0;
+}
+
+/* 列表页：页名下面 */
+.list-hud {
+  margin: 0.9rem 0 0.2rem;
+  opacity: 0.8;
+}
+
+@media (max-width: 1099px) {
+  .shape-barcode { display: none; }
+}
+
+@media (max-width: 719px) {
+  .shape-concentric { width: 18rem; height: 18rem; top: -18%; right: -18%; opacity: 0.1; }
+  .shape-404 { width: 18rem; height: 18rem; right: -8rem; opacity: 0.12; }
+}
+
+@media print {
+  .shape { display: none !important; }
+}

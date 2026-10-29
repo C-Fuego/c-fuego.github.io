@@ -7,6 +7,8 @@
 
 <div class="page">
   <section class="intro-block">
+    <div class="shape shape-concentric" data-shape="concentric" data-shape-opts='{"n":9}' aria-hidden="true"></div>
+    <div class="shape shape-hud intro-hud" data-shape="hudLines" data-shape-opts='{"n":56}' data-fit="none" aria-hidden="true"></div>
     <p class="plaque cue cue-1">
       <span>{{ site.Title }}</span>
       <span>技术笔记</span>
@@ -33,7 +35,7 @@
       {{ end }}
     </ul>
     {{ else }}
-    <div class="empty-plate cue cue-5"><p>还没有文章。写一篇放进 <code>content/posts/</code>，构建后会出现在这里。</p></div>
+    <div class="empty-plate cue cue-5"><div class="shape shape-dots" data-shape="dotMatrix" data-shape-opts='{"n":16}' aria-hidden="true"></div><p>还没有文章。写一篇放进 <code>content/posts/</code>，构建后会出现在这里。</p></div>
     {{ end }}
   </section>
 

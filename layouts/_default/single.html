@@ -3,6 +3,7 @@
 {{- with .File }}{{ $raw = replaceRE "^([0-9]+).*$" "$1" .ContentBaseName }}{{ end -}}
 <div class="page">
   <article class="post">
+    <div class="shape shape-barcode" data-shape="barcode" data-shape-opts='{"seed":29}' data-fit="none" aria-hidden="true"></div>
     <p class="ef-crumb ef-field cue cue-1">
       <a href="{{ "posts/" | relURL }}">文章</a>
       <span>正文</span>
@@ -35,6 +36,7 @@
 
     <div class="ef-prose cue cue-4">{{ .Content }}</div>
 
+    <div class="shape shape-hud post-hud" data-shape="hudLines" data-shape-opts='{"n":48}' data-fit="none" aria-hidden="true"></div>
     <nav class="post-nav" aria-label="相邻文章">
       {{ with .PrevInSection }}<a class="ef-btn" href="{{ .RelPermalink }}">← {{ .Title }}</a>{{ end }}
       {{ with .NextInSection }}<a class="ef-btn" href="{{ .RelPermalink }}">{{ .Title }} →</a>{{ end }}

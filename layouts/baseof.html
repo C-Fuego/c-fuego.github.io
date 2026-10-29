@@ -19,6 +19,7 @@
   </div>
   {{- end }}
   {{ partial "search.html" . }}
+  <script src="{{ "js/shapes.js" | relURL }}?v={{ now.Unix }}" defer></script>
   <script src="{{ "js/site.js" | relURL }}?v={{ now.Unix }}" defer></script>
   <script type="module">
     import { wireTheme, wireReadouts } from "{{ "ef/fx.js" | relURL }}?v={{ now.Unix }}";
