@@ -1,0 +1,43 @@
+{{ define "main" }}
+{{- $posts := where site.RegularPages "Section" "posts" -}}
+<div class="ef-spread">
+  <section class="ef-sheet">
+    <header class="ef-sheet-head">
+      <div>
+        <p class="ef-eyebrow slash">Posts</p>
+        <h1>{{ .Title }}</h1>
+      </div>
+      <p class="ef-field">共 {{ len $posts }} 篇</p>
+    </header>
+    {{ with .Content }}<div class="ef-lede">{{ . }}</div>{{ end }}
+
+    {{ if $posts }}
+      {{- range $posts.GroupByDate "2006" }}
+      <header class="ef-group-head"><span>{{ .Key }}</span><span class="ef-field">{{ len .Pages }} 篇</span></header>
+      <ul class="ef-records">
+        {{- range .Pages }}
+        {{ partial "record.html" . }}
+        {{- end }}
+      </ul>
+      {{- end }}
+    {{ else }}
+      <p class="ef-empty">还没有文章。写一篇放进 <code>content/posts/</code>，构建后会出现在这里。</p>
+    {{ end }}
+  </section>
+
+  <aside class="ef-margin">
+    <p class="ef-eyebrow">Index</p>
+    <ul class="ef-ledger">
+      {{- range $posts.GroupByDate "2006" }}
+      <li><a href="#">{{ .Key }}</a><span class="ef-field">{{ len .Pages }}</span></li>
+      {{- end }}
+    </ul>
+    <p class="ef-eyebrow margin-gap">Tags</p>
+    <div class="ef-chips">
+      {{- range site.Taxonomies.tags.ByCount }}
+      <a class="ef-chip" href="{{ .Page.RelPermalink }}">{{ .Page.LinkTitle }}<span>{{ .Count }}</span></a>
+      {{- end }}
+    </div>
+  </aside>
+</div>
+{{ end }}

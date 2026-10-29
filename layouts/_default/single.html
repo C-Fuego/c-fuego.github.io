@@ -1,0 +1,52 @@
+{{ define "main" }}
+{{- $raw := "" -}}
+{{- with .File }}{{ $raw = replaceRE "^([0-9]+).*$" "$1" .ContentBaseName }}{{ end -}}
+<div class="ef-spread">
+  <article class="ef-sheet">
+    <p class="ef-crumb ef-field">
+      <a href="{{ "posts/" | relURL }}">文章</a>
+      <span>正文</span>
+    </p>
+
+    <p class="post-ids">
+      {{- if findRE "^[0-9]+$" $raw }}
+      <span class="ef-tag is-current">No.{{ printf "%03d" (int $raw) }}</span>
+      {{- end }}
+      {{- range .Params.tags }}
+      <a class="ef-tag" href="{{ "tags/" | relURL }}{{ . | urlize }}/">{{ . }}</a>
+      {{- end }}
+    </p>
+
+    <ul class="ef-facts ef-field">
+      <li><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006.01.02" }}</time></li>
+      <li>{{ .WordCount }} 字</li>
+      <li>约 {{ .ReadingTime }} 分钟</li>
+    </ul>
+
+    <h1 class="post-title">{{ .Title }}</h1>
+    <div class="ef-tri" aria-hidden="true"><i></i><i></i><i></i></div>
+
+    {{ with .Summary }}<p class="ef-lede">{{ . | plainify }}</p>{{ end }}
+
+    <div class="ef-prose">{{ .Content }}</div>
+
+    <nav class="post-nav" aria-label="相邻文章">
+      {{ with .PrevInSection }}<a class="ef-btn" href="{{ .RelPermalink }}">← {{ .Title }}</a>{{ end }}
+      {{ with .NextInSection }}<a class="ef-btn" href="{{ .RelPermalink }}">{{ .Title }} →</a>{{ end }}
+    </nav>
+  </article>
+
+  <aside class="ef-margin">
+    {{ if and site.Params.ui.showToc .TableOfContents }}
+    <p class="ef-eyebrow">目录</p>
+    <nav class="post-toc">{{ .TableOfContents }}</nav>
+    {{ end }}
+    <p class="ef-eyebrow margin-gap">数据</p>
+    <ul class="ef-ledger">
+      <li><span>写入</span><span class="ef-field">{{ .Date.Format "2006.01.02" }}</span></li>
+      <li><span>字数</span><span class="ef-field">{{ .WordCount }}</span></li>
+      <li><span>阅读</span><span class="ef-field">{{ .ReadingTime }} 分钟</span></li>
+    </ul>
+  </aside>
+</div>
+{{ end }}

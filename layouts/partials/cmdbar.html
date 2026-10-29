@@ -1,0 +1,15 @@
+<header class="ef-cmdbar site-cmdbar">
+  <a class="brand" href="{{ "" | relURL }}">
+    <span class="seal" aria-hidden="true">1</span>1GN4CI0
+  </a>
+  <nav aria-label="分区">
+    {{- range site.Menus.main }}
+    <a href="{{ .URL | relURL }}"{{ if $.IsMenuCurrent "main" . }} aria-current="page"{{ end }}>{{ .Name }}<small>{{ with .Params.en }}{{ . }}{{ else }}{{ .Identifier }}{{ end }}</small></a>
+    {{- end }}
+  </nav>
+  <div class="util">
+    <button class="ef-btn small" type="button" data-search-open aria-label="站内搜索">搜索</button>
+    <button class="ef-btn small" type="button" data-theme-toggle aria-label="切换深浅">深浅</button>
+  </div>
+</header>
+<div class="ef-tri site-tri" aria-hidden="true"><i></i><i></i><i></i></div>

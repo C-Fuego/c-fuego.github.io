@@ -1,0 +1,11 @@
+{{ define "main" }}
+<section class="lost">
+  <span class="ef-hollow-no" aria-hidden="true">404</span>
+  <h1>这一页不存在</h1>
+  <p>地址可能写错了，或者那篇文章已经不在了。</p>
+  <p class="ef-actions">
+    <a class="ef-btn go" href="{{ "" | relURL }}">回首页</a>
+    <a class="ef-btn" href="{{ "posts/" | relURL }}">看文章</a>
+  </p>
+</section>
+{{ end }}

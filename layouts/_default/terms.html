@@ -1,0 +1,31 @@
+{{ define "main" }}
+<div class="ef-spread">
+  <section class="ef-sheet">
+    <header class="ef-sheet-head">
+      <div>
+        <p class="ef-eyebrow slash">Tags</p>
+        <h1>{{ .Title }}</h1>
+      </div>
+      <p class="ef-field">{{ len .Data.Terms }} 个</p>
+    </header>
+    {{ if .Data.Terms }}
+    <div class="ef-chips tag-cloud">
+      {{- range .Data.Terms.ByCount }}
+      <a class="ef-chip" href="{{ .Page.RelPermalink }}">{{ .Page.LinkTitle }}<span>{{ .Count }}</span></a>
+      {{- end }}
+    </div>
+    {{ else }}
+    <p class="ef-empty">还没有标签。给文章加上 <code>tags</code> 就会出现在这里。</p>
+    {{ end }}
+  </section>
+
+  <aside class="ef-margin">
+    <p class="ef-eyebrow">按数量</p>
+    <ul class="ef-ledger">
+      {{- range .Data.Terms.ByCount }}
+      <li><a href="{{ .Page.RelPermalink }}">{{ .Page.LinkTitle }}</a><span class="ef-field">{{ .Count }}</span></li>
+      {{- end }}
+    </ul>
+  </aside>
+</div>
+{{ end }}

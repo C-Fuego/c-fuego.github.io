@@ -1,0 +1,17 @@
+<footer class="site-foot">
+  <div class="foot-main">
+    <span class="ef-field">{{ site.Title }} │ 技术笔记</span>
+  </div>
+  <div class="foot-links">
+    <a href="{{ "" | relURL }}">首页</a>
+    <a href="{{ "posts/" | relURL }}">文章</a>
+    <a href="{{ "tags/" | relURL }}">标签</a>
+    <a href="{{ "index.xml" | relURL }}">RSS</a>
+    <a href="https://github.com/C-Fuego/blog">源码</a>
+  </div>
+  <div class="foot-note">
+    <span>{{ site.Params.author }}</span>
+    <span>{{ now.Format "2006.01.02" }} 构建</span>
+    <span>Hugo {{ hugo.Version }}</span>
+  </div>
+</footer>

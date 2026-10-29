@@ -1,0 +1,56 @@
+baseURL = "https://c-fuego.github.io/blog/"
+locale = "zh-CN"
+defaultContentLanguage = "zh-cn"
+title = "1GN4CI0"
+hasCJKLanguage = true
+enableRobotsTXT = true
+timeZone = "Asia/Shanghai"
+
+[params]
+  author = "1GN4CI0"
+  description = "1GN4CI0 的技术笔记：Linux、自建服务、硬件，以及踩过的坑。"
+
+[params.ui]
+  showToc = true
+  tocDepth = 3
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+  [markup.highlight]
+    noClasses = false
+    style = "github"
+    lineNos = false
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+  section = ["HTML", "RSS"]
+
+[pagination]
+  pagerSize = 24
+
+[menu]
+  [[menu.main]]
+    name = "首页"
+    en = "Index"
+    pageRef = "/"
+    weight = 10
+  [[menu.main]]
+    name = "文章"
+    en = "Posts"
+    pageRef = "/posts"
+    weight = 20
+  [[menu.main]]
+    name = "标签"
+    en = "Tags"
+    pageRef = "/tags"
+    weight = 30
+  [[menu.main]]
+    name = "关于"
+    en = "About"
+    pageRef = "/about"
+    weight = 40
+
+[taxonomies]
+  tag = "tags"

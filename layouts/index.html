@@ -1,0 +1,76 @@
+{{ define "main" }}
+{{- $posts := where site.RegularPages "Section" "posts" -}}
+{{- $words := 0 -}}
+{{- range $posts }}{{ $words = add $words .WordCount }}{{ end -}}
+{{- $latest := "" -}}
+{{- with $posts.ByDate.Reverse }}{{ $latest = (index . 0).Date.Format "2006.01.02" }}{{ end -}}
+
+<section class="home-hero">
+  <p class="hero-meta ef-field">
+    <span>{{ now.Format "2006" }}</span>
+    <span>{{ len $posts }} 篇</span>
+    <span>{{ $words }} 字</span>
+    {{ with $latest }}<span>最后写入 {{ . }}</span>{{ end }}
+  </p>
+
+  <h1 class="ef-wordmark home-mark">
+    <span class="solid">1GN4CI0</span>
+    <span class="hollow">Notes</span>
+  </h1>
+
+  <div class="home-copy">
+    <p class="claim">Linux、自建服务、硬件，以及踩过的坑。</p>
+    <p class="bio">{{ site.Params.description }}</p>
+    <p class="ef-actions">
+      <a class="ef-btn go" href="{{ "posts/" | relURL }}">看文章</a>
+      <a class="ef-btn" href="{{ "index.xml" | relURL }}">RSS</a>
+      <a class="ef-btn" href="{{ "about/" | relURL }}">关于</a>
+    </p>
+  </div>
+</section>
+
+<section class="home-boards" aria-label="站点数据">
+  <section class="ef-panel">
+    <h2><span class="ef-pair"><span class="ef-eyebrow">Posts</span><span>文章</span></span><a href="{{ "posts/" | relURL }}">全部</a></h2>
+    <div class="ef-figs">
+      <a href="{{ "posts/" | relURL }}"><b data-fx-load>{{ len $posts }}</b><span>已发布</span></a>
+      <a href="{{ "tags/" | relURL }}"><b data-fx-load>{{ len site.Taxonomies.tags }}</b><span>标签</span></a>
+      <a href="{{ "posts/" | relURL }}"><b data-fx-load>{{ $words }}</b><span>总字数</span></a>
+    </div>
+  </section>
+  <section class="ef-panel ef-in-power" style="--i:1">
+    <h2><span class="ef-pair"><span class="ef-eyebrow">Build</span><span>构建</span></span><a href="https://github.com/C-Fuego/blog/actions">记录</a></h2>
+    <ul class="ef-ledger">
+      <li><span>生成器</span><span class="ef-field">Hugo {{ hugo.Version }}</span></li>
+      <li><span>托管</span><span class="ef-field">GitHub Pages</span></li>
+      <li><span>源码</span><span class="ef-field">C-Fuego/blog</span></li>
+    </ul>
+  </section>
+  <section class="ef-panel ef-in-power" style="--i:2">
+    <h2><span class="ef-pair"><span class="ef-eyebrow">Topics</span><span>标签</span></span><a href="{{ "tags/" | relURL }}">全部</a></h2>
+    <div class="ef-chips">
+      {{- range first 8 site.Taxonomies.tags.ByCount }}
+      <a class="ef-chip" href="{{ .Page.RelPermalink }}">{{ .Page.LinkTitle }}<span>{{ .Count }}</span></a>
+      {{- else }}
+      <p class="ef-empty">还没有标签。</p>
+      {{- end }}
+    </div>
+  </section>
+</section>
+
+<section class="home-index">
+  <header class="ef-group-head">
+    <span class="ef-pair"><span class="ef-eyebrow">Recent</span><span>最近写入</span></span>
+    <a class="ef-field" href="{{ "posts/" | relURL }}">全部 {{ len $posts }} 篇</a>
+  </header>
+  {{ if $posts }}
+  <ul class="ef-records">
+    {{ range first 6 $posts.ByDate.Reverse }}
+    {{ partial "record.html" . }}
+    {{ end }}
+  </ul>
+  {{ else }}
+  <p class="ef-empty">还没有文章。写一篇放进 <code>content/posts/</code>，构建后会出现在这里。</p>
+  {{ end }}
+</section>
+{{ end }}

@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="zh-CN" data-ef-accent="yellow" data-ef-paper="neutral" data-ef-cut="standard">
+<head>
+  {{ partial "head.html" . }}
+</head>
+<body class="ef ef-contours" data-index="{{ "index.json" | relURL }}">
+  <a class="skip" href="#main">跳到正文</a>
+  {{ partial "cmdbar.html" . }}
+  <main id="main">
+    {{ block "main" . }}{{ end }}
+  </main>
+  {{ partial "foot.html" . }}
+  {{ partial "search.html" . }}
+  <script src="{{ "js/site.js" | relURL }}?v={{ now.Unix }}" defer></script>
+  <script type="module">
+    import { wireTheme, wireReadouts } from "{{ "ef/fx.js" | relURL }}?v={{ now.Unix }}";
+    wireTheme();
+    wireReadouts(document);
+  </script>
+</body>
+</html>

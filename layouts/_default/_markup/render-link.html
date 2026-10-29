@@ -1,0 +1,2 @@
+{{- $ext := strings.HasPrefix .Destination "http" -}}
+<a href="{{ .Destination | safeURL }}"{{ with .Title }} title="{{ . }}"{{ end }}{{ if $ext }} target="_blank" rel="noopener noreferrer"{{ end }}>{{ .Text }}{{ if $ext }}<span class="ext" aria-hidden="true">↗</span>{{ end }}</a>
