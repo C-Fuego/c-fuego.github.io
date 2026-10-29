@@ -165,4 +165,32 @@
     window.addEventListener('resize', paintTicks);
     paintTicks();
   }
+
+  // 过场：45° 斜线网格从点击处铺满 → 跳转 → 新页收回
+  const hatch = document.querySelector('[data-hatch]');
+  if (hatch) {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    document.addEventListener('click', (e) => {
+      const a = e.target.closest('a[href]');
+      if (!a) return;
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+      if (a.target && a.target !== '_self') return;
+      if (a.hasAttribute('download')) return;
+
+      let url;
+      try { url = new URL(a.href, location.href); } catch (err) { return; }
+      if (url.origin !== location.origin) return;
+      if (url.pathname === location.pathname && url.hash) return;
+      if (url.href === location.href) return;
+      if (reduceMotion) return;
+
+      e.preventDefault();
+      hatch.style.setProperty('--hx', (e.clientX / innerWidth * 100).toFixed(1) + '%');
+      hatch.style.setProperty('--hy', (e.clientY / innerHeight * 100).toFixed(1) + '%');
+      hatch.classList.add('is-on', 'is-covering');
+      try { sessionStorage.setItem('hatch-go', '1'); } catch (err) {}
+      setTimeout(() => { location.href = url.href; }, 320);
+    });
+  }
 })();

@@ -13,8 +13,24 @@
   <link rel="preload" href="{{ "fonts/saira-var.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="{{ "ef/endfield.css" | relURL }}?v={{ now.Unix }}">
   <link rel="stylesheet" href="{{ "css/site.css" | relURL }}?v={{ now.Unix }}">
+<script>
+  (function () {
+    try {
+      var h = sessionStorage.getItem('hatch-go');
+      if (h) {
+        sessionStorage.removeItem('hatch-go');
+        var el = null;
+        document.addEventListener('DOMContentLoaded', function () {
+          el = document.querySelector('[data-hatch]');
+          if (el) el.classList.add('is-revealing');
+        });
+      }
+    } catch (e) {}
+  })();
+</script>
 </head>
 <body class="ef ef-contours">
+  <div class="vt-hatch" data-hatch aria-hidden="true"></div>
   <a class="skip" href="#main">跳到正文</a>
   {{ partial "statusbar.html" . }}
   <div class="ef-tri ef-in-sweep" aria-hidden="true"><i></i><i></i><i></i></div>
