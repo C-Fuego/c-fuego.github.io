@@ -1,0 +1,135 @@
+{{ define "main" }}
+{{- $posts := (where site.RegularPages "Section" "posts").ByDate.Reverse -}}
+{{- $words := 0 -}}
+{{- range $posts }}{{ $words = add $words .WordCount }}{{ end -}}
+{{- $tags := site.Taxonomies.tags -}}
+{{- $tagCount := len $tags -}}
+
+<div class="board">
+  <div class="orbit">
+    <figure class="hub"><svg class="ef-dial" data-dial role="group" aria-label="站点分区"></svg></figure>
+
+    <section class="ef-panel cut-br l1 ef-in-power" style="--i: 0">
+      <h2><span class="ef-pair"><span class="ef-eyebrow">Records</span><span>记录</span></span> <a href="{{ "posts/" | relURL }}">全部</a></h2>
+      <div class="ef-figs">
+        <a href="{{ "posts/" | relURL }}"><b data-fx-load>{{ len $posts }}</b><span>已发布</span></a>
+        <a href="{{ "posts/" | relURL }}"><b data-fx-load>{{ $words }}</b><span>总字数</span></a>
+        <a href="#tags"><b data-fx-load>{{ $tagCount }}</b><span>标签</span></a>
+      </div>
+    </section>
+
+    <section class="ef-panel cut-bl tab-right r1 ef-in-power" style="--i: 0">
+      <h2><span class="ef-pair"><span class="ef-eyebrow">Site</span><span>站点</span></span> <a href="{{ "" | relURL }}">首页</a></h2>
+      <ul class="ef-ledger">
+        <li><span>生成器</span><span class="ef-field">Hugo {{ hugo.Version }}</span></li>
+        <li><span>托管</span><span class="ef-field">GitHub Pages</span></li>
+        <li><span>构建</span><span class="ef-field">{{ now.Format "2006.01.02 15:04" }}</span></li>
+      </ul>
+    </section>
+
+    <section class="ef-panel lead-right l2 ef-in-power" style="--i: 1">
+      <h2>机器</h2>
+      <ul class="ef-ledger">
+        <li><span>系统</span><span class="ef-field">CachyOS</span></li>
+        <li><span>环境</span><span class="ef-field">WSL2 / 裸机</span></li>
+        <li><span>窗口管理</span><span class="ef-field">niri (Misari)</span></li>
+      </ul>
+    </section>
+
+    <section class="ef-panel lead-left tab-right r2 ef-in-power" style="--i: 1">
+      <h2>硬件</h2>
+      <ul class="ef-ledger">
+        <li><span>开发</span><span class="ef-field">Windows / 10 核</span></li>
+        <li><span>小板子</span><span class="ef-field">Orange Pi Zero 3</span></li>
+        <li><span>墨水屏</span><span class="ef-field">ESP32</span></li>
+      </ul>
+    </section>
+
+    <section class="ef-panel cut-tr l3 ef-in-power" style="--i: 2">
+      <h2>项目</h2>
+      <ul class="ef-ledger">
+        <li><a href="https://github.com/C-Fuego/c-fuego.github.io">本站源码</a><span class="ef-field">{{ len $posts }} 篇</span></li>
+        <li><span>niri fork</span><span class="ef-field">自用</span></li>
+        <li><span>wallpaperd</span><span class="ef-field">本地补丁</span></li>
+      </ul>
+    </section>
+
+    <section class="ef-panel cut-tl tab-right r3 ef-in-power" style="--i: 2">
+      <h2>联系</h2>
+      <ul class="ef-ledger">
+        <li><a href="https://github.com/C-Fuego">GitHub</a><span class="ef-field">C-Fuego</span></li>
+        <li><a href="{{ "index.xml" | relURL }}">RSS</a><span class="ef-field">订阅</span></li>
+        <li><a href="{{ "posts/" | relURL }}">归档</a><span class="ef-field">{{ len $posts }} 篇</span></li>
+      </ul>
+    </section>
+  </div>
+</div>
+
+<div class="cols">
+  <section class="ef-panel">
+    <h2>最近记录 <a href="{{ "posts/" | relURL }}">全部文章</a></h2>
+    <ul class="ef-rows">
+      {{- range $posts }}
+      <li>
+        <div>
+          <div><a href="{{ .RelPermalink }}">{{ .Title }}</a></div>
+          <div class="meta"><span>{{ .Date.Format "2006.01.02" }}</span><span>{{ .WordCount }} 字</span><span>约 {{ .ReadingTime }} 分钟</span></div>
+        </div>
+        <div class="acts"><a class="ef-btn small" href="{{ .RelPermalink }}">阅读</a></div>
+      </li>
+      {{- end }}
+    </ul>
+  </section>
+
+  <section class="ef-panel">
+    <h2>这是什么站</h2>
+    <p class="ef-read" style="margin:0 0 .9rem;color:var(--ef-ink-2);line-height:1.85">
+      一个人的工程记录。跑不通就写卡在哪一步，不写没跑过的东西。
+    </p>
+    <ul class="ef-ledger">
+      <li><span>署名</span><span class="ef-field">{{ site.Params.author }}</span></li>
+      <li><span>起始</span><span class="ef-field">2026.10</span></li>
+      <li><span>许可</span><span class="ef-field">署名 / 非商用</span></li>
+    </ul>
+  </section>
+</div>
+
+<div id="tags" class="tag-block">
+  <p class="ef-eyebrow slash">Tags</p>
+  <h2 class="ef-bar-title">标签</h2>
+  <p class="ef-actions">
+    {{- range $name, $taxonomy := $tags }}
+    <a class="ef-btn small" href="{{ "tags/" | relURL }}{{ $name | urlize }}/">{{ $name }} <span class="sub">{{ len $taxonomy }}</span></a>
+    {{- end }}
+  </p>
+</div>
+
+<script type="module">
+  import { wireReadouts, wireTheme } from "{{ "ef/fx.js" | relURL }}";
+  import { drawDial } from "{{ "ef/dial.js" | relURL }}";
+
+  drawDial(document.querySelector("[data-dial]"), {
+    idle: {
+      label: "全站记录",
+      big: {{ len $posts }},
+      unit: "篇",
+      sub: "合计 {{ $words }} 字",
+    },
+    gauges: [
+      { label: "文章", share: {{ if $posts }}{{ math.Min 1.0 (div (float (len $posts)) 12.0) }}{{ else }}0{{ end }} },
+      { label: "字数", share: {{ if $words }}{{ math.Min 1.0 (div (float $words) 12000.0) }}{{ else }}0{{ end }} },
+      { label: "标签", share: {{ if $tagCount }}{{ math.Min 1.0 (div (float $tagCount) 12.0) }}{{ else }}0{{ end }} },
+    ],
+    sections: [
+      { zh: "记录", en: "Records", big: {{ len $posts }}, unit: "篇", here: true },
+      { zh: "站点", en: "Site", big: "H", sub: "Hugo" },
+      { zh: "机器", en: "Machine", big: "W", sub: "WSL2" },
+      { zh: "硬件", en: "Hardware", big: 3, unit: "台" },
+      { zh: "项目", en: "Projects", big: 3, unit: "个" },
+      { zh: "联系", en: "Contact", big: "G", sub: "GitHub" },
+    ],
+  });
+  wireReadouts();
+  wireTheme();
+</script>
+{{ end }}

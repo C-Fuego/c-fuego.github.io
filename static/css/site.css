@@ -1395,3 +1395,109 @@ html {
   .ef-prose pre { padding-inline: 0.75rem; font-size: 0.78rem; }
   .ef-spread { padding-inline: 1rem; }
 }
+
+/* ---------- 控制台页（关于）：照抄 templates/console.html 的 page-specific 布局 ---------- */
+
+.board,
+.cols,
+.tag-block {
+  width: 100%;
+  max-width: 88rem;
+  margin-inline: auto;
+  padding-inline: var(--ef-pad);
+}
+
+.cols,
+.tag-block { padding-inline: var(--ef-pad); }
+
+.board {
+  container: board / inline-size;
+  padding-block: clamp(1.25rem, 3vw, 2.25rem) 0;
+}
+
+.orbit {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: 1.25rem;
+}
+
+.hub {
+  grid-column: 1 / -1;
+  justify-self: center;
+  width: min(100%, 34rem);
+  margin: 0;
+}
+
+/* 堆叠时引导线没有指向，且会顶出边界 */
+@container board (max-width: 61.99rem) {
+  .orbit .ef-panel::after { display: none; }
+}
+
+.l1 .ef-figs b,
+.r1 .ef-figs b {
+  /* 四位数（1115）在 3 列里会顶到邻列，按视口收一点 */
+  font-size: clamp(1.5rem, 2.1vw, 2.15rem);
+  letter-spacing: -0.04em;
+}
+
+.l1 .ef-figs { column-gap: 1.1rem; }
+
+.l3 .ef-figs,
+.r3 .ef-figs { border-top: 0; }
+
+@container board (min-width: 62rem) {
+  .orbit {
+    --gap: clamp(1.25rem, 3cqi, 2.5rem);
+    grid-template-columns: minmax(0, 1fr) clamp(27rem, 44cqi, 36rem) minmax(0, 1fr);
+    grid-template-rows: repeat(3, auto);
+    align-items: stretch;
+    gap: 1.25rem var(--gap);
+  }
+  .hub {
+    grid-column: 2;
+    grid-row: 1 / 4;
+    align-self: center;
+    width: 100%;
+  }
+  .l1, .l2, .l3 { grid-column: 1; }
+  .r1, .r2, .r3 { grid-column: 3; }
+  .l1, .r1 { grid-row: 1; }
+  .l2, .r2 { grid-row: 2; }
+  .l3, .r3 { grid-row: 3; }
+  /* 顶底部向表盘肩部内倾 */
+  .l1, .l3 { margin-right: -1rem; }
+  .r1, .r3 { margin-left: -1rem; }
+  /* 中间一对后退，并向盘沿拉一条引导线 */
+  .l2 { margin: 0 1.75rem 0 -0.75rem; --lead: calc(1.75rem + var(--gap) + 0.4rem); }
+  .r2 { margin: 0 -0.75rem 0 1.75rem; --lead: calc(1.75rem + var(--gap) + 0.4rem); }
+}
+
+.cols {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  align-items: start;
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.tag-block {
+  margin-top: clamp(2rem, 4vw, 3rem);
+  padding-bottom: 2rem;
+}
+
+@media (max-width: 860px) {
+  .cols { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 899px) {
+  .orbit { gap: 0.9rem; }
+  .hub { width: 100%; }
+
+  /* 窄屏盘面放不下双语与三条读数：只留中文段名和弧 */
+  .ef-dial .gauge text { display: none; }
+  .ef-dial .en { display: none; }
+  .ef-dial .core { font-size: 34px; }
+  .ef-dial .core-label { font-size: 13px; }
+  .l1 .ef-figs b, .r1 .ef-figs b { font-size: 2.2rem; }
+  .ef-panel h2 { font-size: 0.95rem; }
+}
