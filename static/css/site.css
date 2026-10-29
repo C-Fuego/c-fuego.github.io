@@ -1043,11 +1043,6 @@ html {
   height: 2px;
 }
 
-[data-theme='dark'] .ef-tri i:first-child,
-[data-theme='dark'] .ef-tri i:last-child {
-  opacity: 0.35;
-}
-
 [data-theme='dark'] .ef-tri i:nth-child(2) {
   filter: drop-shadow(0 0 6px rgba(255, 245, 0, 0.6));
 }
@@ -1090,14 +1085,6 @@ html {
   letter-spacing: -0.035em;
   font-variant-numeric: tabular-nums;
   color: var(--ef-ink);
-}
-
-.block-title {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 6px 14px;
-  padding-bottom: 4px;
 }
 
 .block-title h2 {
@@ -1168,15 +1155,6 @@ html {
   .block-head { column-gap: 12px; }
 }
 
-/* 浅色下的三色条：STANDARD 只有黄是信号色，另两色退成极淡的线 */
-html:not([data-theme='dark']) .ef-tri i:first-child,
-html:not([data-theme='dark']) .ef-tri i:last-child {
-  opacity: 0.18;
-}
-
-html:not([data-theme='dark']) .ef-tri {
-  height: 3px;
-}
 
 /* 页脚与纸面同层，只靠顶线分隔，不再是压在页面底部的一块黑 */
 .site-foot {
@@ -1564,3 +1542,41 @@ html:not([data-theme='dark']) .ef-tri {
 /* 切角里不压字：右侧留出和切角等宽的空白 */
 .site-bar nav a { padding-right: 22px; }
 .seam .ef-btn { padding-right: 26px; }
+
+/* 区块标题：英文眉标独占一行，中文粗体与计数并排（法则 3） */
+.block-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 14px;
+  row-gap: 4px;
+  padding-bottom: 4px;
+}
+
+.block-title > .mono:first-child {
+  flex-basis: 100%;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: var(--ef-ink-2);
+}
+
+.block-title .is-count {
+  font-size: 11px;
+  color: var(--ef-ink-2);
+}
+
+/* 日志行逐行展开：用滚动驱动的 view timeline，不依赖 JS，也不会出现内容隐藏 */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .log-list .ef-record {
+      animation: row-in linear both;
+      animation-timeline: view();
+      animation-range: entry 8% entry 62%;
+    }
+  }
+
+  @keyframes row-in {
+    from { opacity: 0; transform: translateX(-14px); }
+    to { opacity: 1; transform: none; }
+  }
+}

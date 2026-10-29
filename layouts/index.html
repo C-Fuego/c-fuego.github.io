@@ -36,7 +36,7 @@
       <div class="about-body">
         <div class="block-head">
           <span class="block-num" aria-hidden="true">02</span>
-          <div class="block-title"><h2>关于</h2><span class="mono">ABOUT</span></div>
+          <div class="block-title"><span class="mono">// ABOUT</span><h2>关于</h2><span class="mono is-count">SINCE 2026</span></div>
         </div>
         <p>这里放技术笔记：Linux、自建服务、硬件，以及踩过的坑。</p>
         <p>写东西的原则是只写自己真跑过的东西，跑不通就写卡在哪一步。</p>
@@ -55,14 +55,14 @@
   <div class="wrap">
     <div class="block-head">
       <span class="block-num" aria-hidden="true">03</span>
-      <div class="block-title"><h2>日志</h2><span class="mono">{{ len $posts }} ENTRIES</span></div>
+      <div class="block-title"><span class="mono">// ENTRIES</span><h2>日志</h2><span class="mono is-count">{{ len $posts }} ENTRIES</span></div>
     </div>
     {{ if $posts }}
     <div class="log-list">
       <ul class="ef-records">
         {{- range $i, $p := $posts }}
         <li>
-          <a class="ef-record ef-blur-in" style="--i:{{ add $i 3 }}" href="{{ $p.RelPermalink }}">
+          <a class="ef-record" style="--i:{{ $i }}" href="{{ $p.RelPermalink }}">
             <span class="ef-tag{{ if eq $i 0 }} is-current{{ end }}">{{ if lt (add $i 1) 10 }}0{{ end }}{{ add $i 1 }}</span>
             <span class="ef-field">{{ $p.Date.Format "2006.01.02" }}</span>
             <span class="name{{ if eq $i 0 }} is-latest{{ end }}"{{ with $p.Title }} title="{{ . }}"{{ end }}>{{ $p.Title }}</span>
@@ -82,7 +82,7 @@
   <div class="wrap">
     <div class="block-head">
       <span class="block-num" aria-hidden="true">04</span>
-      <div class="block-title"><h2>项目</h2><span class="mono">01 ITEM</span></div>
+      <div class="block-title"><span class="mono">// WORK</span><h2>项目</h2><span class="mono is-count">01 ITEM</span></div>
     </div>
     <div class="project-grid">
       <article class="project">
