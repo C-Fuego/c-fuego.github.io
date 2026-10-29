@@ -11,13 +11,10 @@
   </main>
   {{ partial "foot.html" . }}
   {{- if and .IsPage (eq .Section "posts") }}
-  <div class="read-badge" aria-hidden="true">
-    <svg viewBox="0 0 46 46">
-      <circle cx="23" cy="23" r="19" fill="var(--ef-ink)"></circle>
-      <circle data-read-arc cx="23" cy="23" r="19" fill="none" stroke="var(--ef-signal)"
-              stroke-width="4.5" stroke-linecap="round"
-              stroke-dasharray="119.4" stroke-dashoffset="119.4"
-              transform="rotate(-90 23 23)"></circle>
+  <div class="read-dial" data-read-dial aria-hidden="true">
+    <svg viewBox="0 0 72 72" width="72" height="72">
+      <g class="dial-ticks" data-dial-ticks></g>
+      <text class="dial-num" data-dial-num x="36" y="36" text-anchor="middle" dominant-baseline="central">0</text>
     </svg>
   </div>
   {{- end }}

@@ -659,18 +659,37 @@ body.is-locked { overflow: hidden; }
   to { opacity: 1; transform: none; }
 }
 
-/* 阅读进度：46px 圆底 + 4.5px 圆头弧 */
-.read-badge {
+/* 阅读进度：60 格刻度圆，走过的刻度变黄，中心是百分比 */
+.read-dial {
   position: fixed;
-  right: 1.35rem;
-  bottom: 1.35rem;
+  right: 1.2rem;
+  bottom: 1.2rem;
   z-index: 30;
-  width: 46px;
-  height: 46px;
+  width: 72px;
+  height: 72px;
   pointer-events: none;
 }
 
-.read-badge svg { display: block; width: 46px; height: 46px; overflow: visible; }
+.read-dial svg { display: block; overflow: visible; }
+
+.read-dial .tick {
+  stroke: var(--ef-strong-rule);
+  stroke-width: 1.5;
+  stroke-linecap: butt;
+}
+
+.read-dial .tick.is-major { stroke-width: 2.5; }
+
+.read-dial .tick.is-on { stroke: var(--ef-signal); }
+
+.read-dial .dial-num {
+  font-family: var(--ef-font-ui);
+  font-stretch: 112%;
+  font-size: 15px;
+  font-weight: 700;
+  fill: var(--ef-ink);
+  font-variant-numeric: tabular-nums;
+}
 
 /* ---------- 响应式 ---------- */
 
@@ -678,7 +697,7 @@ body.is-locked { overflow: hidden; }
   .site-foot { grid-template-columns: minmax(0, 1fr); }
   .site-cmdbar { flex-wrap: wrap; }
   .post-title { max-width: none; }
-  .read-badge { right: 0.9rem; bottom: 0.9rem; }
+  .read-dial { right: 0.8rem; bottom: 0.8rem; width: 60px; height: 60px; }
   .intro-facts .facts-end { margin-left: 0; }
 }
 
@@ -694,7 +713,7 @@ body.is-locked { overflow: hidden; }
 }
 
 @media print {
-  .site-cmdbar, .site-foot, .site-search, .post-nav, .ef-tri, .read-badge { display: none !important; }
+  .site-cmdbar, .site-foot, .site-search, .post-nav, .ef-tri, .read-dial { display: none !important; }
   body.ef { background: #fff; color: #111; }
 }
 

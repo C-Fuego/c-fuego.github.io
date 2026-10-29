@@ -158,18 +158,38 @@
     }
   }
 
-  /* ---------- 阅读进度弧 ---------- */
-  const arc = document.querySelector('[data-read-arc]');
-  if (arc) {
-    const LEN = 119.4;
-    const update = () => {
+  /* ---------- 阅读进度：刻度圆（60 格，走过的刻度变黄） ---------- */
+  const dial = document.querySelector('[data-read-dial]');
+  if (dial) {
+    const group = dial.querySelector('[data-dial-ticks]');
+    const num = dial.querySelector('[data-dial-num]');
+    const NS = 'http://www.w3.org/2000/svg';
+    const N = 60;
+    const ticks = [];
+    for (let i = 0; i < N; i++) {
+      const a = (i / N) * Math.PI * 2 - Math.PI / 2;
+      const long = i % 5 === 0;
+      const r1 = long ? 26 : 28.5;
+      const r2 = 34;
+      const l = document.createElementNS(NS, 'line');
+      l.setAttribute('x1', (36 + Math.cos(a) * r1).toFixed(2));
+      l.setAttribute('y1', (36 + Math.sin(a) * r1).toFixed(2));
+      l.setAttribute('x2', (36 + Math.cos(a) * r2).toFixed(2));
+      l.setAttribute('y2', (36 + Math.sin(a) * r2).toFixed(2));
+      l.setAttribute('class', 'tick' + (long ? ' is-major' : ''));
+      group.appendChild(l);
+      ticks.push(l);
+    }
+    const updateDial = () => {
       const el = document.documentElement;
       const max = el.scrollHeight - el.clientHeight;
-      const p = max > 40 ? Math.min(1, Math.max(0, el.scrollTop / max)) : 1;
-      arc.style.strokeDashoffset = (LEN * (1 - p)).toFixed(1);
+      const ratio = max > 40 ? Math.min(1, Math.max(0, el.scrollTop / max)) : 1;
+      const lit = Math.round(ratio * N);
+      for (let i = 0; i < N; i++) ticks[i].classList.toggle('is-on', i < lit);
+      num.textContent = Math.round(ratio * 100);
     };
-    window.addEventListener('scroll', update, { passive: true });
-    window.addEventListener('resize', update);
-    update();
+    window.addEventListener('scroll', updateDial, { passive: true });
+    window.addEventListener('resize', updateDial);
+    updateDial();
   }
 })();
