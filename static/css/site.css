@@ -1448,14 +1448,14 @@ html {
 @container board (min-width: 62rem) {
   .orbit {
     --gap: clamp(1.25rem, 3cqi, 2.5rem);
-    grid-template-columns: minmax(0, 1fr) clamp(27rem, 44cqi, 36rem) minmax(0, 1fr);
-    grid-template-rows: repeat(3, auto);
+    grid-template-columns: minmax(0, 1fr) clamp(24rem, 40cqi, 33rem) minmax(0, 1fr);
+    grid-template-rows: repeat(2, auto);
     align-items: stretch;
     gap: 1.25rem var(--gap);
   }
   .hub {
     grid-column: 2;
-    grid-row: 1 / 4;
+    grid-row: 1 / 3;
     align-self: center;
     width: 100%;
   }
@@ -1500,4 +1500,14 @@ html {
   .ef-dial .core-label { font-size: 13px; }
   .l1 .ef-figs b, .r1 .ef-figs b { font-size: 2.2rem; }
   .ef-panel h2 { font-size: 0.95rem; }
+}
+
+/* 没有 gauge 弧填充时，中心读数担起盘面的视觉重量（SVG 用户单位，viewBox 600） */
+.ef-dial .core { font-size: 64px; }
+.ef-dial .core .unit { font-size: 18px; }
+.ef-dial .core-label { font-size: 11px; }
+
+@media (max-width: 899px) {
+  .ef-dial .core { font-size: 46px; }
+  .ef-dial .core .unit { font-size: 15px; }
 }
