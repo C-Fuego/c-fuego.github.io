@@ -1,142 +1,86 @@
 # blog
 
-个人博客源码。Hugo 静态站，构建产物同步到 Orange Pi，由板上的 Caddy 托管，
-公网入口 `https://www.ignacio.dpdns.org/`（Cloudflare Tunnel，板子主动拨出）。
+个人博客源码。Hugo 静态站，推到 GitHub 后由 Actions 构建，发布到 GitHub Pages。
+
+- 站点：`https://c-fuego.github.io/blog/`
+- 仓库：`https://github.com/C-Fuego/blog`
+- 视觉体系：`endfield-ui`（终末地工业风）——纸面 `#F4F4F2`、墨 `#161616`、强调色 `#FFFA00` 只做填充、切角表示可点击、零圆角。
 
 ## 结构
 
 ```
-hugo.toml              站点配置（标题、世界观名、菜单、taxonomy）
+hugo.toml                  站点配置（baseURL、菜单、taxonomy、输出 JSON 索引）
 content/
-  _index.md            首页导语（渲染进 hero 正文）
-  about.md             身份档案（带 id-card 表格）
-  posts/_index.md      ARCHIVE 列表页导语
-  posts/NNNN-*.md      文章，文件名前缀就是条目序号
+  _index.md                首页导语
+  about.md                 关于页
+  posts/_index.md          归档页导语
+  posts/NNNN-*.md          文章，文件名前缀 = 永久编号
 layouts/
-  baseof.html          外壳：canvas + 扫描线 + 顶栏 + 页脚
-  index.html           首页：hero / 统计面板 / 最新条目 / 档案摘要
-  _default/list.html   列表页（ARCHIVE、标签）
-  _default/single.html 文章页（正文 + 右侧 sticky 目录）
-  _default/terms.html  标签总览
-  404.html             404 页
-  partials/            head / nav / foot / row
+  baseof.html              外壳：三色条 + 顶栏 + main + 页脚 + 搜索层
+  index.html               首页（展示型：大字标、空心编号、最新记录）
+  _default/single.html     文章页（阅读型：正文 + 侧栏目录）
+  _default/list.html       归档 / 标签列表
+  _default/terms.html      标签总览
+  index.json               站内搜索索引
+  partials/                head / nav / foot / record / row / pager / search
+  _default/_markup/        render-image / render-link / render-heading
 static/
-  css/main.css         全部样式（约 1000 行，无框架）
-  js/backdrop.js       三角网格背景（顶点缓动 + 扫光带）
-  js/noise.js          噪点层，15Hz 随机刷新
-  js/ui.js             搜索/进度/TOC/灯箱/回顶/代码复制
-  fonts/               Saira / Saira Condensed（latin 子集，各 ~14KB）
+  ef/                      endfield.css 部件库 + fx.js + variant.js + 等高线
+  css/main.css             站点层：字体、版式、搜索层、灯箱、代码复制
+  css/chroma.css           代码高亮
+  fonts/                   Saira 可变字体（woff2）+ OFL 许可证
+  js/ui.js                 搜索 / 进度 / 目录跟随 / 灯箱 / 复制
   favicon.svg
-deploy/Caddyfile       板上 Caddy 配置源（改这里，别改板上的）
-bin/deploy.sh          构建 + rsync + 可选推 Caddyfile
+.github/workflows/pages.yml 构建并发布到 GitHub Pages
+bin/pub                    发布脚本
 ```
 
-## 视觉系统
+## 发布
 
-Phigros 语汇 + 二进制世界，四条硬规则：
+首次：仓库 Settings → Pages → Source 选 **GitHub Actions**，之后不用再动。
 
-1. 纯黑底 `#000`，面板 `#08080A`，不出现渐变背景
-2. 只用直角与斜切，零圆角；菱形是 note，三角形是层级标记
-3. 文字走窄体大写 + 大字距（Saira Condensed），中文用系统黑体栈
-4. 强调色只有两个：`--data #35E0FF`（数据/青）、`--hit #FFD35C`（判定/金）
+日常：
 
-判定线出现在 hero 和文章页头，`judge-note` 会沿线的位置漂移。
+```bash
+bin/pub "写了什么"
+```
 
-背景分三层，都在页面最底层，纯 canvas：
+脚本先本地构建一遍（构建失败就不推），再 commit、push，Actions 约 30–60 秒后上线。
+也可以直接 `git add -A && git commit && git push`，脚本只是省事。
 
-1. `js/backdrop.js`：规则三角网格（边长 88px），每个顶点按不同相位做正弦漂移，
-   一条光带沿 x 轴缓慢扫过，光带附近的边变白、三角形填一层淡青。
-   底色 `#05070B`（近黑偏蓝），不是纯黑。
-2. `js/noise.js`：噪点层。预生成 6 张 128px 颗粒 tile，15Hz 随机换 tile + 随机平移，
-   视觉上是连续沙沙的颗粒，每帧只有一次 fillRect。
-3. `body::before`：顶部一层极淡的青色径向光。
-
-两层 canvas 的成本：网格约 500 条边 / 30fps，噪点 15 次/秒单次填充。
-`prefers-reduced-motion` 下两者都只画静态首帧。
-
-字体说明：Phigros 中文界面是思源黑体，英文 HUD 是 Saira 系（社区重制版称
-"Saira Hybrid"）。这里自托管 Saira/Saira Condensed 的 latin 子集，中文走系统栈
-（Noto Sans SC / 思源黑体 / 苹方 / 微软雅黑），避免搬 5MB 的 CJK 字体上板子。
-
-## 已实现的功能
-
-写文/阅读侧：
-
-- 站内搜索：`/index.json` 全站索引（标题+摘要+正文），顶栏按钮或按 `/` 打开，纯前端匹配，无依赖
-- 阅读进度：文章页顶部一条判定线形态的进度条，菱形 note 跟着走
-- 目录跟随：右侧 TOC 用 IntersectionObserver 高亮当前章节
-- 代码块：Chroma 高亮（`static/css/chroma.css`，四色对齐全站），hover 出现 COPY 按钮
-- 图片：自动包 `figure` + 图注，点击开灯箱，ESC 关闭
-- 标题锚点：hover 出现 `#`，可复制小节链接
-- 外链：自动加 `↗` 标记和 `rel="noopener noreferrer"`
-- 相关文章：按共享标签取最多 4 篇
-- 分页：每页 12 条，序号用文件名前缀（永久编号，不回收）
-
-站点侧：
-
-- 首页：hero + 统计面板（条目数/字数/最后同步/信号）+ 最新 6 条 + 标签矩阵 + 档案摘要
-- 标签页：`/tags/` 总览 + 单标签页显示 `TAG` 标记和条目数
-- 404：自定义页，带回程入口
-- SEO：canonical / OG / Twitter Card / JSON-LD（BlogPosting）/ sitemap / RSS / robots
-- 可访问性：跳到正文链接、focus-visible 描边、`prefers-reduced-motion` 全量降级
-- 打印：白底黑字，隐藏所有装饰层
-- 页面过渡：View Transitions API（不支持的浏览器自动忽略）
-
-## 部署前检查
-
-`bin/deploy.sh` 第 2 步会扫一遍 `public/` 里所有内部链接，URL 解码后按
-`文件 / 目录index.html / .html` 三种形式匹配，有死链会列出来但不阻断部署
-（`--dry` 只跑构建和检查）。
+构建记录：https://github.com/C-Fuego/blog/actions
 
 ## 写文章
 
 ```bash
-cd ~/Projects/blog
-hugo new content posts/0002-标题.md
-# 或者直接复制一篇改 front matter
+hugo new content posts/0005-标题.md
 ```
 
-front matter 必填 `title` / `date`，可选 `tags` / `summary`：
+front matter：
 
 ```yaml
 ---
 title: "标题"
-date: 2026-10-26T12:00:00+08:00
+date: 2026-10-29T12:00:00+08:00
 tags: ["标签"]
-summary: "列表页显示的一句话"
+summary: "列表页和搜索结果里显示的一句话"
 ---
 ```
 
-序号规则：文件名前缀 `0001-`、`0002-`…，删掉的号不回收。
+- 文件名前缀 `0001-`、`0002-`… 是永久编号，删掉的号不回收。
+- `date` 不能写未来时间，Hugo 默认不构建未来日期的文章。
+- `summary` 可选，不写就取正文前段。
 
-## 发布
-
-```bash
-bin/deploy.sh            # 构建 + 同步（只改内容时用这个）
-bin/deploy.sh --caddy    # 顺带推送 deploy/Caddyfile 并 reload caddy
-bin/deploy.sh --dry      # 只看要同步什么
-```
-
-本地预览：
+## 本地预览
 
 ```bash
 hugo server --bind 127.0.0.1 --port 1313
 ```
 
-## 板上事实
+`fx.js` / `variant.js` 是 ES module，必须走 `http://`，不能用 `file://` 直接打开。
 
-```
-站点根目录   /var/www/blog        属主 orangepi，755，Caddy 以 caddy 用户读取
-Caddy 配置   /etc/caddy/Caddyfile  源在 deploy/Caddyfile
-监听         :8080                唯一入口，裸域 301 到 www
-日志         /var/log/caddy/access.log（5MiB 轮转，留 2 份）
-```
+## 注意
 
-裸域 301 由板上 Caddy 和 Cloudflare Redirect Rule 双保险，两边都做了。
-
-## 待办 / 可选项
-
-- Cloudflare 对 HTML 是 `cf-cache-status: DYNAMIC`，首字节 1–2.7s。
-  要更快可在 CF 加 Cache Rule（Cache Everything + Edge TTL），纯静态站可安全缓存。
-- `hugo.toml` 里 `worldName = "0x00"` 是占位，改这里 + `content/_index.md` 即可换名。
-- 标签目前用中文，URL 会带百分号编码；想干净可改成英文 slug。
+- 模板里的内部链接写 `{{ "posts/" | relURL }}`，**不要带前导斜杠**。带斜杠时 Hugo 忽略 baseURL 的路径部分，部署在子路径（`/blog/`）下导航会指到站点根。
+- `layouts/index.json` 是 Go 模板不是合法 JSON，别拿 JSON 校验器过它。
+- 高亮样式用 `github` 浅色主题，配浅色纸。
