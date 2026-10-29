@@ -1,7 +1,0 @@
-{{- $alt := .Text -}}
-{{- $cap := .Title -}}
-{{- if not $cap }}{{ $cap = $alt }}{{ end -}}
-<figure class="prose-figure">
-  <img src="{{ .Destination | safeURL }}" alt="{{ $alt }}" loading="lazy" decoding="async"{{ with .Title }} title="{{ . }}"{{ end }}>
-  {{- with $cap }}<figcaption><span class="fig-mark" aria-hidden="true"></span>{{ . }}</figcaption>{{ end -}}
-</figure>

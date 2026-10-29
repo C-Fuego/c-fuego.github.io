@@ -1,7 +1,0 @@
-{{ $n := len (where site.RegularPages "Section" "posts") }}
-<footer class="site-foot">
-  <span>{{ site.Title }} / {{ site.Params.worldName }}</span>
-  <span>{{ now.Format "2006.01.02" }} 构建</span>
-  <span>{{ printf "%02d" $n }} 篇记录</span>
-  <a href="{{ "index.xml" | relURL }}">RSS</a>
-</footer>
