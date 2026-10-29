@@ -35,10 +35,6 @@ timeZone = "Asia/Shanghai"
     name = "LOG"
     pageRef = "/posts"
     weight = 20
-  [[menu.main]]
-    name = "ABOUT"
-    url = "/#about"
-    weight = 30
 
 [taxonomies]
   tag = "tags"

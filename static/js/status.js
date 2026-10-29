@@ -8,7 +8,9 @@
   const tick = () => {
     if (!clock) return;
     const d = new Date();
-    clock.textContent = pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds());
+    clock.textContent =
+      d.getFullYear() + '.' + pad(d.getMonth() + 1) + '.' + pad(d.getDate()) +
+      ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
   };
 
   tick();
