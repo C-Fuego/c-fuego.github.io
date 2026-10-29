@@ -21,8 +21,8 @@
     <p class="bio">{{ site.Params.description }}</p>
     <p class="ef-actions">
       {{ with $latest }}<a class="ef-btn go" href="{{ .RelPermalink }}">读最新一篇 <span class="sub">No.{{ printf "%03d" $n }}</span></a>{{ end }}
-      <a class="ef-btn" href="{{ "/posts/" | relURL }}">全部记录</a>
-      <a class="ef-btn" href="{{ "/about/" | relURL }}">关于</a>
+      <a class="ef-btn" href="{{ "posts/" | relURL }}">全部记录</a>
+      <a class="ef-btn" href="{{ "about/" | relURL }}">关于</a>
     </p>
   </div>
 
@@ -84,8 +84,8 @@
     {{ end }}
   </ol>
   <p class="index-more">
-    <a class="ef-btn" href="{{ "/posts/" | relURL }}">按归档查看</a>
-    <a class="ef-btn" href="{{ "/about/" | relURL }}">关于这个站</a>
+    <a class="ef-btn" href="{{ "posts/" | relURL }}">按归档查看</a>
+    <a class="ef-btn" href="{{ "about/" | relURL }}">关于这个站</a>
   </p>
 </section>
 {{ end }}

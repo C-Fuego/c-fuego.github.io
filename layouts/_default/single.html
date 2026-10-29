@@ -7,14 +7,14 @@
   <div class="ef-sheet">
     <p class="ef-eyebrow slash">{{ if $isPost }}Posts / 记录{{ else }}Page / 页面{{ end }}</p>
     <p class="ef-crumb ef-field">
-      <a href="{{ "/posts/" | relURL }}">全部记录</a>
+      <a href="{{ "posts/" | relURL }}">全部记录</a>
       <span>{{ if $isPost }}记录{{ else }}{{ $p.Title }}{{ end }}</span>
     </p>
 
     <p class="ids">
       {{ if $num }}<span class="ef-tag is-current">No.{{ $num }}</span>{{ end }}
       {{ range $p.Params.tags }}
-        <a class="ef-kv" href="{{ "/tags/" | relURL }}{{ . | urlize }}/"><span>标签</span><span>{{ . }}</span></a>
+        <a class="ef-kv" href="{{ "tags/" | relURL }}{{ . | urlize }}/"><span>标签</span><span>{{ . }}</span></a>
       {{ end }}
     </p>
 
