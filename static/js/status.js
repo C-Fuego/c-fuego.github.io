@@ -128,4 +128,43 @@
       }, 200);
     }
   }
+
+  // 面板指示器：24 根刻度环
+  const pulse = document.querySelector('[data-pulse]');
+  if (pulse) {
+    const g = pulse.querySelector('[data-pulse-ticks]');
+    const NS = 'http://www.w3.org/2000/svg';
+    const N = 24;
+    for (let i = 0; i < N; i++) {
+      const a = (i / N) * Math.PI * 2 - Math.PI / 2;
+      const long = i % 6 === 0;
+      const r1 = long ? 11 : 13;
+      const l = document.createElementNS(NS, 'line');
+      l.setAttribute('x1', (20 + Math.cos(a) * r1).toFixed(2));
+      l.setAttribute('y1', (20 + Math.sin(a) * r1).toFixed(2));
+      l.setAttribute('x2', (20 + Math.cos(a) * 17).toFixed(2));
+      l.setAttribute('y2', (20 + Math.sin(a) * 17).toFixed(2));
+      l.setAttribute('class', 'tick' + (long ? ' is-long' : ''));
+      l.style.setProperty('--i', i);
+      g.appendChild(l);
+    }
+  }
+
+  // 满屏黄闪切：滚到日志区时开一枪，只开一次
+  const flash = document.querySelector('[data-flash]');
+  const logSec = document.querySelector('#log');
+  if (flash && logSec) {
+    let fired = false;
+    const check = () => {
+      if (fired) return;
+      const r = logSec.getBoundingClientRect();
+      if (r.top < window.innerHeight * 0.86 && r.bottom > 0) {
+        fired = true;
+        flash.classList.add('is-firing');
+        setTimeout(() => flash.classList.remove('is-firing'), 700);
+      }
+    };
+    setInterval(check, 200);
+    check();
+  }
 })();

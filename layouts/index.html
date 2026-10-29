@@ -1,15 +1,25 @@
 {{ define "main" }}
+<div class="flash" data-flash aria-hidden="true"></div>
 {{- $posts := (where site.RegularPages "Section" "posts").ByDate.Reverse -}}
 
 <section class="hero">
   <div class="wrap">
     <div class="main">
-      <p class="hero-kicker mono ef-blur-in" style="--i:0">{{ site.Title }} / 技术笔记</p>
+      <div class="hero-head ef-blur-in" style="--i:0">
+        <span class="block-num" aria-hidden="true">01</span>
+        <p class="hero-kicker mono">{{ site.Title }} / 技术笔记</p>
+      </div>
       <h1 class="hero-lede ef-blur-in" style="--i:1">把跑过的东西写下来，<br class="br-wide">跑不通就写卡在哪一步。</h1>
       <div class="hero-rule" aria-hidden="true"></div>
 
       <aside class="panel ef-panel ef-blur-in" style="--i:2" aria-label="站点状态">
-        <h2><span class="ef-pair"><span class="ef-eyebrow">Status</span><span>状态</span></span></h2>
+        <h2>
+          <svg class="pulse" viewBox="0 0 40 40" data-pulse aria-hidden="true">
+            <circle class="pulse-dot" cx="20" cy="20" r="2.4"></circle>
+            <g data-pulse-ticks></g>
+          </svg>
+          <span class="ef-pair"><span class="ef-eyebrow">Status</span><span>状态</span></span>
+        </h2>
         <ul class="ef-ledger">
           <li><span>BUILD</span><span class="ef-field" data-fx-load>{{ now.Format "2006-01-02" }}</span></li>
           <li><span>UPTIME</span><span class="ef-field" data-uptime>00:00</span></li>
@@ -41,8 +51,8 @@
       </figure>
       <div class="about-body">
         <div class="block-head">
-          <h2 class="block-title">关于</h2>
-          <span class="mono">ABOUT</span>
+          <span class="block-num" aria-hidden="true">02</span>
+          <div class="block-title"><h2>关于</h2><span class="mono">ABOUT</span></div>
         </div>
         <p>这里放技术笔记：Linux、自建服务、硬件，以及踩过的坑。</p>
         <p>写东西的原则是只写自己真跑过的东西，跑不通就写卡在哪一步。</p>
@@ -60,8 +70,8 @@
 <section class="block" id="log">
   <div class="wrap">
     <div class="block-head">
-      <h2 class="block-title">日志</h2>
-      <span class="mono">{{ len $posts }} ENTRIES</span>
+      <span class="block-num" aria-hidden="true">03</span>
+      <div class="block-title"><h2>日志</h2><span class="mono">{{ len $posts }} ENTRIES</span></div>
     </div>
     {{ if $posts }}
     <div class="log-list">
@@ -87,12 +97,11 @@
 <section class="block" style="border-bottom:0">
   <div class="wrap">
     <div class="block-head">
-      <h2 class="block-title">项目</h2>
-      <span class="mono">01 ITEM</span>
+      <span class="block-num" aria-hidden="true">04</span>
+      <div class="block-title"><h2>项目</h2><span class="mono">01 ITEM</span></div>
     </div>
     <div class="project-grid">
       <article class="project">
-        <div class="thumb" role="img" aria-label="c-fuego.github.io"></div>
         <table>
           <tr><th>NAME</th><th>YEAR</th><th>ROLE</th></tr>
           <tr><td>c-fuego.github.io</td><td>2026</td><td>设计 / 开发</td></tr>
