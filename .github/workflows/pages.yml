@@ -43,6 +43,18 @@ jobs:
             --baseURL "${{ steps.pages.outputs.base_url }}/" \
             --destination ./public
 
+      # 仓库根有 MAINTENANCE 文件时，用维护页整体替换站点产物。
+      # 恢复：删掉这个文件并 push，下一次构建就是完整站点。
+      - name: Maintenance override
+        if: hashFiles('MAINTENANCE') != ''
+        run: |
+          echo "MAINTENANCE present — replacing site with maintenance page"
+          rm -rf public
+          mkdir -p public
+          cp -r maintenance/. public/
+          cp public/index.html public/404.html
+          ls -la public
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
