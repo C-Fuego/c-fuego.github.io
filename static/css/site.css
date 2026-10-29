@@ -1255,3 +1255,50 @@ html:not([data-theme='dark']) .ef-tri {
     to { transform: scaleX(1); }
   }
 }
+
+/* ---------- 过场：点击链接换页时的转场（View Transitions，跨文档） ---------- */
+
+.wipe {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background: var(--ef-signal);
+  transform: translateY(-101%);
+  pointer-events: none;
+  view-transition-name: wipe;
+}
+
+@view-transition {
+  navigation: auto;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* 旧页：向上抽走 + 模糊 */
+  ::view-transition-old(root) {
+    animation: page-out 380ms cubic-bezier(0.7, 0, 0.2, 1) both;
+  }
+
+  /* 新页：从下方浮上来 + 去模糊 */
+  ::view-transition-new(root) {
+    animation: page-in 380ms cubic-bezier(0.16, 1, 0.3, 1) 60ms both;
+  }
+
+  /* 黄带从上穿到下，穿过整个换页过程 */
+  ::view-transition-group(wipe) {
+    animation: wipe-sweep 620ms cubic-bezier(0.7, 0, 0.2, 1) both;
+  }
+
+  @keyframes page-out {
+    to { opacity: 0; transform: translateY(-18px) scale(0.996); filter: blur(6px); }
+  }
+
+  @keyframes page-in {
+    from { opacity: 0; transform: translateY(18px) scale(1.004); filter: blur(6px); }
+  }
+
+  @keyframes wipe-sweep {
+    0%   { transform: translateY(-101%); }
+    52%  { transform: translateY(0); }
+    100% { transform: translateY(101%); }
+  }
+}
