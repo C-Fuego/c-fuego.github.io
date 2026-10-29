@@ -175,14 +175,16 @@
     const bars = vt.querySelector('.vt-bars');
     const rows = vt.querySelector('.vt-rows');
     if (bars && !bars.children.length) {
-      for (let i = 0; i < 36; i++) {
+      const N = 36;
+      for (let i = 0; i < N; i++) {
         const el = document.createElement('i');
-        el.style.setProperty('--i', i);
+        // 离中线越远，动画越晚 —— 栅格从中心向两侧展开
+        el.style.setProperty('--i', Math.abs(i - Math.floor(N / 2)));
         bars.appendChild(el);
       }
     }
     if (rows && !rows.children.length) {
-      for (let i = 0; i < 16; i++) {
+      for (let i = 0; i < 8; i++) {
         const el = document.createElement('i');
         el.style.setProperty('--i', i);
         rows.appendChild(el);
@@ -210,7 +212,7 @@
       e.preventDefault();
       vt.classList.add('is-on', 'is-leaving');
       try { sessionStorage.setItem('vt-go', '1'); } catch (err) {}
-      setTimeout(() => { location.href = url.href; }, 380);
+      setTimeout(() => { location.href = url.href; }, 860);
     });
   }
 })();

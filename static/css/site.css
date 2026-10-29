@@ -1338,6 +1338,19 @@ html:not([data-theme='dark']) .ef-tri {
 
 .vt.is-on { visibility: visible; }
 
+/* 主线：一根 3px 信号黄从顶部中央垂直落下，是整个过场的起手 */
+.vt-lead {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 3px;
+  height: 52%;
+  margin-left: -1.5px;
+  background: var(--ef-signal);
+  transform: scaleY(0);
+  transform-origin: top center;
+}
+
 /* 竖线组：36 根 1px 细线从顶部落下 */
 .vt-bars {
   position: absolute;
@@ -1369,22 +1382,11 @@ html:not([data-theme='dark']) .ef-tri {
   background: var(--ef-ink);
   transform: scaleX(0);
   transform-origin: left center;
-  opacity: 0.55;
+  opacity: 0.32;
 }
 
 /* 两道黄圆环：从画面中心扩出去 */
-.vt-ring {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 26vmin;
-  height: 26vmin;
-  margin: -13vmin 0 0 -13vmin;
-  border: 1px solid var(--ef-signal);
-  border-radius: 50%;
-  transform: scale(0);
-  opacity: 0;
-}
+
 
 /* 墨色：最后从下往上灌满，把栅栏和旧页一起盖掉 */
 .vt-fill {
@@ -1396,43 +1398,26 @@ html:not([data-theme='dark']) .ef-tri {
 }
 
 /* 一条横扫的黄线，栅栏落下后穿一次 */
-.vt-scan {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  height: 1px;
-  background: var(--ef-signal);
-  transform: scaleX(0);
-  transform-origin: left center;
-  opacity: 0.9;
-}
+
 
 @media (prefers-reduced-motion: no-preference) {
+  .vt.is-leaving .vt-lead {
+    animation: vt-lead-drop 260ms cubic-bezier(0.7, 0, 0.2, 1) both;
+  }
+
+  /* --i 已经是「离中心的距离」，所以栅格是从中线向两侧展开 */
   .vt.is-leaving .vt-bars i {
-    animation: vt-bar-drop 170ms cubic-bezier(0.7, 0, 0.2, 1) both;
-    animation-delay: calc(var(--i, 0) * 5ms);
+    animation: vt-bar-drop 200ms cubic-bezier(0.7, 0, 0.2, 1) both;
+    animation-delay: calc(var(--i, 0) * 6ms + 260ms);
   }
 
   .vt.is-leaving .vt-rows i {
-    animation: vt-row-grow 200ms cubic-bezier(0.7, 0, 0.2, 1) both;
-    animation-delay: calc(var(--i, 0) * 7ms + 60ms);
-  }
-
-  .vt.is-leaving .vt-ring {
-    animation: vt-ring-out 300ms cubic-bezier(0.16, 1, 0.3, 1) 90ms both;
-  }
-
-  .vt.is-leaving .vt-ring.is-late {
-    animation: vt-ring-out 340ms cubic-bezier(0.16, 1, 0.3, 1) 160ms both;
-  }
-
-  .vt.is-leaving .vt-scan {
-    animation: vt-scan-line 220ms cubic-bezier(0.7, 0, 0.2, 1) 150ms both;
+    animation: vt-row-grow 220ms cubic-bezier(0.7, 0, 0.2, 1) both;
+    animation-delay: calc(var(--i, 0) * 10ms + 380ms);
   }
 
   .vt.is-leaving .vt-fill {
-    animation: vt-fill-up 150ms cubic-bezier(0.7, 0, 0.2, 1) 210ms both;
+    animation: vt-fill-up 280ms cubic-bezier(0.16, 1, 0.3, 1) 560ms both;
   }
 
   /* 进入：墨色从上退去，新页从模糊里浮出来 */
@@ -1440,12 +1425,17 @@ html:not([data-theme='dark']) .ef-tri {
 
   .vt-entering .vt-fill {
     transform: scaleY(1);
-    animation: vt-fill-out 220ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation: vt-fill-out 320ms cubic-bezier(0.65, 0, 0.35, 1) both;
   }
 
   .vt-entering main,
   .vt-entering .site-bar {
-    animation: vt-page-in 340ms cubic-bezier(0.16, 1, 0.3, 1) 60ms both;
+    animation: vt-page-in 420ms cubic-bezier(0.16, 1, 0.3, 1) 90ms both;
+  }
+
+  @keyframes vt-lead-drop {
+    from { transform: scaleY(0); }
+    to { transform: scaleY(1); }
   }
 
   @keyframes vt-bar-drop {
@@ -1454,16 +1444,6 @@ html:not([data-theme='dark']) .ef-tri {
   }
 
   @keyframes vt-row-grow {
-    from { transform: scaleX(0); }
-    to { transform: scaleX(1); }
-  }
-
-  @keyframes vt-ring-out {
-    from { transform: scale(0); opacity: 1; }
-    to { transform: scale(3.4); opacity: 0; }
-  }
-
-  @keyframes vt-scan-line {
     from { transform: scaleX(0); }
     to { transform: scaleX(1); }
   }
