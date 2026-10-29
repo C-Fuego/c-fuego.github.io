@@ -81,11 +81,12 @@
 
   /* 斜线阴影只留在最靠里的一小片 */
   .terrain-hatch {
-    /* 密排线：间隔 2.4px，接近版画/钞票的排线密度 */
+    /* 排线周期必须落在整数像素上：1px 线 + 3px 空 = 4px 周期。
+       之前用 1.1 / 2.4 这种非整数，斜线在子像素上被拉成亮暗条纹（看着像荧光）。 */
     background-image: repeating-linear-gradient(
       45deg,
-      color-mix(in srgb, var(--ink) 36%, transparent) 0 1.1px,
-      transparent 1.1px 2.4px
+      color-mix(in srgb, var(--ink) 40%, transparent) 0 1px,
+      transparent 1px 4px
     );
     opacity: 1;
     /* 覆盖范围也跟着放宽，从 10% 半径放到 22%，到 48% 完全消失 */
