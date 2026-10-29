@@ -83,12 +83,13 @@
   .terrain-hatch {
     background-image: repeating-linear-gradient(
       45deg,
-      color-mix(in srgb, var(--ink) 13%, transparent) 0 1px,
-      transparent 1px 6px
+      color-mix(in srgb, var(--ink) 34%, transparent) 0 1.2px,
+      transparent 1.2px 6px
     );
-    opacity: 0.85;
-    mask-image: radial-gradient(circle at 100% 0, #000 0 10%, transparent 30%);
-    -webkit-mask-image: radial-gradient(circle at 100% 0, #000 0 10%, transparent 30%);
+    opacity: 1;
+    /* 覆盖范围也跟着放宽，从 10% 半径放到 22%，到 48% 完全消失 */
+    mask-image: radial-gradient(circle at 100% 0, #000 0 22%, rgba(0,0,0,.5) 34%, transparent 48%);
+    -webkit-mask-image: radial-gradient(circle at 100% 0, #000 0 22%, rgba(0,0,0,.5) 34%, transparent 48%);
   }
 
   .eyebrow {
