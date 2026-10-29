@@ -269,60 +269,102 @@ html {
   font-weight: 700;
 }
 
-/* ---------- 关于 ---------- */
+/* ---------- 关于：左墨色铭牌 / 右短文，5:7 ---------- */
 
 .about-grid {
   display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: 24px;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(24px, 4vw, 56px);
+  align-items: start;
 }
 
+.about-figure { margin: 0; }
 
+.about-figure .frame {
+  position: relative;
+  display: grid;
+  align-content: center;
+  min-height: 258px;
+  padding: clamp(20px, 2.4vw, 30px);
+  background: var(--ef-ink);
+  color: var(--ef-paper);
+  overflow: hidden;
+}
 
-
+/* 竖排署名做水印，压在铭牌后面 */
 .frame-mark {
-  font-family: var(--ef-font-mono);
-  font-size: clamp(20px, 2.4vw, 30px);
-  letter-spacing: 0.42em;
-  text-indent: 0.42em;
-  color: var(--ef-ink);
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
   writing-mode: vertical-rl;
   text-orientation: mixed;
+  font-family: var(--ef-font-mono);
+  font-size: clamp(16px, 1.8vw, 24px);
+  letter-spacing: 0.24em;
+  color: var(--ef-paper);
+  opacity: 0.12;
+  pointer-events: none;
 }
 
-.frame-scale {
-  position: absolute;
-  left: 12%;
-  right: 12%;
-  bottom: 14%;
-  height: 10px;
-  background-image: repeating-linear-gradient(
-    to right,
-    color-mix(in srgb, var(--ef-ink) 55%, transparent) 0 1px,
-    transparent 1px 12px
-  );
+/* 铭牌表：真实字段，一线一行 */
+.nameplate {
+  position: relative;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
 }
+
+.about-figure .nameplate th,
+.about-figure .nameplate td {
+  padding: 9px 0;
+  border-bottom: 1px solid rgba(244, 244, 241, 0.16);
+  text-align: left;
+  vertical-align: baseline;
+}
+
+.about-figure .nameplate tr:first-child th,
+.about-figure .nameplate tr:first-child td { padding-top: 0; }
+
+.about-figure .nameplate tr:last-child th,
+.about-figure .nameplate tr:last-child td {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.about-figure .nameplate th {
+  width: 42%;
+  font-family: var(--ef-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 400;
+  color: rgba(244, 244, 241, 0.5);
+}
+
+.about-figure .nameplate td {
+  color: var(--ef-paper);
+  text-transform: none;
+}
+
+.about-body { align-self: center; }
 
 .about-body p {
-  max-width: 56ch;
-  margin: 0 0 20px;
+  max-width: 34em;
+  margin: 0 0 1.1em;
   font-size: 17px;
   line-height: 1.75;
 }
 
-.about-body p + p { color: var(--ef-ink-2); }
+.about-body p:last-child { margin-bottom: 0; color: var(--ef-ink-2); }
 
-.nameplate {
-  width: 100%;
-  margin-top: 28px;
-  border-collapse: collapse;
-  border-top: 1px solid var(--ef-ink);
+@media (max-width: 768px) {
+  .about-grid { grid-template-columns: 1fr; }
 }
-
 .nameplate tr { border-bottom: 1px solid var(--ef-rule); }
 
-.nameplate th,
-.nameplate td {
+.about-figure .nameplate th,
+.about-figure .nameplate td {
   height: 40px;
   padding: 0;
   text-align: left;
@@ -1449,29 +1491,6 @@ html {
   margin: 0;
 }
 
-.shot-art {
-  position: absolute;
-  inset: 0;
-  background: var(--ef-paper);
-  opacity: 0.5;
-  mask-image: url("../images/gen/concentric.svg");
-  mask-size: contain;
-  mask-position: center;
-  mask-repeat: no-repeat;
-}
-
-.shot-art::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--ef-paper);
-  opacity: 0.45;
-  mask-image: url("../images/gen/dotmatrix.svg");
-  mask-size: cover;
-  mask-position: center;
-  mask-repeat: no-repeat;
-}
-
 .shot-hud { position: absolute; inset: 0; pointer-events: none; }
 
 .shot-hud span {
@@ -1608,4 +1627,20 @@ html {
   .hero .main { padding-top: 88px; }
   .hero-foot { height: 46px; }
   .hero-foot .ticks { max-width: none; }
+}
+
+/* 图框里的空心大字：实心标题之外的第二层（skill：字标实心加空心） */
+.shot-glyph {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--ef-font-ui);
+  font-stretch: 125%;
+  font-size: clamp(52px, 7.4vw, 104px);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: transparent;
+  -webkit-text-stroke: 1.2px rgba(244, 244, 241, 0.75);
+  pointer-events: none;
 }
