@@ -1572,3 +1572,6 @@ html {
   .hud-rule { margin-top: 1.5rem; }
   .fact-code { width: 64px; height: 11px; }
 }
+
+/* 过场只有一套：JS 网格 hatch（static/js/status.js）。
+   浏览器跨文档转场在 static/ef/endfield.css 里已关成 navigation: none。 */

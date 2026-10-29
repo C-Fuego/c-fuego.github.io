@@ -1321,8 +1321,11 @@ a.ef-record:is(:hover, :focus-visible) > * {
 /* Going from page to page (same-origin navigations): the new page is drawn
    across the old one by a slanted shutter. */
 @media (prefers-reduced-motion: no-preference) {
+  /* 本项目改用 JS 网格过场（static/js/status.js 的 [data-hatch]）；
+     浏览器跨文档转场关掉，否则两套会叠：第一次 VT + 网格，后续只剩网格。
+     要恢复斜切快门，把下面这行改回 auto 并删掉 status.js 的 hatch 拦截。 */
   @view-transition {
-    navigation: auto;
+    navigation: none;
   }
   ::view-transition-old(root) {
     animation: none;
