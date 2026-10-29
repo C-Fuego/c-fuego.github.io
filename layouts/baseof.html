@@ -10,6 +10,17 @@
     {{ block "main" . }}{{ end }}
   </main>
   {{ partial "foot.html" . }}
+  {{- if .IsPage }}
+  <div class="read-badge" aria-hidden="true">
+    <svg viewBox="0 0 46 46">
+      <circle cx="23" cy="23" r="19" fill="var(--ef-ink)"></circle>
+      <circle data-read-arc cx="23" cy="23" r="19" fill="none" stroke="var(--ef-signal)"
+              stroke-width="4.5" stroke-linecap="round"
+              stroke-dasharray="119.4" stroke-dashoffset="119.4"
+              transform="rotate(-90 23 23)"></circle>
+    </svg>
+  </div>
+  {{- end }}
   {{ partial "search.html" . }}
   <script src="{{ "js/site.js" | relURL }}?v={{ now.Unix }}" defer></script>
   <script type="module">

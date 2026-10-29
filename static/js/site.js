@@ -157,4 +157,19 @@
       heads.forEach((h) => io.observe(h));
     }
   }
+
+  /* ---------- 阅读进度弧 ---------- */
+  const arc = document.querySelector('[data-read-arc]');
+  if (arc) {
+    const LEN = 119.4;
+    const update = () => {
+      const el = document.documentElement;
+      const max = el.scrollHeight - el.clientHeight;
+      const p = max > 40 ? Math.min(1, Math.max(0, el.scrollTop / max)) : 1;
+      arc.style.strokeDashoffset = (LEN * (1 - p)).toFixed(1);
+    };
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  }
 })();

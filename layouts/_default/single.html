@@ -3,12 +3,12 @@
 {{- with .File }}{{ $raw = replaceRE "^([0-9]+).*$" "$1" .ContentBaseName }}{{ end -}}
 <div class="ef-spread">
   <article class="ef-sheet">
-    <p class="ef-crumb ef-field">
+    <p class="ef-crumb ef-field cue cue-1">
       <a href="{{ "posts/" | relURL }}">文章</a>
       <span>正文</span>
     </p>
 
-    <p class="post-ids">
+    <p class="post-ids cue cue-2">
       {{- if findRE "^[0-9]+$" $raw }}
       <span class="ef-tag is-current">No.{{ printf "%03d" (int $raw) }}</span>
       {{- end }}
@@ -17,18 +17,18 @@
       {{- end }}
     </p>
 
-    <ul class="ef-facts ef-field">
+    <ul class="ef-facts ef-field cue cue-3">
       <li><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006.01.02" }}</time></li>
       <li>{{ .WordCount }} 字</li>
       <li>约 {{ .ReadingTime }} 分钟</li>
     </ul>
 
-    <h1 class="post-title">{{ .Title }}</h1>
+    <h1 class="post-title cue cue-3">{{ .Title }}</h1>
     <div class="ef-tri" aria-hidden="true"><i></i><i></i><i></i></div>
 
     {{ with .Summary }}<p class="ef-lede">{{ . | plainify }}</p>{{ end }}
 
-    <div class="ef-prose">{{ .Content }}</div>
+    <div class="ef-prose cue cue-4">{{ .Content }}</div>
 
     <nav class="post-nav" aria-label="相邻文章">
       {{ with .PrevInSection }}<a class="ef-btn" href="{{ .RelPermalink }}">← {{ .Title }}</a>{{ end }}

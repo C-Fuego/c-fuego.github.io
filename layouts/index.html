@@ -7,40 +7,40 @@
 
 <div class="ef-spread">
   <section class="ef-sheet home-sheet">
-    <p class="plaque">
+    <p class="plaque cue cue-1">
       <span>{{ site.Title }}</span>
       <span>技术笔记</span>
     </p>
 
-    <p class="intro">{{ site.Params.description }}</p>
+    <p class="intro cue cue-2">{{ site.Params.description }}</p>
 
-    <ul class="ef-facts">
+    <ul class="ef-facts cue cue-3">
       <li>{{ len $posts }} 篇</li>
       <li>{{ $words }} 字</li>
       <li>{{ len site.Taxonomies.tags }} 个标签</li>
       {{ with $latest }}<li>最近写入 {{ . }}</li>{{ end }}
     </ul>
 
-    <header class="ef-group-head">
+    <header class="ef-group-head cue cue-4">
       <span>最近写入</span>
       <a class="ef-field" href="{{ "posts/" | relURL }}">全部 {{ len $posts }} 篇</a>
     </header>
     {{ if $posts }}
-    <ul class="ef-records">
+    <ul class="ef-records cue cue-5">
       {{ range first 8 $posts.ByDate.Reverse }}
       {{ partial "record.html" . }}
       {{ end }}
     </ul>
     {{ else }}
-    <div class="empty-plate"><p>还没有文章。写一篇放进 <code>content/posts/</code>，构建后会出现在这里。</p></div>
+    <div class="empty-plate cue cue-5"><p>还没有文章。写一篇放进 <code>content/posts/</code>，构建后会出现在这里。</p></div>
     {{ end }}
 
     {{ if site.Taxonomies.tags }}
-    <header class="ef-group-head">
+    <header class="ef-group-head cue cue-6">
       <span>标签</span>
       <a class="ef-field" href="{{ "tags/" | relURL }}">全部</a>
     </header>
-    <div class="ef-chips">
+    <div class="ef-chips cue cue-6">
       {{- range first 12 site.Taxonomies.tags.ByCount }}
       <a class="ef-chip" href="{{ .Page.RelPermalink }}">{{ .Page.LinkTitle }}<span>{{ .Count }}</span></a>
       {{- end }}
