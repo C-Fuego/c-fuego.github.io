@@ -54,7 +54,7 @@
   --ef-tag-bg: #101110;
   --ef-tag-fg: #F2F2EC;
   --ef-accent-text: #6B5D00;
-  --ef-contour: color-mix(in srgb, var(--ef-ink) 4%, transparent);
+  --ef-contour: color-mix(in srgb, var(--ef-ink) 9%, transparent);
 
   font-family: var(--ef-font-text);
   font-variant-numeric: tabular-nums;
@@ -373,15 +373,6 @@ html {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 24px;
-}
-
-.project .thumb {
-  width: 100%;
-  aspect-ratio: 16 / 10;
-  background: var(--ef-panel);
-  border: 1px solid var(--ef-rule);
-  background-image: repeating-linear-gradient(45deg,
-    color-mix(in srgb, var(--ef-ink) 5%, transparent) 0 1px, transparent 1px 11px);
 }
 
 .project table {
@@ -1779,4 +1770,47 @@ html {
 
 @media (max-width: 768px) {
   .hero-art { right: -40%; bottom: -22%; width: 120vw; opacity: 0.04; }
+}
+
+/* 深浅切换按钮：切角表示可点，跟其他按钮同一套语言 */
+/* 文案由 CSS 跟着 data-theme 走，fx.js 只管 aria-pressed */
+.theme-toggle::before { content: "深色"; }
+[data-theme='dark'] .theme-toggle::before { content: "浅色"; }
+
+.theme-toggle {
+  margin-left: 16px;
+  min-width: 62px;
+  text-align: center;
+  padding: 4px 12px;
+  background: transparent;
+  border: 1px solid rgba(237, 237, 237, 0.3);
+  color: inherit;
+  font-family: var(--ef-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 7px), calc(100% - 7px) 100%, 0 100%);
+  transition: border-color 160ms ease, color 160ms ease;
+}
+
+.theme-toggle:hover {
+  border-color: var(--ef-signal);
+  color: var(--ef-signal);
+}
+
+/* 深色下把纸/墨/线重新映射，纸纹与等高线跟着走 */
+[data-theme='dark'] .seam {
+  background-image: repeating-linear-gradient(45deg,
+    rgba(237, 237, 237, 0.07) 0 1px, transparent 1px 10px);
+}
+
+[data-theme='dark'] .about-figure .frame {
+  background: var(--ef-panel-2);
+  color: var(--ef-paper);
+}
+
+[data-theme='dark'] .project-shot {
+  background: var(--ef-panel-2);
+  border-color: var(--ef-strong-rule);
 }
