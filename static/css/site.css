@@ -1814,3 +1814,30 @@ html {
   background: var(--ef-panel-2);
   border-color: var(--ef-strong-rule);
 }
+
+/* ---------- 整屏节奏：每个区块占一屏，滚动整屏吸附（照 PV 的幻灯片感） ---------- */
+
+@media (min-width: 769px) {
+  html {
+    scroll-snap-type: y proximity;
+  }
+
+  .hero,
+  .block {
+    scroll-snap-align: start;
+    min-height: calc(100vh - 63px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .block > .wrap {
+    width: 100%;
+  }
+
+  /* 接缝带在吸附模式下会成为一屏的一部分，压成一条细线 */
+  .seam {
+    height: 44px;
+    scroll-snap-align: none;
+  }
+}
