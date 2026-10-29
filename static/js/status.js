@@ -77,17 +77,36 @@
     ringIn.setAttribute('class', 'dial-ring is-dashed');
     group.appendChild(ringIn);
 
+    const scrollTop = () => {
+      const el = document.scrollingElement || document.documentElement;
+      return el.scrollTop || window.scrollY || 0;
+    };
+
     const update = () => {
-      const el = document.documentElement;
-      const max = el.scrollHeight - el.clientHeight;
-      const ratio = max > 40 ? Math.min(1, Math.max(0, el.scrollTop / max)) : 1;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const ratio = max > 40 ? Math.min(1, Math.max(0, scrollTop() / max)) : 1;
       const lit = Math.round(ratio * N);
       for (let i = 0; i < N; i++) ticks[i].classList.toggle('is-on', i < lit);
       num.textContent = Math.round(ratio * 100);
     };
 
+    // 事件 + rAF 双通道：有些环境（headless、内嵌 webview）滚动时不派发 scroll
     window.addEventListener('scroll', update, { passive: true });
+    document.addEventListener('scroll', update, { passive: true, capture: true });
     window.addEventListener('resize', update);
+
+    let lastTop = -1;
+    const watch = () => {
+      const top = scrollTop();
+      if (top !== lastTop) {
+        lastTop = top;
+        update();
+      }
+    };
+    // rAF 在后台/隐藏标签会被挂起，setInterval 不会；两条都留，谁活着谁干活
+    const rafLoop = () => { watch(); requestAnimationFrame(rafLoop); };
+    requestAnimationFrame(rafLoop);
+    setInterval(watch, 200);
     update();
   }
 })();

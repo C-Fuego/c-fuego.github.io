@@ -17,6 +17,11 @@
       <span class="paper-edge edge-1" aria-hidden="true"></span>
 
       <div class="paper">
+        <div class="term-bar" aria-hidden="true">
+          <span class="term-path">~/posts/{{ .File.BaseFileName }}.md</span>
+          <span class="term-lights"><i></i><i></i><i></i></span>
+        </div>
+
         <header class="post-head">
           <div class="post-meta">
             <span class="mono">{{ .Date.Format "2006-01-02" }}</span>
@@ -27,6 +32,13 @@
         </header>
 
         <div class="ef-prose">{{ .Content }}</div>
+
+        <div class="term-status" aria-hidden="true">
+          <span>-- READ --</span>
+          <span>{{ .WordCount }} WORDS</span>
+          <span>{{ .ReadingTime }} MIN</span>
+          <span>UTF-8</span>
+        </div>
 
         <nav class="post-foot" aria-label="相邻文章">
           {{ with .PrevInSection }}<a href="{{ .RelPermalink }}">← {{ .Title }}</a>{{ else }}<span></span>{{ end }}

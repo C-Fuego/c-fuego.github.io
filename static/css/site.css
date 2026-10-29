@@ -85,6 +85,7 @@ body.ef {
   flex-direction: column;
   background: var(--ef-paper);
   color: var(--ef-ink);
+  overflow-x: clip;
 }
 
 html {
@@ -484,7 +485,6 @@ html {
   display: grid;
   grid-template-columns: var(--split) calc(100% - var(--split));
   min-height: calc(100vh - 63px);
-  overflow: hidden;
   background: var(--ef-paper);
 }
 
@@ -641,13 +641,75 @@ html {
 .paper {
   position: relative;
   z-index: 4;
-  padding: clamp(24px, 3.4vw, 52px) clamp(22px, 3vw, 48px) clamp(28px, 4vw, 56px);
+  padding: calc(clamp(24px, 3.4vw, 52px) + 34px) clamp(22px, 3vw, 48px) clamp(28px, 4vw, 56px);
   /* 硬边阴影：不用 blur，用一层实线 + 一层虚线表示纸的厚度 */
   box-shadow:
     6px 6px 0 -1px var(--ef-panel),
     6px 6px 0 0 var(--ef-rule),
     12px 12px 0 -1px var(--ef-panel),
     12px 12px 0 0 var(--ef-rule);
+}
+
+/* 终端窗口条：路径 + 三个方形控制键 */
+.term-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14px;
+  background: var(--ef-paper);
+  border-bottom: 1px solid var(--ef-rule);
+}
+
+.term-path {
+  font-family: var(--ef-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--ef-ink-2);
+}
+
+.term-lights {
+  display: flex;
+  gap: 5px;
+}
+
+.term-lights i {
+  width: 8px;
+  height: 8px;
+  border: 1px solid var(--ef-strong-rule);
+}
+
+.term-lights i:first-child { background: var(--c-my); border-color: var(--c-my); }
+.term-lights i:nth-child(2) { background: var(--c-ye); border-color: var(--c-ye); }
+.term-lights i:last-child { background: var(--c-cy); border-color: var(--c-cy); }
+
+/* 底部状态行 */
+.term-status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+  margin-top: 40px;
+  padding: 8px 12px;
+  border: 1px solid var(--ef-rule);
+  border-left: 3px solid var(--ef-signal);
+  font-family: var(--ef-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ef-ink-2);
+}
+
+/* 标题前的提示符 */
+.stage .post-title::before {
+  content: "> ";
+  font-family: var(--ef-font-mono);
+  font-size: 0.62em;
+  color: var(--ef-accent-text);
+  letter-spacing: 0;
 }
 
 .stage .post-meta {
@@ -673,6 +735,7 @@ html {
   line-height: 1.16;
   letter-spacing: -0.01em;
   font-weight: 700;
+  text-wrap: balance;
 }
 
 .stage .ef-prose {
