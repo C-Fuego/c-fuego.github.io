@@ -1104,32 +1104,6 @@ html {
   letter-spacing: 0.1em;
 }
 
-/* ---------- 满屏黄闪切：区块之间的硬转场 ---------- */
-
-.flash {
-  position: fixed;
-  inset: 0;
-  z-index: 90;
-  background: var(--ef-signal);
-  transform: scaleY(0);
-  transform-origin: bottom;
-  pointer-events: none;
-  will-change: transform;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .flash.is-firing {
-    animation: flash-cut 560ms cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  @keyframes flash-cut {
-    0%   { transform: scaleY(0); transform-origin: bottom; }
-    42%  { transform: scaleY(1); transform-origin: bottom; }
-    43%  { transform: scaleY(1); transform-origin: top; }
-    100% { transform: scaleY(0); transform-origin: top; }
-  }
-}
-
 /* 首屏一句话也收紧到编号右侧的视觉轴上 */
 .hero .hero-lede {
   margin-top: 0;
@@ -1550,8 +1524,8 @@ html {
   }
 
   @keyframes row-in {
-    from { opacity: 0; transform: translateX(-14px); }
-    to { opacity: 1; transform: none; }
+    from { transform: translateX(-16px); }
+    to { transform: none; }
   }
 }
 
@@ -1660,4 +1634,149 @@ html {
 @media (max-width: 768px) {
   .about-grid { grid-template-columns: 1fr; }
   .frame-mark { font-size: 40px; opacity: 0.08; }
+}
+
+/* 04 项目：左图右表，与 02 的「左块右文」形成镜像节奏 */
+.project-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: clamp(24px, 4vw, 56px);
+  align-items: start;
+}
+
+.project-shot { margin: 0; }
+
+.project-shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--ef-ink);
+  background: var(--ef-ink);
+}
+
+.project table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.project th,
+.project td {
+  padding: 9px 0;
+  border-bottom: 1px solid var(--ef-rule);
+  text-align: left;
+}
+
+.project th {
+  font-family: var(--ef-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 400;
+  color: var(--ef-ink-2);
+}
+
+@media (max-width: 768px) {
+  .project-grid { grid-template-columns: 1fr; }
+}
+
+/* 影像框：占位图本身很空，用四角 HUD + 一层点阵把它撑起来 */
+.project-shot {
+  position: relative;
+  overflow: hidden;
+  height: clamp(240px, 24vw, 340px);
+  border: 1px solid var(--ef-ink);
+  background: #1a2126;
+}
+
+/* 图形素材用 mask 挂上去：颜色由底色决定，深底自动变纸色 */
+.shot-art {
+  position: absolute;
+  inset: 0;
+  background: var(--ef-paper);
+  opacity: 0.5;
+  mask-image: url("../images/gen/concentric.svg");
+  mask-size: contain;
+  mask-position: center;
+  mask-repeat: no-repeat;
+}
+
+.shot-art::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--ef-paper);
+  opacity: 0.5;
+  mask-image: url("../images/gen/dotmatrix.svg");
+  mask-size: cover;
+  mask-position: center;
+  mask-repeat: no-repeat;
+}
+
+.shot-hud {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.shot-hud span {
+  position: absolute;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(232, 232, 226, 0.62);
+}
+
+.hud-tl { top: 12px; left: 14px; }
+.hud-tr { top: 12px; right: 14px; }
+.hud-bl { bottom: 12px; left: 14px; }
+.hud-br { bottom: 12px; right: 14px; }
+
+/* 极淡的点阵，给平面一点设备感 */
+.shot-hud::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(232, 232, 226, 0.3) 1px, transparent 1px);
+  background-size: 14px 14px;
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.45) 70%, rgba(0, 0, 0, 0.25) 100%);
+}
+
+/* 四角准星 */
+.shot-hud::after {
+  content: "";
+  position: absolute;
+  inset: 18px;
+  border: 1px solid rgba(232, 232, 226, 0.18);
+  clip-path: polygon(
+    0 0, 26% 0, 26% 1px, 1px 1px, 1px 26%, 0 26%,
+    0 100%, 26% 100%, 26% calc(100% - 1px), 1px calc(100% - 1px), 1px 74%, 0 74%,
+    100% 0, 74% 0, 74% 1px, calc(100% - 1px) 1px, calc(100% - 1px) 26%, 100% 26%,
+    100% 100%, 74% 100%, 74% calc(100% - 1px), calc(100% - 1px) calc(100% - 1px), calc(100% - 1px) 74%, 100% 74%
+  );
+}
+
+/* 首屏底层：右下角一枚被裁掉一半的同心圆，只做纹理，不抢内容 */
+.hero {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-art {
+  position: absolute;
+  right: -22%;
+  bottom: -34%;
+  width: min(78vw, 900px);
+  aspect-ratio: 1;
+  background: var(--ef-ink);
+  opacity: 0.055;
+  mask-image: url("../images/gen/concentric.svg");
+  mask-size: contain;
+  mask-position: center;
+  mask-repeat: no-repeat;
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .hero-art { right: -40%; bottom: -22%; width: 120vw; opacity: 0.04; }
 }

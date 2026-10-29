@@ -1,10 +1,11 @@
 {{ define "main" }}
-<div class="flash" data-flash aria-hidden="true"></div>
 {{- $posts := (where site.RegularPages "Section" "posts").ByDate.Reverse -}}
 
 <section class="hero">
   <div class="wrap">
     <div class="main">
+      <div class="hero-art" aria-hidden="true"></div>
+
       <div class="hero-head ef-blur-in" style="--i:0">
         <span class="block-num" aria-hidden="true">01</span>
         <p class="hero-kicker mono">// NOTES</p>
@@ -14,7 +15,7 @@
 
       <p class="hero-fields mono ef-blur-in" style="--i:2">
         <span>{{ now.Format "2006.01.02" }}</span>
-        <span><span data-count="{{ len $posts }}">0</span> 篇</span>
+        <span><span data-count="{{ len $posts }}">{{ len $posts }}</span> 篇</span>
       </p>
     </div>
   </div>
@@ -86,6 +87,15 @@
       <div class="block-title"><span class="mono">// WORK</span><h2>项目</h2><span class="mono is-count">01 ITEM</span></div>
     </div>
     <div class="project-grid">
+      <figure class="project-shot">
+        <div class="shot-art" aria-hidden="true"></div>
+        <div class="shot-hud" aria-hidden="true">
+          <span class="hud-tl mono">REC</span>
+          <span class="hud-tr mono">01 / 03</span>
+          <span class="hud-bl mono">2025.03</span>
+          <span class="hud-br mono">1200 × 800</span>
+        </div>
+      </figure>
       <article class="project">
         <table>
           <tr><th>NAME</th><th>YEAR</th><th>ROLE</th></tr>
