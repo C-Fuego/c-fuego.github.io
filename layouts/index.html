@@ -1,110 +1,91 @@
 {{ define "main" }}
 {{- $posts := (where site.RegularPages "Section" "posts").ByDate.Reverse -}}
+{{- $words := 0 -}}
+{{- range $posts }}{{ $words = add $words .WordCount }}{{ end -}}
+{{- $latest := index $posts 0 -}}
 
-<section class="hero">
-  <div class="wrap">
-    <div class="main">
-      <div class="hero-art" aria-hidden="true"></div>
+<section class="hero" data-hero>
+  <p class="meta ef-field">
+    <time>{{ now.Format "2006.01.02" }}</time>
+    <span><b data-fx-load>{{ len $posts }}</b> 篇</span>
+    <span><b data-fx-load>{{ $words }}</b> 字</span>
+  </p>
 
-      <div class="hero-head ef-blur-in" style="--i:0">
-        <span class="block-num" aria-hidden="true">01</span>
-        <p class="hero-kicker mono">// NOTES</p>
-      </div>
+  <h1 class="ef-wordmark">
+    <span class="solid ef-in-drive">{{ site.Title }}</span>
+    <span class="hollow ef-in-drive" style="animation-delay: 140ms" aria-hidden="true">.NOTES</span>
+  </h1>
 
-      <h1 class="hero-lede">把跑过的东西写下来，<br class="br-wide">跑不通就写卡在哪一步。</h1>
-
-      <p class="hero-fields mono ef-blur-in" style="--i:2">
-        <span>{{ now.Format "2006.01.02" }}</span>
-        <span><span data-count="{{ len $posts }}">{{ len $posts }}</span> 篇</span>
-      </p>
-
-      <div class="hero-foot mono">
-        <span>// 01 INDEX</span>
-        <span class="ticks" data-ticks aria-hidden="true"></span>
-        <span>{{ len $posts }} ENTRIES</span>
-      </div>
-    </div>
+  <div class="copy">
+    <p class="claim"><span class="ef-marker ef-in-stroke">把跑过的东西写下来</span></p>
+    <p class="bio">跑不通就写卡在哪一步。Linux、自建服务、硬件，以及踩过的坑。</p>
+    <p class="ef-actions">
+      {{ with $latest }}<a class="ef-btn go" href="{{ .RelPermalink }}">读最新一篇 <span class="sub">{{ .Date.Format "2006.01.02" }}</span></a>{{ end }}
+      <a class="ef-btn" href="{{ "posts/" | relURL }}">全部文章</a>
+      <a class="ef-btn" href="#index">索引</a>
+    </p>
   </div>
-</section>
 
-<section class="block" id="about">
-  <div class="wrap">
-    <div class="block-head">
-      <span class="block-num" aria-hidden="true">02</span>
-      <div class="block-title"><span class="mono">// ABOUT</span><h2>关于</h2><span class="mono is-count">SINCE 2026</span></div>
+  <figure class="ef-frame">
+    <div class="window">
+      <svg viewBox="0 0 400 420" fill="none" stroke="currentColor" stroke-width="1.5" aria-label="等轴测线稿">
+        <g transform="translate(200 250)">
+          <path d="M0 -150 L130 -75 L130 75 L0 150 L-130 75 L-130 -75 Z" />
+          <path d="M-130 -75 L0 0 L130 -75 M0 0 L0 150" />
+          <path d="M-100 -40 L-30 0 L-30 80 L-100 40 Z" stroke-dasharray="4 4" />
+          <path d="M30 0 L100 -40 M30 40 L100 0 M30 80 L100 40" />
+          <path d="M-65 -112 L65 -37 M-30 -132 L100 -57" opacity=".5" />
+        </g>
+        <text x="24" y="400" font-family="Saira, sans-serif" font-stretch="125%" font-size="11" letter-spacing="2" fill="currentColor" stroke="none">{{ len $posts }} ENTRIES</text>
+      </svg>
     </div>
+    <figcaption class="ef-plate">只写自己真跑过的东西</figcaption>
+  </figure>
 
-    <div class="about-grid">
-      <figure class="about-figure">
-        <div class="frame">
-          <span class="frame-mark" aria-hidden="true">1GN4CI0</span>
-          <table class="nameplate">
-            <tr><th>ORIGIN</th><td>中国</td></tr>
-            <tr><th>FOCUS</th><td>Linux / 自建服务 / 硬件</td></tr>
-            <tr><th>STACK</th><td>Hugo / Arch / niri</td></tr>
-            <tr><th>STATUS</th><td>在线</td></tr>
-          </table>
-        </div>
-      </figure>
-
-      <div class="about-body">
-        <p>这里放技术笔记：Linux、自建服务、硬件，以及踩过的坑。</p>
-        <p>写东西的原则是只写自己真跑过的东西，跑不通就写卡在哪一步。</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="block" id="log">
-  <div class="wrap">
-    <div class="block-head">
-      <span class="block-num" aria-hidden="true">03</span>
-      <div class="block-title"><span class="mono">// ENTRIES</span><h2>日志</h2><span class="mono is-count">{{ len $posts }} ENTRIES</span></div>
-    </div>
-    {{ if $posts }}
-    <div class="log-list">
-      <ul class="ef-records">
-        {{- range $i, $p := $posts }}
-        <li>
-          <a class="ef-record" style="--i:{{ $i }}" href="{{ $p.RelPermalink }}">
-            <span class="ef-tag{{ if eq $i 0 }} is-current{{ end }}">{{ if lt (add $i 1) 10 }}0{{ end }}{{ add $i 1 }}</span>
-            <span class="ef-field">{{ $p.Date.Format "2006.01.02" }}</span>
-            <span class="name{{ if eq $i 0 }} is-latest{{ end }}"{{ with $p.Title }} title="{{ . }}"{{ end }}>{{ $p.Title }}</span>
-            <span class="ef-field">{{ $p.ReadingTime }} MIN</span>
-          </a>
-        </li>
+  <div class="ef-ticker" aria-label="最近的文章">
+    <div class="track">
+      <ul>
+        {{- range $posts }}
+        <li><a href="{{ .RelPermalink }}"><b>{{ .Date.Format "01.02" }}</b>{{ .Title }}</a></li>
+        {{- end }}
+      </ul>
+      <ul aria-hidden="true">
+        {{- range $posts }}
+        <li><a href="{{ .RelPermalink }}" tabindex="-1"><b>{{ .Date.Format "01.02" }}</b>{{ .Title }}</a></li>
         {{- end }}
       </ul>
     </div>
-    {{ else }}
-    <p class="empty">还没有记录。</p>
-    {{ end }}
   </div>
 </section>
 
-<section class="block" style="border-bottom:0">
-  <div class="wrap">
-    <div class="block-head">
-      <span class="block-num" aria-hidden="true">04</span>
-      <div class="block-title"><span class="mono">// WORK</span><h2>项目</h2><span class="mono is-count">01 ITEM</span></div>
-    </div>
-    <div class="project-grid">
-      <figure class="project-shot">
-        <span class="shot-glyph" aria-hidden="true">SITE</span>
-        <div class="shot-hud" aria-hidden="true">
-          <span class="hud-tl mono">REC</span>
-          <span class="hud-tr mono">01 / 03</span>
-          <span class="hud-bl mono">2025.03</span>
-          <span class="hud-br mono">1200 × 800</span>
-        </div>
-      </figure>
-      <article class="project">
-        <table>
-          <tr><th>NAME</th><th>YEAR</th><th>ROLE</th></tr>
-          <tr><td>c-fuego.github.io</td><td>2026</td><td>设计 / 开发</td></tr>
-        </table>
-      </article>
-    </div>
-  </div>
+{{ with $latest }}
+<section class="latest">
+  <a href="{{ .RelPermalink }}" data-fx-host>
+    <span class="ef-hollow-no" aria-hidden="true" data-fx>{{ .Date.Format "0102" }}</span>
+    <span class="body">
+      <span class="ef-field"><span class="flag">最新</span> {{ .Date.Format "2006.01.02" }} | {{ .WordCount }} 字 | 约 {{ .ReadingTime }} 分钟</span>
+      <span class="title">{{ .Title }}</span>
+      <span class="ef-read" style="color: var(--ef-ink-2); line-height: 1.8">{{ with .Summary }}{{ . }}{{ else }}{{ with .Params.summary }}{{ . }}{{ end }}{{ end }}</span>
+      <span class="ef-btn go">阅读全文</span>
+    </span>
+  </a>
+</section>
+{{ end }}
+
+<section class="index" id="index">
+  <p class="ef-eyebrow slash">Index</p>
+  <h2 class="ef-bar-title">全站索引</h2>
+  <ol class="ef-records">
+    {{- range $i, $p := $posts }}
+    <li>
+      <a class="ef-record ef-in-come" style="--i: {{ $i }}" href="{{ $p.RelPermalink }}">
+        <span class="ef-tag">{{ $p.Date.Format "0102" }}</span>
+        <time class="ef-field">{{ $p.Date.Format "2006.01.02" }}</time>
+        <span class="name ef-read">{{ $p.Title }}</span>
+        <span class="ef-field">{{ $p.WordCount }} 字</span>
+      </a>
+    </li>
+    {{- end }}
+  </ol>
 </section>
 {{ end }}
