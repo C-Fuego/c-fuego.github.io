@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} — {{ site.Title }}{{ end }}</title>
   <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ site.Params.description }}{{ end }}">
-  <meta name="theme-color" content="#E8E8E2">
+  <meta name="theme-color" content="#F4F4F1">
   <script>
     try { var t = localStorage.getItem('theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
   </script>
@@ -13,22 +13,7 @@
   <link rel="preload" href="{{ "fonts/saira-var.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="{{ "ef/endfield.css" | relURL }}?v={{ now.Unix }}">
   <link rel="stylesheet" href="{{ "css/site.css" | relURL }}?v={{ now.Unix }}">
-<script>
-  (function () {
-    try {
-      if (sessionStorage.getItem('vt-go')) {
-        sessionStorage.removeItem('vt-go');
-        document.documentElement.classList.add('vt-entering');
-        setTimeout(function () { document.documentElement.classList.remove('vt-entering'); }, 580);
-      }
-    } catch (e) {}
-  })();
-</script>
 </head>
-<div class="vt" data-vt aria-hidden="true">
-    <div class="vt-dot"></div>
-    <span class="vt-chapter mono" data-vt-chapter></span>
-  </div>
 <body class="ef ef-contours">
   <a class="skip" href="#main">跳到正文</a>
   {{ partial "statusbar.html" . }}
