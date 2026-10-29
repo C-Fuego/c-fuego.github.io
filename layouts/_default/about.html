@@ -4,6 +4,15 @@
 {{- range $posts }}{{ $words = add $words .WordCount }}{{ end -}}
 {{- $tags := site.Taxonomies.tags -}}
 {{- $tagCount := len $tags -}}
+{{- $avg := 0 -}}
+{{- if $posts }}{{ $avg = div $words (len $posts) }}{{ end -}}
+{{- $max := 0 -}}
+{{- range $posts }}{{ if gt .WordCount $max }}{{ $max = .WordCount }}{{ end }}{{ end -}}
+{{- $thisMonth := now.Format "2006-01" -}}
+{{- $mCount := 0 -}}
+{{- range $posts }}{{ if eq (.Date.Format "2006-01") $thisMonth }}{{ $mCount = add $mCount 1 }}{{ end }}{{ end -}}
+{{- $firstDate := "" -}}
+{{- with $posts }}{{ $firstDate = (index . (sub (len .) 1)).Date.Format "2006.01" }}{{ end -}}
 
 <div class="board">
   <div class="orbit">
@@ -28,12 +37,12 @@
     </section>
 
     <section class="ef-panel lead-right l2 ef-in-power" style="--i: 1">
-      <h2>机器</h2>
+      <h2>统计</h2>
       <ul class="ef-ledger">
-        <li><span>系统</span><span class="ef-field">CachyOS</span></li>
-        <li><span>环境</span><span class="ef-field">WSL2 / 裸机</span></li>
-        <li><span>窗口管理</span><span class="ef-field">niri (Misari)</span></li>
-        <li><span>小板子</span><span class="ef-field">Orange Pi Zero 3</span></li>
+        <li><span>平均每篇</span><span class="ef-field">{{ $avg }} 字</span></li>
+        <li><span>最长一篇</span><span class="ef-field">{{ $max }} 字</span></li>
+        <li><span>本月更新</span><span class="ef-field">{{ $mCount }} 篇</span></li>
+        <li><span>起始</span><span class="ef-field">{{ $firstDate }}</span></li>
       </ul>
     </section>
 
@@ -72,7 +81,7 @@
     </p>
     <ul class="ef-ledger">
       <li><span>署名</span><span class="ef-field">{{ site.Params.author }}</span></li>
-      <li><span>起始</span><span class="ef-field">2026.10</span></li>
+      <li><span>起始</span><span class="ef-field">{{ $firstDate }}</span></li>
       <li><span>许可</span><span class="ef-field">署名 / 非商用</span></li>
     </ul>
   </section>
@@ -104,7 +113,7 @@
       { zh: "记录", en: "Records", big: {{ len $posts }}, unit: "篇", here: true },
       { zh: "站点", en: "Site", big: "H", sub: "Hugo" },
       { zh: "联系", en: "Contact", big: "G", sub: "GitHub" },
-      { zh: "机器", en: "Machine", big: "W", sub: "WSL2" },
+      { zh: "统计", en: "Stats", big: {{ $avg }}, unit: "字", sub: "平均每篇" },
     ],
   });
 </script>
