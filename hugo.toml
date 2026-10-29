@@ -3,6 +3,7 @@ locale = "zh-CN"
 defaultContentLanguage = "zh-cn"
 title = "1GN4CI0"
 hasCJKLanguage = true
+disableHugoGeneratorInject = true
 enableRobotsTXT = true
 timeZone = "Asia/Shanghai"
 
