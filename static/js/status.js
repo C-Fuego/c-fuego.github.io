@@ -13,6 +13,17 @@
       ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
   };
 
+  // 时钟上挂完整时区，悬停可见；不占顶栏宽度
+  if (clock) {
+    try {
+      var zone = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+      var parts = new Intl.DateTimeFormat('en-US', { timeZoneName: 'short' }).formatToParts(new Date());
+      var name = '';
+      for (var i = 0; i < parts.length; i++) if (parts[i].type === 'timeZoneName') name = parts[i].value;
+      clock.title = zone + (name ? '（' + name + '）' : '');
+    } catch (e) {}
+  }
+
   tick();
   timer = setInterval(tick, 1000);
   window.addEventListener('pagehide', () => clearInterval(timer));
