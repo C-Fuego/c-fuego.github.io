@@ -15,6 +15,7 @@
       <li><time>{{ .Date.Format "2006.01.02" }}</time></li>
       <li>{{ .WordCount }} 字</li>
       <li>约 {{ .ReadingTime }} 分钟</li>
+      <li class="fact-code" style="--code-w: {{ math.Min 120 (add 64 (div .WordCount 12)) }}px" aria-hidden="true"></li>
     </ul>
 
     <h1 class="title ef-read">{{ .Title }}</h1>
@@ -22,6 +23,7 @@
 
     {{ with .Params.summary }}<p class="ef-lede ef-read">{{ . }}</p>{{ end }}
 
+    <div class="hud-rule" aria-hidden="true"></div>
     <div class="ef-prose">{{ .Content }}</div>
 
     {{ if or .PrevInSection .NextInSection }}

@@ -1271,13 +1271,26 @@ html {
 
 @media (max-width: 899px) {
   /* 顶栏不换行：时间收掉，导航和主题按钮留在一行 */
-  .site-bar { flex-wrap: nowrap; gap: 0 0.75rem; padding-inline: 1rem; }
-  .site-bar .brand { font-size: 0.9rem; }
-  .site-bar nav { gap: 0.9rem; }
-  .site-bar nav a { min-height: 48px; display: inline-flex; align-items: center; font-size: 0.8rem; }
+  /* 三项目录 + 品牌 + 主题按钮要在 390 宽里排成一行 */
+  .site-bar { flex-wrap: nowrap; gap: 0 0.5rem; padding-inline: 0.75rem; }
+  .site-bar .brand { font-size: 0.78rem; letter-spacing: 0.04em; }
+  .site-bar nav { flex-wrap: nowrap; gap: 0.35rem; }
+  .site-bar nav a {
+    min-height: 48px;
+    padding-inline: 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+  }
   .site-bar .util { gap: 0.5rem; }
   .site-bar .util .clock { display: none; }
-  .site-bar [data-theme-toggle] { min-width: 48px; min-height: 48px; }
+  .site-bar [data-theme-toggle] {
+    min-width: 44px;
+    min-height: 48px;
+    white-space: nowrap;
+    font-size: 0.7rem;
+  }
 
   /* 首屏收紧 */
   .hero { padding-top: 0.75rem; }
@@ -1513,4 +1526,49 @@ html {
   font-stretch: 125%;
   -webkit-text-stroke-width: 2.2px;
   margin-top: 0.18em;
+}
+
+/* ---------- 读数层：正文起点标尺 + 元信息条形码 ---------- */
+
+/* HUD 标尺：细刻度 7px 间隔，主刻度每 4 根加深；两端渐隐，不硬切 */
+.hud-rule {
+  position: relative;
+  height: 18px;
+  margin: 2rem 0 0.5rem;
+  background-image: repeating-linear-gradient(
+    to right,
+    color-mix(in srgb, currentColor 26%, transparent) 0 1px,
+    transparent 1px 7px
+  );
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 3%, #000 97%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 3%, #000 97%, transparent);
+}
+
+.hud-rule::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    to right,
+    color-mix(in srgb, currentColor 58%, transparent) 0 1px,
+    transparent 1px 28px
+  );
+}
+
+/* 条形码：12 条竖向标尺，宽度编码发布日期（真实数据驱动） */
+.fact-code {
+  flex: 0 0 auto;
+  margin-left: auto;
+  align-self: center;
+  width: var(--code-w, 84px);
+  height: 14px;
+  background-color: currentColor;
+  opacity: 0.68;
+  -webkit-mask: url("../images/gen/barcode-h.svg") left center / 100% 100% no-repeat;
+          mask: url("../images/gen/barcode-h.svg") left center / 100% 100% no-repeat;
+}
+
+@media (max-width: 899px) {
+  .hud-rule { margin-top: 1.5rem; }
+  .fact-code { width: 64px; height: 11px; }
 }
