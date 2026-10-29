@@ -16,7 +16,7 @@
         <a class="log-row" href="{{ $p.RelPermalink }}">
           <span class="log-no mono">{{ if lt (add $i 1) 10 }}0{{ end }}{{ add $i 1 }}</span>
           <span class="log-date mono">{{ $p.Date.Format "2006-01-02" }}</span>
-          <span class="log-title"{{ if $p.Title }} title="{{ $p.Title }}"{{ end }}>{{ $p.Title }}</span>
+          <span class="log-title{{ if eq $i 0 }} is-latest{{ end }}"{{ if $p.Title }} title="{{ $p.Title }}"{{ end }}>{{ $p.Title }}</span>
           <span class="log-arrow mono">→</span>
         </a>
       </li>
