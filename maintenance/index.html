@@ -13,6 +13,14 @@
     font-weight: 100 900;
     font-display: swap;
   }
+  /* 拉丁字标用 Saira 宽体，和 skill 的 .ef-wordmark 一致 */
+  @font-face {
+    font-family: "Maintenance Wide";
+    src: url("./fonts/saira.woff2") format("woff2");
+    font-weight: 100 900;
+    font-stretch: 50% 125%;
+    font-display: swap;
+  }
   @font-face {
     font-family: "Maintenance Mono";
     src: url("./fonts/mono.woff2") format("woff2");
@@ -85,7 +93,7 @@
   h1 {
     position: relative;
     margin: 0;
-    font-size: clamp(44px, 11vw, 132px);
+    font-size: clamp(3rem, 10vw, 11rem);
     font-weight: 800;
     line-height: 1;
     letter-spacing: -0.02em;
@@ -100,14 +108,17 @@
       0.044em 0.044em 0 color-mix(in srgb, var(--ink) 10%, transparent);
   }
 
+  /* 照 endfield.css 的 .ef-wordmark .hollow：Saira 宽体、0.48 × 主字、间距 0.12em */
   h1 .hollow {
     display: block;
-    margin-top: 0.5em;   /* 相对 hollow 自身字号，手机和桌面都不会贴住上一行 */
+    margin-top: 0.12em;
+    font-family: "Maintenance Wide", var(--sans);
+    font-stretch: 125%;
+    font-size: 0.48em;
+    line-height: 0.84;
+    letter-spacing: 0.02em;
     color: transparent;
     -webkit-text-stroke: 2px var(--ink);
-    font-family: var(--mono);
-    font-size: 0.42em;
-    letter-spacing: 0.08em;
   }
 
   .lede {
