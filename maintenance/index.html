@@ -206,7 +206,7 @@
       <span>1GN4CI0</span>
       <span class="state">维护中</span>
       <span id="clock">----.--.-- --:--</span>
-      <span id="tz" title="按你的系统时区">UTC+--</span>
+      <span id="tz">UTC±--</span>
       <svg class="code" viewBox="0 0 120 24" preserveAspectRatio="none" role="img" aria-label="编号条码">
         <g id="bars" fill="currentColor"></g>
       </svg>
@@ -241,21 +241,18 @@
     if (i < 11) x += gaps[i] * unit;
   });
 
-  // 时区：Intl 拿到访客真实时区（含夏令时），不是写死的 +08
+
+  // 时区：跟主站同一套判断，写成 UTC±N
   (function () {
     var tzEl = document.getElementById("tz");
     if (!tzEl) return;
     try {
-      var parts = new Intl.DateTimeFormat("en-US", { timeZoneName: "short" }).formatToParts(new Date());
-      var name = "";
-      for (var i = 0; i < parts.length; i++) if (parts[i].type === "timeZoneName") name = parts[i].value;
-      var zone = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
-      tzEl.textContent = name || zone;
-      tzEl.title = zone + (name ? "（" + name + "）" : "");
-    } catch (e) {
       var off = -new Date().getTimezoneOffset() / 60;
-      tzEl.textContent = "UTC" + (off >= 0 ? "+" : "") + off;
-    }
+      var sign = off >= 0 ? "+" : "\u2212";
+      var abs = Math.abs(off);
+      tzEl.textContent = "UTC" + sign + (Number.isInteger(abs) ? abs : abs.toFixed(1));
+      tzEl.title = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+    } catch (e) { tzEl.textContent = ""; }
   })();
 
   // 时钟

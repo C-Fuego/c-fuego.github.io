@@ -13,15 +13,20 @@
       ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
   };
 
-  // 时钟上挂完整时区，悬停可见；不占顶栏宽度
-  if (clock) {
+
+  // 时区：Intl 拿访客真实时区，写成 UTC±N，不硬编码
+  const tzEl = document.querySelector('[data-tz]');
+  if (tzEl) {
     try {
-      var zone = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
-      var parts = new Intl.DateTimeFormat('en-US', { timeZoneName: 'short' }).formatToParts(new Date());
-      var name = '';
-      for (var i = 0; i < parts.length; i++) if (parts[i].type === 'timeZoneName') name = parts[i].value;
-      clock.title = zone + (name ? '（' + name + '）' : '');
-    } catch (e) {}
+      const zone = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+      const off = -new Date().getTimezoneOffset() / 60;
+      const sign = off >= 0 ? '+' : '−';
+      const abs = Math.abs(off);
+      tzEl.textContent = 'UTC' + sign + (Number.isInteger(abs) ? abs : abs.toFixed(1));
+      tzEl.title = zone;
+    } catch (e) {
+      tzEl.textContent = '';
+    }
   }
 
   tick();

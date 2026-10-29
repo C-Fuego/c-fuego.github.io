@@ -163,6 +163,14 @@ html {
   display: inline-block;
 }
 
+/* 时区：跟在时钟后面，不等宽的短标，弱化处理 */
+.site-bar .tz {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: #A8AAA3;
+  font-variant-numeric: tabular-nums;
+}
+
 /* 顶栏两套主题都是深色：文字固定浅色，不要用会翻转的 --ef-paper */
 .site-bar .clock {
   font-variant-numeric: tabular-nums;
@@ -1284,7 +1292,8 @@ html {
     letter-spacing: 0.06em;
   }
   .site-bar .util { gap: 0.5rem; }
-  .site-bar .util .clock { display: none; }
+  .site-bar .util .clock,
+  .site-bar .util .tz { display: none; }
   .site-bar [data-theme-toggle] {
     min-width: 44px;
     min-height: 48px;
