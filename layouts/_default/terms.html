@@ -1,18 +1,38 @@
 {{ define "main" }}
+{{- $terms := .Data.Terms.ByCount -}}
+{{- $total := 0 -}}
+{{- range $terms }}{{ $total = add $total .Count }}{{ end -}}
 <div class="page">
   <header class="sheet-head cue cue-1">
     <div>
       <p class="ef-eyebrow">Tags</p>
       <h1>{{ .Title }}</h1>
     </div>
-    <p class="ef-field">{{ len .Data.Terms }} 个</p>
+    <p class="ef-field">{{ len $terms }} 个标签 / {{ $total }} 次引用</p>
   </header>
-  {{ if .Data.Terms }}
-  <div class="ef-chips tag-cloud cue cue-2">
-    {{- range .Data.Terms.ByCount }}
-    <a class="ef-chip" href="{{ .Page.RelPermalink }}">{{ .Page.LinkTitle }}<span>{{ .Count }}</span></a>
-    {{- end }}
-  </div>
+
+  {{ if $terms }}
+  <table class="ef-table tag-table cue cue-2">
+    <thead>
+      <tr>
+        <th scope="col">标签</th>
+        <th scope="col">篇数</th>
+        <th scope="col">占比</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{- range $terms }}
+      <tr>
+        <td><a href="{{ .Page.RelPermalink }}">{{ .Page.LinkTitle }}</a></td>
+        <td class="num">{{ .Count }}</td>
+        <td class="share">
+          <span class="share-bar" style="--w: {{ div (mul .Count 100) $total }}%"></span>
+          <span class="share-num">{{ div (mul .Count 100) $total }}%</span>
+        </td>
+      </tr>
+      {{- end }}
+    </tbody>
+  </table>
   {{ else }}
   <div class="empty-plate"><p>还没有标签。给文章加上 <code>tags</code> 就会出现在这里。</p></div>
   {{ end }}

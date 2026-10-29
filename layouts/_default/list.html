@@ -1,5 +1,9 @@
 {{ define "main" }}
 {{- $posts := where site.RegularPages "Section" "posts" -}}
+{{- $words := 0 -}}
+{{- range $posts }}{{ $words = add $words .WordCount }}{{ end -}}
+{{- $latest := "" -}}
+{{- with $posts.ByDate.Reverse }}{{ $latest = (index . 0).Date.Format "2006.01.02" }}{{ end -}}
 <div class="page">
   <header class="sheet-head cue cue-1">
     <div>
@@ -9,11 +13,20 @@
     <p class="ef-field">共 {{ len $posts }} 篇</p>
   </header>
 
+  <ul class="ef-facts list-facts cue cue-2">
+    <li>{{ len $posts }} 篇</li>
+    <li>{{ $words }} 字</li>
+    <li>{{ len site.Taxonomies.tags }} 个标签</li>
+    {{ with $latest }}<li>最近写入 {{ . }}</li>{{ end }}
+  </ul>
+
   {{ with .Content }}<div class="ef-lede">{{ . }}</div>{{ end }}
 
   {{ if $posts }}
     {{- range $posts.GroupByDate "2006" }}
-    <header class="ef-group-head"><span>{{ .Key }}</span><span class="ef-field">{{ len .Pages }} 篇</span></header>
+    {{- $gw := 0 -}}
+    {{- range .Pages }}{{ $gw = add $gw .WordCount }}{{ end -}}
+    <header class="ef-group-head"><span>{{ .Key }}</span><span class="ef-field">{{ len .Pages }} 篇 / {{ $gw }} 字</span></header>
     <ul class="ef-records">
       {{- range .Pages }}
       {{ partial "record.html" . }}

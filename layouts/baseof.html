@@ -10,7 +10,7 @@
     {{ block "main" . }}{{ end }}
   </main>
   {{ partial "foot.html" . }}
-  {{- if .IsPage }}
+  {{- if and .IsPage (eq .Section "posts") }}
   <div class="read-badge" aria-hidden="true">
     <svg viewBox="0 0 46 46">
       <circle cx="23" cy="23" r="19" fill="var(--ef-ink)"></circle>

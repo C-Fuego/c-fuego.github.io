@@ -1,0 +1,22 @@
+{{ define "main" }}
+{{- $posts := where site.RegularPages "Section" "posts" -}}
+{{- $words := 0 -}}
+{{- range $posts }}{{ $words = add $words .WordCount }}{{ end -}}
+<div class="page">
+  <article class="post">
+    <p class="ef-eyebrow cue cue-1">About</p>
+    <h1 class="post-title cue cue-2">{{ .Title }}</h1>
+    <div class="ef-tri cue cue-3" aria-hidden="true"><i></i><i></i><i></i></div>
+
+    <div class="ef-prose cue cue-4">{{ .Content }}</div>
+
+    <ul class="ef-ledger about-ledger">
+      <li><span>文章</span><span class="ef-field">{{ len $posts }} 篇 / {{ $words }} 字</span></li>
+      <li><span>生成器</span><span class="ef-field">Hugo {{ hugo.Version }}</span></li>
+      <li><span>托管</span><span class="ef-field">GitHub Pages</span></li>
+      <li><span>源码</span><a href="https://github.com/C-Fuego/blog">C-Fuego/blog</a></li>
+      <li><span>订阅</span><a href="{{ "index.xml" | relURL }}">RSS</a></li>
+    </ul>
+  </article>
+</div>
+{{ end }}
