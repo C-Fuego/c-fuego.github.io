@@ -13,8 +13,26 @@
   <link rel="preload" href="{{ "fonts/saira-var.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="{{ "ef/endfield.css" | relURL }}?v={{ now.Unix }}">
   <link rel="stylesheet" href="{{ "css/site.css" | relURL }}?v={{ now.Unix }}">
+<script>
+  (function () {
+    try {
+      if (sessionStorage.getItem('vt-go')) {
+        sessionStorage.removeItem('vt-go');
+        document.documentElement.classList.add('vt-entering');
+        setTimeout(function () { document.documentElement.classList.remove('vt-entering'); }, 460);
+      }
+    } catch (e) {}
+  })();
+</script>
 </head>
-<div class="wipe" aria-hidden="true"></div>
+<div class="vt" data-vt aria-hidden="true">
+    <div class="vt-bars"></div>
+    <div class="vt-rows"></div>
+    <div class="vt-ring"></div>
+    <div class="vt-ring is-late"></div>
+    <div class="vt-fill"></div>
+    <div class="vt-scan"></div>
+  </div>
 <body class="ef ef-contours">
   <a class="skip" href="#main">跳到正文</a>
   {{ partial "statusbar.html" . }}

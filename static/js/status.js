@@ -167,4 +167,50 @@
     setInterval(check, 200);
     check();
   }
+
+  // 过场：竖线依次落下 → 圆环扩散 → 横扫 → 墨色灌满，然后导航
+  const vt = document.querySelector('[data-vt]');
+  if (vt) {
+    // 生成线条：36 根竖线 + 16 根横线
+    const bars = vt.querySelector('.vt-bars');
+    const rows = vt.querySelector('.vt-rows');
+    if (bars && !bars.children.length) {
+      for (let i = 0; i < 36; i++) {
+        const el = document.createElement('i');
+        el.style.setProperty('--i', i);
+        bars.appendChild(el);
+      }
+    }
+    if (rows && !rows.children.length) {
+      for (let i = 0; i < 16; i++) {
+        const el = document.createElement('i');
+        el.style.setProperty('--i', i);
+        rows.appendChild(el);
+      }
+    }
+
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    document.addEventListener('click', (e) => {
+      const a = e.target.closest('a[href]');
+      if (!a) return;
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+      if (a.target && a.target !== '_self') return;
+      if (a.hasAttribute('download')) return;
+
+      let url;
+      try { url = new URL(a.href, location.href); } catch (err) { return; }
+      if (url.origin !== location.origin) return;
+      if (url.pathname === location.pathname && url.hash) return;
+      if (a.dataset.seam !== undefined) return;   // 接缝带是页内滚动
+      if (url.href === location.href) return;
+
+      if (reduce) return;   // 减少动态效果：直接跳
+
+      e.preventDefault();
+      vt.classList.add('is-on', 'is-leaving');
+      try { sessionStorage.setItem('vt-go', '1'); } catch (err) {}
+      setTimeout(() => { location.href = url.href; }, 380);
+    });
+  }
 })();
