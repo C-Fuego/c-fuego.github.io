@@ -22,7 +22,7 @@
     <p class="ef-actions">
       {{ with $latest }}<a class="ef-btn go" href="{{ .RelPermalink }}">读最新一篇 <span class="sub">{{ .Date.Format "2006.01.02" }}</span></a>{{ end }}
       <a class="ef-btn" href="{{ "posts/" | relURL }}">全部文章</a>
-      <a class="ef-btn" href="#index">索引</a>
+      <a class="ef-btn" href="{{ "about/" | relURL }}">关于</a>
     </p>
   </div>
 
