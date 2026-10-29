@@ -42,18 +42,19 @@
   --ef-font-mono: "Mono Subset", "JetBrains Maple Mono", "JetBrains Mono",
                   ui-monospace, Menlo, Consolas, monospace;
 
-  --ef-paper: #E8E8E2;
-  --ef-panel: #F2F2EC;
-  --ef-ink: #101110;
-  --ef-ink-2: #5A5C56;
-  --ef-rule: #C9CAC2;
-  --ef-strong-rule: #9EA098;
-  --ef-chip: #DEDFD6;
-  --ef-signal: #FFF500;
-  --ef-on-signal: #101110;
-  --ef-tag-bg: #101110;
-  --ef-tag-fg: #F2F2EC;
-  --ef-accent-text: #6B5D00;
+  /* 色板取自 PV 逐帧实测：纸 #F4F4F1 / 墨 #161616 / 黄 #FFFA00 */
+  --ef-paper: #F4F4F1;
+  --ef-panel: #FFFFFF;
+  --ef-ink: #161616;
+  --ef-ink-2: #5C5C58;
+  --ef-rule: #DCDCD7;
+  --ef-strong-rule: #B5B5AF;
+  --ef-chip: #EAEAE6;
+  --ef-signal: #FFFA00;
+  --ef-on-signal: #161616;
+  --ef-tag-bg: #161616;
+  --ef-tag-fg: #F4F4F1;
+  --ef-accent-text: #6F6200;
   --ef-contour: color-mix(in srgb, var(--ef-ink) 9%, transparent);
 
   font-family: var(--ef-font-text);
@@ -62,18 +63,19 @@
 
 :root[data-theme='dark'] .ef {
   /* 三档明度：底 → 面板 → 高亮层，靠这个做层次，不靠描边 */
-  --ef-paper: #0A0B0A;
-  --ef-panel: #141613;
-  --ef-panel-2: #1D1F1B;
-  --ef-ink: #F2F2EC;
-  --ef-ink-2: #9BA098;
-  --ef-rule: #2A2C28;
-  --ef-strong-rule: #454842;
-  --ef-chip: #1D1F1B;
-  --ef-tag-bg: #2A2C29;
-  --ef-tag-fg: #F2F2EC;
-  --ef-accent-text: #FFF500;
-  --ef-glow: 0 0 10px rgba(255, 245, 0, 0.45);
+  /* 深色段实测：纸 #181818 / 板 #212121 / 字 #EDEDED */
+  --ef-paper: #181818;
+  --ef-panel: #212121;
+  --ef-panel-2: #272727;
+  --ef-ink: #EDEDED;
+  --ef-ink-2: #9A9A96;
+  --ef-rule: #333333;
+  --ef-strong-rule: #4D4D4D;
+  --ef-chip: #2A2A2A;
+  --ef-tag-bg: #2E2E2E;
+  --ef-tag-fg: #EDEDED;
+  --ef-accent-text: #FFFA00;
+  --ef-glow: 0 0 10px rgba(255, 250, 0, 0.4);
 }
 
 /* endfield 的 .ef-tag 在本页结构下会被压成墨底墨字，兜底一次 */
@@ -452,8 +454,8 @@ html {
 
 .stage {
   --split: 38.2%;
-  --c-my: #FF00F0;
-  --c-ye: #FFF500;
+  --c-my: #FF00EF;
+  --c-ye: #FFFA00;
   --c-cy: #00C8FF;
   display: grid;
   grid-template-columns: var(--split) calc(100% - var(--split));
@@ -1459,14 +1461,14 @@ html {
   letter-spacing: 0.16em;
   text-transform: uppercase;
   font-weight: 400;
-  color: rgba(232, 232, 226, 0.5);
+  color: rgba(244, 244, 241, 0.5);
 }
 
 .nameplate td { color: var(--ef-paper); }
 
 .nameplate th,
 .nameplate td {
-  border-bottom-color: rgba(232, 232, 226, 0.16);
+  border-bottom-color: rgba(244, 244, 241, 0.16);
 }
 
 .about-body {
@@ -1575,7 +1577,7 @@ html {
   font-size: 10px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: rgba(232, 232, 226, 0.62);
+  color: rgba(244, 244, 241, 0.62);
 }
 
 .hud-tl { top: 12px; left: 14px; }
@@ -1588,7 +1590,7 @@ html {
   content: "";
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(rgba(232, 232, 226, 0.3) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(244, 244, 241, 0.3) 1px, transparent 1px);
   background-size: 14px 14px;
   mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.45) 70%, rgba(0, 0, 0, 0.25) 100%);
 }
@@ -1598,7 +1600,7 @@ html {
   content: "";
   position: absolute;
   inset: 18px;
-  border: 1px solid rgba(232, 232, 226, 0.18);
+  border: 1px solid rgba(244, 244, 241, 0.18);
   clip-path: polygon(
     0 0, 26% 0, 26% 1px, 1px 1px, 1px 26%, 0 26%,
     0 100%, 26% 100%, 26% calc(100% - 1px), 1px calc(100% - 1px), 1px 74%, 0 74%,
