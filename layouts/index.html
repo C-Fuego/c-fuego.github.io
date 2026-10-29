@@ -4,17 +4,18 @@
 <section class="hero">
   <div class="wrap">
     <div class="main">
-      <h1 class="hero-title">{{ site.Title }}<span class="accent">.</span></h1>
+      <p class="hero-kicker mono">{{ site.Title }} / 技术笔记</p>
+      <h1 class="hero-lede">把跑过的东西写下来，跑不通就写卡在哪一步。</h1>
       <div class="hero-rule" aria-hidden="true"></div>
-      <p class="hero-sub">{{ site.Params.description }}</p>
 
-      <aside class="panel" aria-label="站点状态">
-        <dl>
-          <div class="row"><dt>BUILD</dt><dd>{{ now.Format "2006-01-02" }}</dd></div>
-          <div class="row"><dt>UPTIME</dt><dd data-uptime>00:00</dd></div>
-          <div class="row"><dt>ENTRIES</dt><dd>{{ len $posts }}</dd></div>
-          <div class="row"><dt>TZ</dt><dd>UTC+08</dd></div>
-        </dl>
+      <aside class="panel ef-panel" aria-label="站点状态">
+        <h2><span class="ef-pair"><span class="ef-eyebrow">Status</span><span>状态</span></span></h2>
+        <ul class="ef-ledger">
+          <li><span>BUILD</span><span class="ef-field">{{ now.Format "2006-01-02" }}</span></li>
+          <li><span>UPTIME</span><span class="ef-field" data-uptime>00:00</span></li>
+          <li><span>ENTRIES</span><span class="ef-field">{{ len $posts }}</span></li>
+          <li><span>TZ</span><span class="ef-field">UTC+08</span></li>
+        </ul>
       </aside>
     </div>
 
@@ -26,21 +27,21 @@
 </section>
 
 <a class="seam" href="#log" data-seam>
-  <div class="wrap"><span class="seam-mark">// ENTER ARCHIVE</span></div>
+  <div class="wrap"><span class="ef-btn go">// ENTER ARCHIVE</span></div>
 </a>
 
 <section class="block" id="about">
   <div class="wrap">
-    <div class="grid12">
+    <div class="about-grid">
       <figure class="about-figure">
-        <div class="frame">
-          <span class="corner tl"></span><span class="corner tr"></span>
-          <span class="corner bl"></span><span class="corner br"></span>
-        </div>
+        <div class="frame" role="img" aria-label="占位图"></div>
       </figure>
       <div class="about-body">
-        <h2 class="block-title">关于</h2>
-        <p style="margin-top:24px">这里放技术笔记：Linux、自建服务、硬件，以及踩过的坑。</p>
+        <div class="block-head">
+          <h2 class="block-title">关于</h2>
+          <span class="mono">ABOUT</span>
+        </div>
+        <p>这里放技术笔记：Linux、自建服务、硬件，以及踩过的坑。</p>
         <p>写东西的原则是只写自己真跑过的东西，跑不通就写卡在哪一步。</p>
         <table class="nameplate">
           <tr><th>ORIGIN</th><td>中国</td></tr>
@@ -60,30 +61,31 @@
       <span class="mono">{{ len $posts }} ENTRIES</span>
     </div>
     {{ if $posts }}
-    <ul class="log-list">
-      {{- range $i, $p := $posts }}
-      {{- $no := string (add $i 1) }}
-      <li>
-        <a class="log-row" href="{{ $p.RelPermalink }}">
-          <span class="log-no mono">{{ if lt (add $i 1) 10 }}0{{ end }}{{ add $i 1 }}</span>
-          <span class="log-date mono">{{ $p.Date.Format "2006-01-02" }}</span>
-          <span class="log-title{{ if eq $i 0 }} is-latest{{ end }}"{{ if $p.Title }} title="{{ $p.Title }}"{{ end }}>{{ $p.Title }}</span>
-          <span class="log-arrow mono">→</span>
-        </a>
-      </li>
-      {{- end }}
-    </ul>
+    <div class="log-list">
+      <ul class="ef-records">
+        {{- range $i, $p := $posts }}
+        <li>
+          <a class="ef-record" href="{{ $p.RelPermalink }}">
+            <span class="ef-tag{{ if eq $i 0 }} is-current{{ end }}">{{ if lt (add $i 1) 10 }}0{{ end }}{{ add $i 1 }}</span>
+            <span class="ef-field">{{ $p.Date.Format "2006.01.02" }}</span>
+            <span class="name{{ if eq $i 0 }} is-latest{{ end }}"{{ with $p.Title }} title="{{ . }}"{{ end }}>{{ $p.Title }}</span>
+            <span class="ef-field">{{ $p.ReadingTime }} MIN</span>
+          </a>
+        </li>
+        {{- end }}
+      </ul>
+    </div>
     {{ else }}
     <p class="empty">还没有记录。</p>
     {{ end }}
   </div>
 </section>
 
-<section class="block">
+<section class="block" style="border-bottom:0">
   <div class="wrap">
     <div class="block-head">
       <h2 class="block-title">项目</h2>
-      <span class="mono">02 ITEMS</span>
+      <span class="mono">01 ITEM</span>
     </div>
     <div class="project-grid">
       <article class="project">
@@ -91,13 +93,6 @@
         <table>
           <tr><th>NAME</th><th>YEAR</th><th>ROLE</th></tr>
           <tr><td>c-fuego.github.io</td><td>2026</td><td>设计 / 开发</td></tr>
-        </table>
-      </article>
-      <article class="project">
-        <div class="thumb" role="img" aria-label="Misari niri fork"></div>
-        <table>
-          <tr><th>NAME</th><th>YEAR</th><th>ROLE</th></tr>
-          <tr><td>Misari（niri 分支）</td><td>2026</td><td>配置 / 打包</td></tr>
         </table>
       </article>
     </div>

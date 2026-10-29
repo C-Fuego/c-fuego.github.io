@@ -4,7 +4,7 @@
     <div class="wrap">
       <div class="post-meta">
         <span class="mono">{{ .Date.Format "2006-01-02" }}</span>
-        {{- with .Params.tags }}{{ range . }}<span class="mono">#{{ . }}</span>{{ end }}{{ end }}
+        {{- with .Params.tags }}{{ range . }}<span class="ef-tag">{{ . }}</span>{{ end }}{{ end }}
         <span class="mono">{{ .ReadingTime }} MIN</span>
       </div>
       <h1 class="post-title">{{ .Title }}</h1>
@@ -13,7 +13,7 @@
 
   <div class="post-body">
     <div class="wrap">
-      <div class="prose">{{ .Content }}</div>
+      <div class="ef-prose">{{ .Content }}</div>
       <nav class="post-foot" aria-label="相邻文章">
         {{ with .PrevInSection }}<a href="{{ .RelPermalink }}">← {{ .Title }}</a>{{ else }}<span></span>{{ end }}
         {{ with .NextInSection }}<a href="{{ .RelPermalink }}">{{ .Title }} →</a>{{ else }}<span></span>{{ end }}

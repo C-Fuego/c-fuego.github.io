@@ -1,11 +1,10 @@
-<footer class="footer">
+<footer class="site-foot">
   <div class="wrap">
     <div class="cols">
       <div>
         <h3>SITE</h3>
         <a href="{{ "" | relURL }}">INDEX</a>
         <a href="{{ "posts/" | relURL }}">LOG</a>
-        <a href="{{ "about/" | relURL }}">ABOUT</a>
       </div>
       <div>
         <h3>FEED</h3>
@@ -17,12 +16,12 @@
       </div>
       <div>
         <h3>BUILD</h3>
-        <span class="mono">{{ now.Format "2006-01-02 15:04" }}</span>
+        <span class="mono" style="color:inherit;opacity:.65">{{ now.Format "2006-01-02 15:04" }}</span>
       </div>
     </div>
     <div class="end">
-      <span class="mono">{{ site.Params.author }}</span>
-      <span class="mono">END OF FILE</span>
+      <span>{{ site.Params.author }}</span>
+      <span>END OF FILE</span>
     </div>
   </div>
 </footer>

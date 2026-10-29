@@ -5,27 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} — {{ site.Title }}{{ end }}</title>
   <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ site.Params.description }}{{ end }}">
-  <meta name="theme-color" content="#0B0E0F">
-  <link rel="preload" href="{{ "css/tokens.css" | relURL }}" as="style">
-  <link rel="stylesheet" href="{{ "css/tokens.css" | relURL }}?v={{ now.Unix }}">
-  <link rel="stylesheet" href="{{ "css/global.css" | relURL }}?v={{ now.Unix }}">
+  <meta name="theme-color" content="#E8E8E2">
+  <script>
+    try { var t = localStorage.getItem('theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+  <link rel="preload" href="{{ "fonts/saira-var.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="{{ "ef/endfield.css" | relURL }}?v={{ now.Unix }}">
+  <link rel="stylesheet" href="{{ "css/site.css" | relURL }}?v={{ now.Unix }}">
 </head>
-<body>
-  <div class="fx-layer" aria-hidden="true">
-    <span class="fx-corner tl"></span>
-    <span class="fx-corner tr"></span>
-    <span class="fx-corner bl"></span>
-    <span class="fx-corner br"></span>
-  </div>
-
+<body class="ef ef-contours">
+  <a class="skip" href="#main">跳到正文</a>
   {{ partial "statusbar.html" . }}
+  <div class="ef-tri" aria-hidden="true"><i></i><i></i><i></i></div>
 
-  <main>
+  <main id="main">
     {{ block "main" . }}{{ end }}
   </main>
 
   {{ partial "footer.html" . }}
 
   <script src="{{ "js/status.js" | relURL }}?v={{ now.Unix }}" defer></script>
+  <script type="module">
+    import { wireTheme, wireReadouts } from "{{ "ef/fx.js" | relURL }}?v={{ now.Unix }}";
+    wireTheme();
+    wireReadouts(document);
+  </script>
 </body>
 </html>

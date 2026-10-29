@@ -1,19 +1,28 @@
 /* ==========================================================================
-   tokens.css — 视觉规范（DESIGN.md 的唯一实现）
-   只允许使用这里的色值、字号、间距。新增任何值 = 违规。
+   tokens.css — 视觉规范
+   骨架沿用指导的 DESIGN.md；色板换成终末地的纸墨（深色只留给状态条）。
    ========================================================================== */
 
 :root {
-  /* 色板 */
-  --bg: #0B0E0F;
-  --surface: #1A2126;
-  --surface-2: #121819;
-  --line: #2E3A40;
-  --text: #E6EDF0;
-  --text-dim: #8A9BA3;
-  --accent: #5FE3C0;
-  --warn: #E8C547;
-  --danger: #D9482B;
+  /* 纸 / 面板 / 墨 / 线 */
+  --bg: #E8E8E2;
+  --surface: #F2F2EC;
+  --surface-2: #DEDFD6;
+  --line: #C9CAC2;
+  --text: #101110;
+  --text-dim: #5A5C56;
+
+  /* 信号黄只做填充；亮色下当文字/线条一律用 --accent-ink（纸上 #fff500 是 1.07:1，等于消失） */
+  --accent: #FFF500;
+  --accent-ink: #6B5D00;
+  --warn: #B8860B;
+  --danger: #B3261E;
+
+  /* 深色设备条：状态条与页脚条 */
+  --bar-bg: #101110;
+  --bar-text: #F5F5F0;
+  --bar-dim: #8A8C85;
+  --bar-line: #2A2C28;
 
   /* 字体 */
   --font-sans: "Sarasa Gothic SC", "Source Han Sans SC", "Noto Sans SC", system-ui, sans-serif;

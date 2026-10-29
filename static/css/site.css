@@ -1,0 +1,602 @@
+/* ==========================================================================
+   site.css — 站点层
+   部件与颜色来自 ef/endfield.css；色板按纸墨覆盖；
+   版式骨架来自 DESIGN.md（12 栏 / 4px / 单断点 768px）。
+   ========================================================================== */
+
+@font-face {
+  font-family: "Saira Variable";
+  src: url("../fonts/saira-var.woff2") format("woff2");
+  font-weight: 100 900;
+  font-stretch: 50% 125%;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ---------- 纸墨色板：覆盖 endfield 的默认纸色 ---------- */
+
+.ef {
+  --ef-font-ui: "Saira Variable", "Saira", "Sarasa Gothic SC", -apple-system,
+                 "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  --ef-font-text: "Sarasa Gothic SC", -apple-system, "PingFang SC",
+                  "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  --ef-font-mono: "JetBrains Mono", "Sarasa Mono SC", ui-monospace, Menlo, Consolas, monospace;
+
+  --ef-paper: #E8E8E2;
+  --ef-panel: #F2F2EC;
+  --ef-ink: #101110;
+  --ef-ink-2: #5A5C56;
+  --ef-rule: #C9CAC2;
+  --ef-strong-rule: #9EA098;
+  --ef-chip: #DEDFD6;
+  --ef-signal: #FFF500;
+  --ef-on-signal: #101110;
+  --ef-tag-bg: #101110;
+  --ef-tag-fg: #F2F2EC;
+  --ef-accent-text: #6B5D00;
+  --ef-contour: color-mix(in srgb, var(--ef-ink) 4%, transparent);
+
+  font-family: var(--ef-font-text);
+  font-variant-numeric: tabular-nums;
+}
+
+:root[data-theme='dark'] .ef {
+  --ef-paper: #101110;
+  --ef-panel: #181A18;
+  --ef-ink: #F5F5F0;
+  --ef-ink-2: #898D89;
+  --ef-rule: #343633;
+  --ef-strong-rule: #4A4D49;
+  --ef-chip: #1E201D;
+  --ef-tag-bg: #2A2C29;
+  --ef-tag-fg: #F5F5F0;
+  --ef-accent-text: #FFF500;
+}
+
+/* endfield 的 .ef-tag 在本页结构下会被压成墨底墨字，兜底一次 */
+.ef .ef-tag { color: var(--ef-tag-fg); }
+
+/* ---------- 基础 ---------- */
+
+body.ef {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--ef-paper);
+  color: var(--ef-ink);
+}
+
+html {
+  scrollbar-color: var(--ef-strong-rule) transparent;
+  scrollbar-width: thin;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ef-accent-text);
+  outline-offset: 3px;
+}
+
+.skip {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 999;
+  padding: 0.55rem 0.9rem;
+  background: var(--ef-ink);
+  color: var(--ef-paper);
+}
+
+.skip:focus { left: 0.5rem; top: 0.5rem; }
+
+/* ---------- 容器 ---------- */
+
+.wrap {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: var(--ef-pad);
+}
+
+/* DESIGN 要求的等宽标注 */
+.mono {
+  font-family: var(--ef-font-mono);
+  font-size: 12px;
+  line-height: 1.4;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--ef-ink-2);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- 状态条：endfield 命令栏 ---------- */
+
+.site-bar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+.site-bar .util {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-family: var(--ef-font-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ef-bar-dim, #8A8C85);
+}
+
+.site-bar .dot {
+  width: 6px;
+  height: 6px;
+  background: var(--ef-signal);
+  display: inline-block;
+}
+
+.site-bar .clock {
+  font-variant-numeric: tabular-nums;
+  color: var(--ef-paper);
+}
+
+/* ---------- 首屏 ---------- */
+
+.hero {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: calc(100vh - 60px);
+}
+
+.hero .main {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 24px;
+  align-content: start;
+  padding-block: 10vh 48px;
+}
+
+.hero-kicker {
+  grid-column: 1 / -1;
+  margin: 0 0 28px;
+}
+
+/* 主视觉是一句话，不是站名。署名永远不放大 */
+.hero-lede {
+  grid-column: 1 / 10;
+  margin: 0;
+  max-width: 22em;
+  font-family: var(--ef-font-text);
+  font-size: clamp(26px, 3.4vw, 46px);
+  line-height: 1.32;
+  letter-spacing: -0.01em;
+  font-weight: 700;
+}
+
+.hero-rule {
+  grid-column: 1 / -1;
+  height: 1px;
+  margin-top: 32px;
+  background: var(--ef-ink);
+}
+
+.hero-sub {
+  grid-column: 1 / 8;
+  margin: 24px 0 0;
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--ef-ink-2);
+}
+
+.hero-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-block: 16px 24px;
+  border-top: 1px solid var(--ef-rule);
+}
+
+/* ---------- 接缝带 ---------- */
+
+.seam {
+  display: block;
+  height: 72px;
+  border-block: 1px solid var(--ef-rule);
+  background-image: repeating-linear-gradient(45deg,
+    color-mix(in srgb, var(--ef-ink) 6%, transparent) 0 1px, transparent 1px 10px);
+}
+
+.seam .wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.seam .ef-btn {
+  text-decoration: none;
+}
+
+/* ---------- 区块 ---------- */
+
+.block {
+  padding-block: clamp(48px, 7vw, 96px);
+  border-bottom: 1px solid var(--ef-rule);
+}
+
+.block-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 32px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--ef-ink);
+}
+
+.block-title {
+  margin: 0;
+  font-family: var(--ef-font-ui);
+  font-stretch: 112%;
+  font-size: clamp(24px, 3vw, 36px);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  font-weight: 700;
+}
+
+/* ---------- 关于 ---------- */
+
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.about-figure { grid-column: 1 / 6; }
+.about-body { grid-column: 7 / -1; }
+
+.about-figure .frame {
+  aspect-ratio: 3 / 4;
+  background: var(--ef-panel);
+  border: 1px solid var(--ef-rule);
+  background-image: repeating-linear-gradient(45deg,
+    color-mix(in srgb, var(--ef-ink) 5%, transparent) 0 1px, transparent 1px 11px);
+}
+
+.about-body p {
+  max-width: 56ch;
+  margin: 0 0 20px;
+  font-size: 17px;
+  line-height: 1.75;
+}
+
+.about-body p + p { color: var(--ef-ink-2); }
+
+.nameplate {
+  width: 100%;
+  margin-top: 28px;
+  border-collapse: collapse;
+  border-top: 1px solid var(--ef-ink);
+}
+
+.nameplate tr { border-bottom: 1px solid var(--ef-rule); }
+
+.nameplate th,
+.nameplate td {
+  height: 40px;
+  padding: 0;
+  text-align: left;
+  vertical-align: middle;
+  font-family: var(--ef-font-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.nameplate th { width: 40%; font-weight: 500; color: var(--ef-ink-2); }
+.nameplate td { color: var(--ef-ink); }
+
+/* ---------- 日志：endfield 记录行 ---------- */
+
+.log-list .ef-records { margin: 0; }
+
+.log-list .ef-record {
+  grid-template-columns: auto 7.5rem minmax(0, 1fr) auto;
+  padding-block: 1.6rem;
+  text-decoration: none;
+}
+
+.log-list .ef-record .name {
+  font-family: var(--ef-font-text);
+  font-size: clamp(17px, 1.6vw, 22px);
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.log-list .ef-record .ef-field { white-space: nowrap; }
+
+/* 最新一篇：实心方块 */
+.is-latest::after {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-left: 8px;
+  vertical-align: middle;
+  background: var(--ef-signal);
+}
+
+/* ---------- 项目 ---------- */
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.project .thumb {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  background: var(--ef-panel);
+  border: 1px solid var(--ef-rule);
+  background-image: repeating-linear-gradient(45deg,
+    color-mix(in srgb, var(--ef-ink) 5%, transparent) 0 1px, transparent 1px 11px);
+}
+
+.project table {
+  width: 100%;
+  margin-top: 16px;
+  border-collapse: collapse;
+}
+
+.project th {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--ef-ink);
+  text-align: left;
+  font-family: var(--ef-font-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ef-ink-2);
+  font-weight: 500;
+}
+
+.project td {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--ef-rule);
+  font-size: 15px;
+}
+
+/* ---------- 页脚：第二条设备带 ---------- */
+
+.site-foot {
+  background: var(--ef-ink);
+  color: var(--ef-paper);
+  padding-block: 40px 28px;
+}
+
+.site-foot .cols {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
+  padding-bottom: 32px;
+}
+
+.site-foot h3 {
+  margin: 0 0 12px;
+  font-family: var(--ef-font-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--ef-paper) 55%, transparent);
+  font-weight: 500;
+}
+
+.site-foot a {
+  display: block;
+  padding-block: 4px;
+  font-size: 15px;
+  color: var(--ef-paper);
+  text-decoration: none;
+  transition: color 0.2s var(--ef-ease, ease);
+}
+
+.site-foot a:hover { color: var(--ef-signal); }
+
+.site-foot .end {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  padding-top: 16px;
+  border-top: 1px solid color-mix(in srgb, var(--ef-paper) 18%, transparent);
+  font-family: var(--ef-font-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--ef-paper) 55%, transparent);
+}
+
+/* ---------- 文章详情 ---------- */
+
+.post-head {
+  padding-block: clamp(64px, 9vw, 120px) 32px;
+  border-bottom: 1px solid var(--ef-ink);
+}
+
+.post-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.post-title {
+  max-width: 20em;
+  margin: 0;
+  font-family: var(--ef-font-ui);
+  font-stretch: 112%;
+  font-size: clamp(26px, 4.2vw, 52px);
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  font-weight: 700;
+}
+
+.post-body {
+  padding-block: 48px clamp(64px, 8vw, 96px);
+}
+
+.post-body .ef-prose {
+  max-width: 68ch;
+  font-size: 17px;
+  line-height: 1.75;
+}
+
+.post-body .ef-prose h2 {
+  margin-top: 48px;
+  padding-top: 12px;
+  border-top: 1px solid var(--ef-rule);
+}
+
+.post-body .ef-prose code {
+  font-family: var(--ef-font-mono);
+  font-size: 0.88em;
+}
+
+.post-body .ef-prose pre {
+  background: var(--ef-panel);
+  border: 1px solid var(--ef-rule);
+  padding: 20px;
+  overflow-x: auto;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.post-body .ef-prose pre code {
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+.post-body .ef-prose table { width: 100%; border-collapse: collapse; font-size: 15px; }
+
+.post-body .ef-prose th,
+.post-body .ef-prose td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--ef-rule);
+  text-align: left;
+}
+
+.post-body .ef-prose th {
+  border-bottom-color: var(--ef-ink);
+  font-family: var(--ef-font-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ef-ink-2);
+  font-weight: 500;
+}
+
+.post-body .ef-prose img { border: 1px solid var(--ef-rule); }
+
+.post-foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 16px;
+  max-width: 68ch;
+  margin-top: 64px;
+  padding-top: 20px;
+  border-top: 1px solid var(--ef-rule);
+}
+
+.post-foot a {
+  font-family: var(--ef-font-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ef-ink-2);
+  text-decoration: none;
+}
+
+.post-foot a:hover { color: var(--ef-ink); }
+
+/* ---------- 列表页 ---------- */
+
+.page-head {
+  padding-block: clamp(64px, 9vw, 120px) 32px;
+  border-bottom: 1px solid var(--ef-ink);
+}
+
+.page-head .title {
+  margin: 0;
+  font-family: var(--ef-font-ui);
+  font-stretch: 125%;
+  font-size: clamp(32px, 5vw, 64px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.empty {
+  padding-block: 48px;
+  color: var(--ef-ink-2);
+}
+
+/* ---------- 响应式：只有一个断点 ---------- */
+
+@media (max-width: 768px) {
+  .hero .main { padding-block: 64px 32px; }
+  .hero-title { grid-column: 1 / -1; }
+  .hero-sub { grid-column: 1 / -1; }
+  .about-figure, .about-body { grid-column: 1 / -1; }
+  .about-body { margin-top: 32px; }
+  .project-grid { grid-template-columns: minmax(0, 1fr); }
+  .site-foot .cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .log-list .ef-record { grid-template-columns: auto minmax(0, 1fr); row-gap: 6px; }
+  .log-list .ef-record .ef-field:nth-of-type(2) { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* 首屏数据面板：靠右三栏 */
+.panel {
+  grid-column: 10 / -1;
+  align-self: start;
+  margin-top: 32px;
+}
+
+.panel h2 {
+  margin: 0;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--ef-rule);
+  font-family: var(--ef-font-ui);
+  font-stretch: 112%;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.panel .ef-ledger {
+  margin: 0;
+  padding-inline: 16px;
+  border-top: 0;
+  font-family: var(--ef-font-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.panel .ef-ledger > li { padding: 10px 0; }
+
+.panel .ef-ledger > li > span:first-child { color: var(--ef-ink-2); }
+
+@media (max-width: 768px) {
+  .panel { display: none; }
+}
