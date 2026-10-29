@@ -181,8 +181,7 @@ html {
   padding-block: 10vh 48px;
 }
 
-.hero-kicker::before { content: "[ "; }
-.hero-kicker::after { content: " ]"; }
+
 
 .hero-kicker {
   grid-row: 1;
@@ -1462,4 +1461,49 @@ html:not([data-theme='dark']) .ef-tri {
     from { opacity: 0; filter: blur(8px); }
     to { opacity: 1; filter: blur(0); }
   }
+}
+
+/* ---------- 首屏：一屏只讲一件事，剩下一律留白 ---------- */
+
+.hero .main {
+  min-height: calc(100vh - 63px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(24px, 4vh, 56px);
+  padding-block: clamp(48px, 9vh, 120px);
+}
+
+.hero-head {
+  margin-bottom: 0;
+}
+
+.hero-lede {
+  max-width: 17em;
+  margin: 0;
+  font-family: var(--ef-font-ui);
+  font-stretch: 112%;
+  font-size: clamp(30px, 4.6vw, 62px);
+  line-height: 1.14;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+/* 唯一一行元信息，全部是真实数据 */
+.hero-fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin: 0;
+  color: var(--ef-ink-2);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.hero-fields span + span::before {
+  content: "│";
+  margin-right: 20px;
+  color: var(--ef-rule);
 }
