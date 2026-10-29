@@ -69,81 +69,45 @@ a { color: inherit; }
 
 .site-tri { margin: 0; }
 
-/* ---------- 首页 ---------- */
+/* ---------- 首页：铭牌 + 索引 ---------- */
 
-.home-hero {
-  padding: clamp(1.5rem, 4vw, 2.75rem) var(--ef-pad) clamp(1.25rem, 3vw, 2rem);
-  border-bottom: 1px solid var(--ef-rule);
-}
+.home-sheet { background: var(--ef-panel); }
 
-.hero-meta {
+.plaque {
   display: flex;
   flex-wrap: wrap;
-  gap: 0 1.1rem;
-  margin: 0 0 clamp(1rem, 3vw, 2rem);
-}
-
-.hero-meta > * + *::before {
-  content: "/";
-  margin-right: 1.1rem;
-  color: var(--ef-rule);
-}
-
-.home-mark { --ef-wordmark: clamp(3.4rem, 12.5vw, 12rem); }
-
-.home-mark .hollow { letter-spacing: 0.02em; }
-
-.home-copy { margin-top: clamp(1.5rem, 4vw, 2.75rem); max-width: 46rem; }
-
-.home-copy .claim {
-  margin: 0;
-  font-family: var(--ef-font-text);
-  font-size: clamp(1.15rem, 2.2vw, 1.55rem);
-  font-weight: 700;
-  line-height: 1.45;
-}
-
-.home-copy .bio {
-  margin: 0.75rem 0 0;
-  color: var(--ef-ink-2);
-  font-family: var(--ef-font-text);
-  line-height: 1.8;
-}
-
-.home-copy .ef-actions { margin-top: 1.5rem; }
-
-.home-boards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
-  gap: 1.25rem;
-  padding: clamp(1.5rem, 3vw, 2rem) var(--ef-pad);
-  border-bottom: 1px solid var(--ef-rule);
-}
-
-.home-boards .ef-panel h2 {
-  display: flex;
   align-items: baseline;
-  justify-content: space-between;
-  gap: 0.75rem;
-}
-
-.home-boards .ef-panel h2 a {
+  gap: 0.9rem;
+  margin: 0 0 1.35rem;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid var(--ef-ink);
   font-family: var(--ef-font-ui);
-  font-stretch: 112%;
-  font-size: 0.68rem;
-  letter-spacing: 0.12em;
+  font-stretch: 125%;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
+}
+
+.plaque > :last-child {
+  font-weight: 500;
+  font-stretch: 112%;
   color: var(--ef-ink-2);
-  text-decoration: none;
 }
 
-.home-index {
-  padding: clamp(1.5rem, 3vw, 2rem) var(--ef-pad) clamp(3rem, 6vw, 4.5rem);
+.home-sheet .intro {
+  max-width: var(--ef-measure);
+  margin: 0 0 1rem;
+  font-family: var(--ef-font-text);
+  font-size: 1.02rem;
+  line-height: 1.85;
 }
 
-.home-index .ef-group-head { margin-top: 0; }
+.home-sheet .ef-facts { color: var(--ef-ink-2); }
 
-.home-index .ef-group-head a { text-decoration: none; }
+.home-sheet .ef-group-head { margin-top: 2.25rem; }
+
+.home-sheet .ef-chips { margin-bottom: 1rem; }
 
 /* ---------- 阅读页补充 ---------- */
 
@@ -201,9 +165,20 @@ a { color: inherit; }
 
 .margin-gap { margin-top: 2rem; }
 
-.ef-margin .ef-ledger { margin-bottom: 0.5rem; }
+.ef-margin .ef-ledger {
+  margin-bottom: 0.5rem;
+  font-family: var(--ef-font-text);
+  font-size: 0.84rem;
+}
 
-.ef-margin .ef-ledger a { text-decoration: none; }
+.ef-margin .ef-ledger li > span:first-child { color: var(--ef-ink-2); }
+
+.ef-margin .ef-ledger a {
+  text-decoration: none;
+  color: var(--ef-ink-2);
+}
+
+.ef-margin .ef-ledger a:hover { color: var(--ef-ink); }
 
 .post-toc ol {
   list-style: none;
@@ -250,6 +225,26 @@ a { color: inherit; }
 }
 
 .tag-cloud { margin-top: 1.5rem; }
+
+/* 空状态：细线框铺斜线纹，中间一块纸色底的句子 */
+.empty-plate {
+  margin: 1.5rem 0 0;
+  padding: 2.25rem 1.25rem;
+  border: 1px solid var(--ef-rule);
+  background-image: var(--ef-hatch);
+}
+
+.empty-plate > p {
+  max-width: 26rem;
+  margin: 0 auto;
+  padding: 0.65rem 1rem;
+  background: var(--ef-panel);
+  color: var(--ef-ink-2);
+  font-family: var(--ef-font-text);
+  font-size: 0.9rem;
+  line-height: 1.75;
+  text-align: center;
+}
 
 /* ---------- 正文细节 ---------- */
 
