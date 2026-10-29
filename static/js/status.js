@@ -109,4 +109,23 @@
     setInterval(watch, 200);
     update();
   }
+
+  // 页底斜线：进入视口才划过去（IO 在隐藏标签页不触发，用轮询兜底）
+  const cut = document.querySelector('[data-cut]');
+  if (cut) {
+    const near = () => {
+      const r = cut.getBoundingClientRect();
+      return r.top < window.innerHeight * 0.92 && r.bottom > 0;
+    };
+    if (near()) {
+      cut.classList.add('is-cut');
+    } else {
+      const timer = setInterval(() => {
+        if (near()) {
+          cut.classList.add('is-cut');
+          clearInterval(timer);
+        }
+      }, 200);
+    }
+  }
 })();

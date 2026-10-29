@@ -955,3 +955,28 @@ html {
 @media (max-width: 768px) {
   .panel { display: none; }
 }
+
+/* ---------- 页底收束：一道斜线划过（照 PV 109s 的收尾） ---------- */
+
+.cut {
+  height: 3px;
+  margin: 0 -3%;
+  background: var(--ef-ink);
+  transform: rotate(-1.3deg) scaleX(1.06);
+  transform-origin: left center;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .cut {
+    transform: rotate(-1.3deg) scaleX(0);
+    transition: transform 380ms ease-out;
+  }
+
+  .cut.is-cut {
+    transform: rotate(-1.3deg) scaleX(1.06);
+  }
+}
+
+@media (max-width: 768px) {
+  .cut { margin: 0 -6%; }
+}
