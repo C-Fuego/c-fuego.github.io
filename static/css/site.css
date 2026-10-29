@@ -232,25 +232,6 @@ html {
 
 /* ---------- 接缝带 ---------- */
 
-.seam {
-  display: block;
-  height: 72px;
-  border-block: 1px solid var(--ef-rule);
-  background-image: repeating-linear-gradient(45deg,
-    color-mix(in srgb, var(--ef-ink) 6%, transparent) 0 1px, transparent 1px 10px);
-}
-
-.seam .wrap {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-}
-
-.seam .ef-btn {
-  text-decoration: none;
-}
-
 /* ---------- 区块 ---------- */
 
 .block {
@@ -1187,52 +1168,6 @@ html {
   }
 }
 
-/* ---------- 过场：点击链接换页时的转场（View Transitions，跨文档） ---------- */
-
-.wipe {
-  position: fixed;
-  inset: 0;
-  z-index: 999;
-  background: var(--ef-signal);
-  transform: translateY(-101%);
-  pointer-events: none;
-  view-transition-name: wipe;
-}
-
-@view-transition {
-  navigation: auto;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  /* 旧页：向上抽走 + 模糊 */
-  ::view-transition-old(root) {
-    animation: page-out 380ms cubic-bezier(0.7, 0, 0.2, 1) both;
-  }
-
-  /* 新页：从下方浮上来 + 去模糊 */
-  ::view-transition-new(root) {
-    animation: page-in 380ms cubic-bezier(0.16, 1, 0.3, 1) 60ms both;
-  }
-
-  /* 黄带从上穿到下，穿过整个换页过程 */
-  ::view-transition-group(wipe) {
-    animation: wipe-sweep 620ms cubic-bezier(0.7, 0, 0.2, 1) both;
-  }
-
-  @keyframes page-out {
-    to { opacity: 0; transform: translateY(-18px) scale(0.996); filter: blur(6px); }
-  }
-
-  @keyframes page-in {
-    from { opacity: 0; transform: translateY(18px) scale(1.004); filter: blur(6px); }
-  }
-
-  @keyframes wipe-sweep {
-    0%   { transform: translateY(-101%); }
-    52%  { transform: translateY(0); }
-    100% { transform: translateY(101%); }
-  }
-}
 
 /* 品牌不再用黄色方块：黄色只留给「当前位置」，品牌用 // 前缀 + 墨色文字 */
 .site-bar .brand {
@@ -1311,7 +1246,6 @@ html {
 
 .site-bar nav a,
 .log-list .ef-record,
-.seam .ef-btn,
 .post-foot a {
   clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
   transition: clip-path 160ms cubic-bezier(0.7, 0, 0.2, 1), background-color 160ms ease;
@@ -1325,14 +1259,8 @@ html {
   clip-path: polygon(0 0, 100% 0, 100% calc(100% - 26px), calc(100% - 26px) 100%, 0 100%);
 }
 
-.seam .ef-btn {
-  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%);
-}
-
 /* 切角里不压字：右侧留出和切角等宽的空白 */
 .site-bar nav a { padding-right: 22px; }
-.seam .ef-btn { padding-right: 26px; }
-
 /* 区块标题：英文眉标独占一行，中文粗体与计数并排（法则 3） */
 .block-title {
   display: flex;
@@ -1355,39 +1283,6 @@ html {
   color: var(--ef-ink-2);
 }
 
-/* ---------- 换页快门：同源跳转时旧页横向收成一条线，新页从线展开 ----------
-   规范：360ms / mech / clip-path；旧页不动，被新页盖住 */
-
-@media (prefers-reduced-motion: no-preference) {
-  @view-transition {
-    navigation: auto;
-  }
-
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
-    animation-duration: 360ms;
-    animation-timing-function: cubic-bezier(0.7, 0, 0.2, 1);
-    mix-blend-mode: normal;
-  }
-
-  ::view-transition-old(root) {
-    animation-name: shutter-close;
-  }
-
-  ::view-transition-new(root) {
-    animation-name: shutter-open;
-  }
-
-  @keyframes shutter-close {
-    from { clip-path: inset(0 0 0 0); }
-    to   { clip-path: inset(49.9% 0 49.9% 0); }
-  }
-
-  @keyframes shutter-open {
-    from { clip-path: inset(49.9% 0 49.9% 0); }
-    to   { clip-path: inset(0 0 0 0); }
-  }
-}
 
 /* ---------- 首屏入场：照规范时间轴（骨架 0 / 主角 0-620 / 数据 120），错开 100ms ---------- */
 

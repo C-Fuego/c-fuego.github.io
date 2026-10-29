@@ -29,17 +29,6 @@
     setInterval(upd, 1000);
   }
 
-  // 接缝带：平滑滚到日志区
-  const seam = document.querySelector('[data-seam]');
-  const target = document.querySelector('#log');
-  if (seam && target) {
-    seam.addEventListener('click', (e) => {
-      e.preventDefault();
-      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
-    });
-  }
-
   // 阅读进度盘：等距投影的椭圆环，靠刻度长短和虚实表现纵深（伪 3D，不用 3D 变换）
   const dial = document.querySelector('[data-read-dial]');
   if (dial) {
