@@ -79,21 +79,6 @@
   }
   .terrain svg { display: block; width: 100%; height: 100%; }
 
-  /* 斜线阴影只留在最靠里的一小片 */
-  .terrain-hatch {
-    /* 排线周期必须落在整数像素上：1px 线 + 3px 空 = 4px 周期。
-       之前用 1.1 / 2.4 这种非整数，斜线在子像素上被拉成亮暗条纹（看着像荧光）。 */
-    background-image: repeating-linear-gradient(
-      45deg,
-      color-mix(in srgb, var(--ink) 38%, transparent) 0 1px,
-      transparent 1px 7px
-    );
-    opacity: 1;
-    /* 覆盖范围也跟着放宽，从 10% 半径放到 22%，到 48% 完全消失 */
-    mask-image: radial-gradient(circle at 100% 0, #000 0 22%, rgba(0,0,0,.5) 34%, transparent 48%);
-    -webkit-mask-image: radial-gradient(circle at 100% 0, #000 0 22%, rgba(0,0,0,.5) 34%, transparent 48%);
-  }
-
   .eyebrow {
     position: relative;
     margin: 0 0 clamp(1.25rem, 3.5vh, 2.25rem);
@@ -194,7 +179,6 @@
   <main>
     
     <div class="terrain" aria-hidden="true"><svg id="terrain" preserveAspectRatio="xMaxYMin slice"></svg></div>
-    <div class="terrain terrain-hatch" aria-hidden="true"></div>
 
     <p class="eyebrow">Maintenance</p>
 
