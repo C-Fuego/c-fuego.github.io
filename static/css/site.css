@@ -1538,3 +1538,29 @@ html:not([data-theme='dark']) .ef-tri {
 @keyframes ch-rise {
   to { transform: translateY(0); }
 }
+
+/* ---------- 切角 = 可点击（法则 2）：只给能点的东西，展示容器保持直角 ---------- */
+
+.site-bar nav a,
+.log-list .ef-record,
+.seam .ef-btn,
+.post-foot a {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
+  transition: clip-path 160ms cubic-bezier(0.7, 0, 0.2, 1), background-color 160ms ease;
+}
+
+.log-list .ef-record {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%);
+}
+
+.log-list .ef-record:hover {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 26px), calc(100% - 26px) 100%, 0 100%);
+}
+
+.seam .ef-btn {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%);
+}
+
+/* 切角里不压字：右侧留出和切角等宽的空白 */
+.site-bar nav a { padding-right: 22px; }
+.seam .ef-btn { padding-right: 26px; }
