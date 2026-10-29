@@ -1418,12 +1418,12 @@ html {
 
 .hero-art {
   position: absolute;
-  right: -22%;
-  bottom: -34%;
-  width: min(78vw, 900px);
+  right: -14%;
+  bottom: -42%;
+  width: min(56vw, 640px);
   aspect-ratio: 1;
   background: var(--ef-ink);
-  opacity: 0.055;
+  opacity: 0.07;
   mask-image: url("../images/gen/concentric.svg");
   mask-size: contain;
   mask-position: center;
@@ -1544,4 +1544,68 @@ html {
   .block-num { font-size: 76px; margin-left: -26px; }
   .hero-lede { margin-right: 0; }
   .project-shot { margin-right: 0; }
+}
+
+/* ---------- 版面校准：顶栏压薄、上留白加到 33%、编号加大、补底栏 ---------- */
+
+.site-bar {
+  height: 44px;
+}
+
+.hero .main {
+  min-height: calc(100vh - 44px);
+  justify-content: flex-start;
+  padding-top: clamp(96px, 16vh, 200px);
+  padding-bottom: 0;
+  position: relative;
+}
+
+/* 编号加大到约占屏高 26% */
+.block-num {
+  font-size: clamp(96px, 15.5vw, 220px);
+  line-height: 0.7;
+}
+
+/* 底栏：左章节 / 中刻度 / 右计数，压在画布下缘 4% */
+.hero-foot {
+  position: absolute;
+  left: clamp(20px, 3.2vw, 44px);
+  right: clamp(20px, 3.2vw, 44px);
+  bottom: 0;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  border-top: 1px solid var(--ef-rule);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ef-ink-2);
+}
+
+/* 中段刻度：24 格，随滚动点亮 */
+.hero-foot .ticks {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  max-width: 420px;
+}
+
+.hero-foot .ticks i {
+  flex: 1;
+  height: 10px;
+  background: var(--ef-rule);
+}
+
+.hero-foot .ticks i.is-on {
+  background: var(--ef-ink);
+}
+
+@media (max-width: 768px) {
+  .site-bar { height: 48px; }
+  .hero .main { padding-top: 88px; }
+  .hero-foot { height: 46px; }
+  .hero-foot .ticks { max-width: none; }
 }

@@ -154,4 +154,26 @@
 
 
 
+
+  // 首屏底栏刻度：24 格，随滚动进度点亮（真实进度，不是装饰）
+  const ticksBox = document.querySelector('[data-ticks]');
+  if (ticksBox) {
+    if (!ticksBox.children.length) {
+      for (let i = 0; i < 24; i++) ticksBox.appendChild(document.createElement('i'));
+    }
+    const cells = [...ticksBox.children];
+
+    const paintTicks = () => {
+      const el = document.scrollingElement || document.documentElement;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const top = el.scrollTop || window.scrollY || 0;
+      const p = max > 40 ? Math.min(1, Math.max(0, top / max)) : 0;
+      const lit = Math.round(p * cells.length);
+      cells.forEach((c, i) => c.classList.toggle('is-on', i < lit));
+    };
+
+    window.addEventListener('scroll', paintTicks, { passive: true });
+    window.addEventListener('resize', paintTicks);
+    paintTicks();
+  }
 })();
