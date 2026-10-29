@@ -4,11 +4,11 @@
 <section class="hero">
   <div class="wrap">
     <div class="main">
-      <p class="hero-kicker mono ef-in-come" style="--i:0">{{ site.Title }} / 技术笔记</p>
-      <h1 class="hero-lede ef-in-drive">把跑过的东西写下来，<br class="br-wide">跑不通就写卡在哪一步。</h1>
+      <p class="hero-kicker mono ef-blur-in" style="--i:0">{{ site.Title }} / 技术笔记</p>
+      <h1 class="hero-lede ef-blur-in" style="--i:1">把跑过的东西写下来，<br class="br-wide">跑不通就写卡在哪一步。</h1>
       <div class="hero-rule" aria-hidden="true"></div>
 
-      <aside class="panel ef-panel ef-in-power" style="--i:0" aria-label="站点状态">
+      <aside class="panel ef-panel ef-blur-in" style="--i:2" aria-label="站点状态">
         <h2><span class="ef-pair"><span class="ef-eyebrow">Status</span><span>状态</span></span></h2>
         <ul class="ef-ledger">
           <li><span>BUILD</span><span class="ef-field" data-fx-load>{{ now.Format "2006-01-02" }}</span></li>
@@ -68,7 +68,7 @@
       <ul class="ef-records">
         {{- range $i, $p := $posts }}
         <li>
-          <a class="ef-record ef-in-come" style="--i:{{ add $i 1 }}" href="{{ $p.RelPermalink }}">
+          <a class="ef-record ef-blur-in" style="--i:{{ add $i 3 }}" href="{{ $p.RelPermalink }}">
             <span class="ef-tag{{ if eq $i 0 }} is-current{{ end }}">{{ if lt (add $i 1) 10 }}0{{ end }}{{ add $i 1 }}</span>
             <span class="ef-field">{{ $p.Date.Format "2006.01.02" }}</span>
             <span class="name{{ if eq $i 0 }} is-latest{{ end }}"{{ with $p.Title }} title="{{ . }}"{{ end }}>{{ $p.Title }}</span>

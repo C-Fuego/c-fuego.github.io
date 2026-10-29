@@ -178,6 +178,9 @@ html {
   padding-block: 10vh 48px;
 }
 
+.hero-kicker::before { content: "[ "; }
+.hero-kicker::after { content: " ]"; }
+
 .hero-kicker {
   grid-row: 1;
   grid-column: 1 / -1;
@@ -604,21 +607,21 @@ html {
 
 @media (prefers-reduced-motion: no-preference) {
   .paper-stack {
-    animation: paper-drop 380ms var(--ef-snap, cubic-bezier(0.16, 1, 0.3, 1)) 60ms both;
+    animation: paper-drop 300ms ease-out 60ms both;
   }
   .dial-plane {
-    animation: dial-in 420ms var(--ef-snap, cubic-bezier(0.16, 1, 0.3, 1)) both;
+    animation: dial-in 340ms ease-out both;
   }
 }
 
 @keyframes paper-drop {
-  from { opacity: 0; transform: translateY(16px) skewY(-0.6deg); }
-  to { opacity: 1; transform: skewY(-0.6deg); }
+  from { opacity: 0; transform: translateY(16px) skewY(-0.6deg); filter: blur(8px); }
+  to { opacity: 1; transform: skewY(-0.6deg); filter: blur(0); }
 }
 
 @keyframes dial-in {
-  from { opacity: 0; transform: translate(-50%, -46%); }
-  to { opacity: 1; transform: translate(-50%, -50%); }
+  from { opacity: 0; transform: translate(-50%, -46%); filter: blur(6px); }
+  to { opacity: 1; transform: translate(-50%, -50%); filter: blur(0); }
 }
 
 .paper,
@@ -804,6 +807,60 @@ html {
 }
 
 .stage .post-foot a:hover { color: var(--ef-ink); }
+
+/* 官网量出来的基准：300ms / ease-out，filter(blur) + transform + opacity 三件事一起做，
+   这才是影像感，单靠 opacity 只是“淡出淡入”。 */
+@media (prefers-reduced-motion: no-preference) {
+  /* 等高线是 mask 挂的 SVG，bg-position 无效；放大 6% 后整体缓慢平移，
+     边缘不会露，48s 一来回，肉眼只觉得“纸在呼吸” */
+  @keyframes ef-drift {
+    from { transform: translate3d(-1.5%, -1%, 0) scale(1.06); }
+    to { transform: translate3d(1.5%, 1%, 0) scale(1.06); }
+  }
+
+  .ef-contours::before {
+    animation: ef-drift 48s ease-in-out infinite alternate;
+  }
+
+  @keyframes ef-blur-up {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+      filter: blur(7px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+  }
+
+  .ef-blur-in {
+    animation: ef-blur-up 300ms ease-out backwards;
+    animation-delay: calc(var(--i, 0) * 60ms);
+  }
+
+  /* 读数条上一条极慢的扫描高光，给静止画面一点“设备在跑”的呼吸感 */
+  @keyframes ef-scan {
+    from { transform: translateY(-1px); }
+    to { transform: translateY(64px); }
+  }
+
+  .site-bar { position: relative; overflow: hidden; }
+
+  .site-bar::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--ef-signal), transparent);
+    opacity: 0.4;
+    animation: ef-scan 11s linear infinite;
+    pointer-events: none;
+  }
+}
 
 @media (max-width: 768px) {
   .stage {
