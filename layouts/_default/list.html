@@ -1,32 +1,28 @@
 {{ define "main" }}
 {{- $posts := .Pages.ByDate.Reverse -}}
-<header class="page-head">
-  <div class="wrap">
-    <h1 class="title">{{ .Title }}</h1>
-    <p class="mono" style="margin-top:16px">{{ len $posts }} ENTRIES</p>
-  </div>
-</header>
 
-<section class="block" style="border-bottom:0">
-  <div class="wrap">
-    {{ if $posts }}
-    <div class="log-list">
-      <ul class="ef-records">
-        {{- range $i, $p := $posts }}
-        <li>
-          <a class="ef-record" href="{{ $p.RelPermalink }}">
-            <span class="ef-tag{{ if eq $i 0 }} is-current{{ end }}">{{ if lt (add $i 1) 10 }}0{{ end }}{{ add $i 1 }}</span>
-            <span class="ef-field">{{ $p.Date.Format "2006.01.02" }}</span>
-            <span class="name"{{ with $p.Title }} title="{{ . }}"{{ end }}>{{ $p.Title }}</span>
-            <span class="ef-field">{{ $p.ReadingTime }} MIN</span>
-          </a>
-        </li>
-        {{- end }}
-      </ul>
-    </div>
-    {{ else }}
-    <p class="empty">还没有记录。</p>
-    {{ end }}
-  </div>
+<section class="index" style="border-bottom: 0">
+  <p class="ef-eyebrow slash">{{ with .Section }}{{ . | upper }}{{ else }}INDEX{{ end }}</p>
+  <h2 class="ef-bar-title">{{ .Title }}</h2>
+  <p class="ef-field" style="margin: 0 0 1.75rem; color: var(--ef-ink-2)">
+    {{ len $posts }} ENTRIES<span aria-hidden="true"> / </span>按时间倒序
+  </p>
+
+  {{ if $posts }}
+  <ol class="ef-records">
+    {{- range $i, $p := $posts }}
+    <li>
+      <a class="ef-record" href="{{ $p.RelPermalink }}">
+        <span class="ef-tag{{ if eq $i 0 }} is-current{{ end }}">{{ if lt (add $i 1) 10 }}0{{ end }}{{ add $i 1 }}</span>
+        <time class="ef-field">{{ $p.Date.Format "2006.01.02" }}</time>
+        <span class="name ef-read">{{ $p.Title }}</span>
+        <span class="ef-field">{{ $p.WordCount }} 字</span>
+      </a>
+    </li>
+    {{- end }}
+  </ol>
+  {{ else }}
+  <p class="ef-field">还没有记录。</p>
+  {{ end }}
 </section>
 {{ end }}

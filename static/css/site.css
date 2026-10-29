@@ -762,6 +762,9 @@ html {
 
 /* ---------- 页底收束：一道斜线划过（照 PV 109s 的收尾） ---------- */
 
+/* 出血线靠外层裁切，不撑出横向滚动 */
+.foot-wrap { overflow-x: clip; }
+
 .cut {
   height: 3px;
   margin: 0 -3%;
