@@ -1078,6 +1078,9 @@ html {
 .vt-hatch {
   position: fixed;
   inset: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: clip;
   z-index: 999;
   pointer-events: none;
   background-color: var(--ef-paper);
@@ -1243,4 +1246,149 @@ html {
 /* 页脚在窄屏收成两列 */
 @media (max-width: 768px) {
   .site-foot .cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* ---------- 阅读页布局：照抄 templates/reading.html 的 page-specific 部分 ---------- */
+
+.ef-spread {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 16rem;
+  gap: clamp(2rem, 5vw, 4rem);
+  padding: clamp(1.5rem, 3vw, 2.5rem) var(--ef-pad) 4rem;
+}
+
+.ef-sheet { max-width: 40rem; }
+
+.ids {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 0.75rem;
+}
+
+.title {
+  margin: 1.5rem 0 1rem;
+  font-size: clamp(var(--ef-t-title), 5.5vw, var(--ef-t-h1));
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.ef-prose { margin-top: 2rem; }
+
+.toc {
+  position: sticky;
+  top: 2rem;
+  max-width: 18rem;
+}
+
+.toc ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-left: 1px solid var(--ef-rule);
+}
+
+.toc ol a {
+  display: block;
+  margin-left: -1px;
+  padding: 0.28rem 0 0.28rem 0.9rem;
+  border-left: 3px solid transparent;
+  color: var(--ef-ink-2);
+  font-size: 0.875rem;
+}
+
+.toc ol a[aria-current] {
+  color: var(--ef-ink);
+  border-left-color: var(--ef-trace);
+}
+
+.margin-h { margin: 2.5rem 0 0.5rem; }
+.margin-h:first-child { margin-top: 0; }
+
+@media (max-width: 1099px) {
+  .ef-spread { grid-template-columns: minmax(0, 1fr); }
+  .toc { position: static; max-width: none; }
+}
+
+/* ---------- 手机适配 ----------
+   触屏规范：点击区域 ≥44px；没有悬停，主要按钮静止就是黄底 */
+
+@media (max-width: 899px) {
+  /* 顶栏不换行：时间收掉，导航和主题按钮留在一行 */
+  .site-bar { flex-wrap: nowrap; gap: 0 0.75rem; padding-inline: 1rem; }
+  .site-bar .brand { font-size: 0.9rem; }
+  .site-bar nav { gap: 0.9rem; }
+  .site-bar nav a { min-height: 48px; display: inline-flex; align-items: center; font-size: 0.8rem; }
+  .site-bar .util { gap: 0.5rem; }
+  .site-bar .util .clock { display: none; }
+  .site-bar [data-theme-toggle] { min-width: 48px; min-height: 48px; }
+
+  /* 首屏收紧 */
+  .hero { padding-top: 0.75rem; }
+  .hero > .meta { gap: 0.2rem 0.5rem; font-size: 0.75rem; }
+  .hero .ef-wordmark { margin-top: 1.1rem; }
+  .hero .copy { padding-block: 1.15rem 1.5rem; }
+  .hero .claim { font-size: 1.05rem; }
+  .hero .ef-frame { height: 15.5rem; margin-right: var(--ef-pad); }
+  .hero .ef-actions { gap: 0.6rem; }
+  .hero .ef-actions .ef-btn { flex: 1 1 auto; min-height: 46px; justify-content: center; }
+
+  /* 索引记录：窄屏压掉字数列，留编号/日期/标题 */
+  .ef-record {
+    grid-template-columns: auto minmax(0, 1fr);
+    row-gap: 0.3rem;
+    min-height: 48px;
+    padding-block: 0.85rem;
+  }
+  .ef-record > .ef-field:last-child { display: none; }
+  .ef-record .name { grid-column: 1 / -1; }
+
+  /* 文章页 */
+  .ef-spread { padding-top: 1rem; gap: 2rem; }
+  .ef-sheet { max-width: none; }
+  .title { font-size: 1.8rem; }
+  .ef-facts { gap: 0.35rem 1rem; font-size: 0.75rem; }
+  .toc { border-top: 1px solid var(--ef-rule); padding-top: 1rem; }
+
+  /* 跑马灯与页脚链接补到 44px 触控高度 */
+  .ef-ticker a { min-height: 44px; align-items: center; }
+  .site-foot a { display: inline-flex; align-items: center; min-height: 44px; }
+  .site-foot .cols { row-gap: 0.25rem; }
+
+  /* 页底斜线在窄屏不要外扩，否则撑出横向滚动 */
+  .cut { margin: 0; scale: none; width: 100%; }
+}
+
+/* 触屏：没有悬停，主要按钮静止态就是黄底；按下时回应 */
+@media (hover: none) {
+  .ef-btn.go {
+    background: var(--ef-signal);
+    color: var(--ef-on-signal);
+    border-color: var(--ef-signal);
+  }
+  .ef-btn.go:active { background: var(--ef-ink); color: var(--ef-paper); border-color: var(--ef-ink); }
+  .ef-btn:active { background: var(--ef-ink); color: var(--ef-paper); }
+  .ef-record:active { background: color-mix(in srgb, var(--ef-ink) 6%, transparent); }
+  .ef-btn:hover, .ef-record:hover { transform: none; }
+}
+
+/* 正文里的长代码不撑破版心 */
+.ef-prose code {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.ef-prose pre {
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.ef-prose img,
+.ef-prose table { max-width: 100%; }
+
+@media (max-width: 899px) {
+  .ef-prose pre { padding-inline: 0.75rem; font-size: 0.78rem; }
+  .ef-spread { padding-inline: 1rem; }
 }

@@ -1,51 +1,71 @@
 {{ define "main" }}
-<article class="stage">
-  <aside class="stage-side" aria-hidden="true">
-    <div class="dial-plane">
-      <svg class="dial-svg" viewBox="0 0 100 100" data-read-dial>
-        <g class="dial-ticks" data-dial-ticks></g>
-        <text class="dial-num" data-dial-num x="50" y="50" text-anchor="middle" dominant-baseline="central">0</text>
-      </svg>
-    </div>
-    <span class="side-shadow" aria-hidden="true"></span>
-  </aside>
+<article class="ef-spread">
+  <div class="ef-sheet">
+    <p class="ef-eyebrow slash">{{ .Section | upper }}</p>
+    <p class="ef-crumb ef-field"><a href="{{ "posts/" | relURL }}">全部文章</a><span>{{ .Title }}</span></p>
 
-  <div class="stage-main">
-    <div class="paper-stack">
-      <span class="paper-edge edge-3" aria-hidden="true"></span>
-      <span class="paper-edge edge-2" aria-hidden="true"></span>
-      <span class="paper-edge edge-1" aria-hidden="true"></span>
+    <p class="ids">
+      <span class="ef-tag is-current">{{ .Date.Format "01.02" }}</span>
+      {{- range .Params.tags }}
+      <a class="ef-kv" href="{{ "tags/" | relURL }}{{ . | urlize }}/"><span>分类</span><span>{{ . }}</span></a>
+      {{- end }}
+    </p>
 
-      <div class="paper">
-        <div class="term-bar" aria-hidden="true">
-          <span class="term-path">~/posts/{{ .File.BaseFileName }}.md</span>
-          <span class="term-lights"><i></i><i></i><i></i></span>
-        </div>
+    <ul class="ef-facts ef-field">
+      <li><time>{{ .Date.Format "2006.01.02" }}</time></li>
+      <li>{{ .WordCount }} 字</li>
+      <li>约 {{ .ReadingTime }} 分钟</li>
+    </ul>
 
-        <header class="post-head">
-          <div class="post-meta">
-            <span class="mono">{{ .Date.Format "2006-01-02" }}</span>
-            {{- with .Params.tags }}{{ range . }}<span class="ef-tag">{{ . }}</span>{{ end }}{{ end }}
-            <span class="mono">{{ .ReadingTime }} MIN</span>
-          </div>
-          <h1 class="post-title">{{ .Title }}</h1>
-        </header>
+    <h1 class="title ef-read">{{ .Title }}</h1>
+    <div class="ef-tri" aria-hidden="true"><i></i><i></i><i></i></div>
 
-        <div class="ef-prose">{{ .Content }}</div>
+    {{ with .Params.summary }}<p class="ef-lede ef-read">{{ . }}</p>{{ end }}
 
-        <div class="term-status" aria-hidden="true">
-          <span>-- READ --</span>
-          <span>{{ .WordCount }} WORDS</span>
-          <span>{{ .ReadingTime }} MIN</span>
-          <span>UTF-8</span>
-        </div>
+    <div class="ef-prose">{{ .Content }}</div>
 
-        <nav class="post-foot" aria-label="相邻文章">
-          {{ with .PrevInSection }}<a href="{{ .RelPermalink }}">← {{ .Title }}</a>{{ else }}<span></span>{{ end }}
-          {{ with .NextInSection }}<a href="{{ .RelPermalink }}">{{ .Title }} →</a>{{ else }}<span></span>{{ end }}
-        </nav>
-      </div>
-    </div>
+    {{ if or .PrevInSection .NextInSection }}
+    <h2 class="ef-group-head ef-read"><span>相邻文章</span><span class="ef-field">按时间序</span></h2>
+    <ol class="ef-records">
+      {{- with .PrevInSection }}
+      <li><a class="ef-record" href="{{ .RelPermalink }}">
+        <span class="ef-tag">上</span>
+        <time class="ef-field">{{ .Date.Format "2006.01.02" }}</time>
+        <span class="name ef-read">{{ .Title }}</span>
+        <span class="ef-field">{{ .WordCount }} 字</span>
+      </a></li>
+      {{- end }}
+      {{- with .NextInSection }}
+      <li><a class="ef-record" href="{{ .RelPermalink }}">
+        <span class="ef-tag">下</span>
+        <time class="ef-field">{{ .Date.Format "2006.01.02" }}</time>
+        <span class="name ef-read">{{ .Title }}</span>
+        <span class="ef-field">{{ .WordCount }} 字</span>
+      </a></li>
+      {{- end }}
+    </ol>
+    {{ end }}
   </div>
+
+  <aside class="ef-margin" aria-label="目录与统计">
+    <div class="toc">
+      {{ with .TableOfContents }}
+      <h2 class="margin-h ef-field">目录</h2>
+      {{ . }}
+      {{ end }}
+
+      {{ with .Params.tags }}
+      <h2 class="margin-h ef-field">按分类</h2>
+      <ul class="ef-ledger">
+        {{- range . }}
+        {{- $tag := . }}
+        {{- with index $.Site.Taxonomies.tags $tag }}
+        <li><a href="{{ "tags/" | relURL }}{{ $tag | urlize }}/">{{ $tag }}</a><span class="ef-field">{{ len . }} 篇</span></li>
+        {{- end }}
+        {{- end }}
+      </ul>
+      {{ end }}
+    </div>
+  </aside>
 </article>
 {{ end }}
