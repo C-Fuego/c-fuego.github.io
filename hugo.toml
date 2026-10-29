@@ -1,4 +1,4 @@
-baseURL = "https://c-fuego.github.io/blog/"
+baseURL = "https://c-fuego.github.io/"
 locale = "zh-CN"
 defaultContentLanguage = "zh-cn"
 title = "1GN4CI0"
