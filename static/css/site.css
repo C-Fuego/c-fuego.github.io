@@ -386,56 +386,6 @@ html {
   transform: translate(-50%, -50%);
 }
 
-.dial-svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-}
-
-.dial-svg .tick {
-  stroke: var(--ef-ink);
-  stroke-width: 0.7;
-  opacity: 0.55;
-}
-
-.dial-svg .tick.is-major {
-  stroke-width: 1.15;
-  opacity: 0.8;
-}
-
-/* 远端（上半圈）更淡更细，制造"转到后面去了"的错觉 */
-.dial-svg .tick.is-far {
-  opacity: 0.22;
-  stroke-width: 0.5;
-}
-
-.dial-svg .tick.is-on {
-  stroke: var(--ef-accent-ink, #6B5D00);
-  opacity: 1;
-}
-
-.dial-svg .dial-ring {
-  fill: none;
-  stroke: var(--ef-ink);
-  stroke-width: 0.6;
-  opacity: 0.35;
-}
-
-.dial-svg .dial-ring.is-dashed {
-  stroke-dasharray: 2 2.4;
-  opacity: 0.28;
-}
-
-.dial-svg .dial-num {
-  font-family: var(--ef-font-ui);
-  font-stretch: 112%;
-  font-size: 11px;
-  font-weight: 700;
-  fill: var(--ef-ink);
-  font-variant-numeric: tabular-nums;
-}
-
 /* 右页：一叠纸，靠平行四边形错位 + 三色实线边表现厚度 */
 .stage-main {
   position: relative;
