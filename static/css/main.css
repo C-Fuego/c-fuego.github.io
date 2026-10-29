@@ -19,6 +19,60 @@
   --ef-font-text: -apple-system, BlinkMacSystemFont, "PingFang SC",
                   "Noto Sans SC", "Source Han Sans SC", "Microsoft YaHei", sans-serif;
   --ef-font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* 奶油纸 / 墨黑 / 信号黄：色值取自已算过对比度的一组已知值
+     （ymh0000123/dsh-theme-endfield 的设计语言文档）。纸不用纯白，
+     暗色不用纯黑；#e8e8e2 偏暖是纸，#101110 偏绿避免死黑。 */
+  --ef-paper: #e8e8e2;
+  --ef-panel: #f2f2ec;
+  --ef-ink: #101110;
+  --ef-ink-2: #4a4c48;
+  --ef-rule: #d8d9d5;
+  --ef-strong-rule: #b6b8b3;
+  --ef-chip: #dcddd6;
+  --ef-signal: #fff500;
+  --ef-on-signal: #101110;
+  --ef-tag-bg: #101110;
+  --ef-tag-fg: #f2f2ec;
+  /* 亮色下「当文字用的强调」必须下沉：#fff500 压在纸底只有 1.07:1 */
+  --ef-accent-text: #6b5d00;
+
+  font-variant-numeric: tabular-nums;
+}
+
+:root[data-theme='dark'] .ef {
+  --ef-paper: #101110;
+  --ef-panel: #181a18;
+  --ef-ink: #f5f5f0;
+  --ef-ink-2: #898d89;
+  --ef-rule: #343633;
+  --ef-strong-rule: #4a4d49;
+  --ef-chip: #1e201d;
+  --ef-signal: #fff500;
+  --ef-on-signal: #101110;
+  --ef-tag-bg: #2a2c29;
+  --ef-tag-fg: #f5f5f0;
+  --ef-accent-text: #fff500;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) .ef {
+    --ef-paper: #101110;
+    --ef-panel: #181a18;
+    --ef-ink: #f5f5f0;
+    --ef-ink-2: #898d89;
+    --ef-rule: #343633;
+    --ef-strong-rule: #4a4d49;
+    --ef-chip: #1e201d;
+    --ef-tag-bg: #2a2c29;
+    --ef-tag-fg: #f5f5f0;
+    --ef-accent-text: #fff500;
+  }
+}
+
+/* 等高线是装饰层：压到刚好能看见，不跟文字抢对比度 */
+.ef {
+  --ef-contour: color-mix(in srgb, var(--ef-ink) 3%, transparent);
 }
 
 body.ef {
@@ -31,9 +85,25 @@ body.ef {
 
 #main { flex: 1; }
 
+html {
+  scrollbar-color: var(--ef-strong-rule) transparent;
+  scrollbar-width: thin;
+}
+
 ::selection {
   background: var(--ef-signal);
   color: var(--ef-on-signal);
+}
+
+/* 次要链接：悬停时走强调色下划线，不改变字色（纸上黄字不可读） */
+.site-foot a:hover,
+.ef-margin .ef-ledger a:hover {
+  color: var(--ef-ink);
+  text-decoration: underline;
+  text-decoration-color: var(--ef-signal);
+  text-decoration-thickness: 0.35em;
+  text-underline-offset: -0.12em;
+  text-decoration-skip-ink: none;
 }
 
 a { color: inherit; }

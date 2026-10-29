@@ -57,12 +57,6 @@
       <li><span>订阅</span><a href="{{ "index.xml" | relURL }}">RSS</a></li>
     </ul>
 
-    <p class="ef-eyebrow margin-gap">页面</p>
-    <ul class="ef-ledger">
-      {{- range site.Menus.main }}
-      <li><a href="{{ .URL | relURL }}">{{ .Name }}</a></li>
-      {{- end }}
-    </ul>
   </aside>
 </div>
 {{ end }}
