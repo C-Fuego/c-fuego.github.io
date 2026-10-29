@@ -1491,3 +1491,26 @@ html {
   place-items: center;
 }
 .hero .ef-frame svg { max-height: 100%; }
+
+/* 字标用中文：Saira 没有汉字，改走正文黑体；描边按汉字笔画密度收细 */
+/* 中文没有拉丁大写字高空间，行高要放开；描边按笔画密度加粗 */
+.hero .ef-wordmark {
+  line-height: 1.04;
+}
+
+.hero .ef-wordmark .solid,
+.hero .ef-wordmark .hollow {
+  display: block;
+  font-family: var(--ef-font-text);
+  font-weight: 800;
+  font-stretch: normal;
+  letter-spacing: -0.01em;
+  line-height: 1.04;
+}
+
+.hero .ef-wordmark .hollow {
+  font-family: var(--ef-font-ui);
+  font-stretch: 125%;
+  -webkit-text-stroke-width: 2.2px;
+  margin-top: 0.18em;
+}
