@@ -214,7 +214,7 @@
       e.preventDefault();
       vt.classList.add('is-on', 'is-leaving');
       try { sessionStorage.setItem('vt-go', '1'); } catch (err) {}
-      setTimeout(() => { location.href = url.href; }, 860);
+      setTimeout(() => { location.href = url.href; }, 900);
     });
   }
 
