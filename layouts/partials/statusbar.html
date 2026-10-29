@@ -1,0 +1,15 @@
+<header class="statusbar">
+  <div class="inner">
+    <a class="brand" href="{{ "" | relURL }}">{{ site.Title }}</a>
+    <nav aria-label="导航">
+      {{- range site.Menus.main }}
+      <a href="{{ .URL | relURL }}"{{ if or ($.IsMenuCurrent "main" .) ($.HasMenuCurrent "main" .) }} aria-current="page"{{ end }}>{{ .Name }}</a>
+      {{- end }}
+    </nav>
+    <div class="sys">
+      <span class="dot" aria-hidden="true"></span>
+      <span>SYS.NOMINAL</span>
+      <span class="clock" data-clock>--:--:--</span>
+    </div>
+  </div>
+</header>

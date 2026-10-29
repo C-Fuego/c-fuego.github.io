@@ -1,41 +1,30 @@
 {{ define "main" }}
-{{- $posts := where site.RegularPages "Section" "posts" -}}
-{{- $words := 0 -}}
-{{- range $posts }}{{ $words = add $words .WordCount }}{{ end -}}
-{{- $latest := "" -}}
-{{- with $posts.ByDate.Reverse }}{{ $latest = (index . 0).Date.Format "2006.01.02" }}{{ end -}}
-<div class="page">
-  <header class="sheet-head cue cue-1">
-    <div>
-      <p class="ef-eyebrow">Posts</p>
-      <h1>{{ .Title }}</h1>
-    </div>
-    <p class="ef-field">共 {{ len $posts }} 篇</p>
-  </header>
+{{- $posts := .Pages.ByDate.Reverse -}}
+<header class="page-head">
+  <div class="wrap">
+    <h1 class="title">{{ .Title }}</h1>
+    <p class="mono" style="margin-top:16px">{{ len $posts }} ENTRIES</p>
+  </div>
+</header>
 
-  <ul class="ef-facts list-facts cue cue-2">
-    <li>{{ len $posts }} 篇</li>
-    <li>{{ $words }} 字</li>
-    <li>{{ len site.Taxonomies.tags }} 个标签</li>
-    {{ with $latest }}<li>最近写入 {{ . }}</li>{{ end }}
-  </ul>
-
-  {{ with .Content }}<div class="ef-lede">{{ . }}</div>{{ end }}
-
-  {{ if $posts }}
-    {{- range $posts.GroupByDate "2006" }}
-    {{- $gw := 0 -}}
-    {{- range .Pages }}{{ $gw = add $gw .WordCount }}{{ end -}}
-    <div class="shape shape-hud block-hud" data-shape="hudLines" data-shape-opts='{"n":40}' data-fit="none" aria-hidden="true"></div>
-    <header class="ef-group-head"><span>{{ .Key }}</span><span class="ef-field">{{ len .Pages }} 篇 / {{ $gw }} 字</span></header>
-    <ul class="ef-records">
-      {{- range .Pages }}
-      {{ partial "record.html" . }}
+<section class="block" style="border-bottom:0">
+  <div class="wrap">
+    {{ if $posts }}
+    <ul class="log-list">
+      {{- range $i, $p := $posts }}
+      <li>
+        <a class="log-row" href="{{ $p.RelPermalink }}">
+          <span class="log-no mono">{{ if lt (add $i 1) 10 }}0{{ end }}{{ add $i 1 }}</span>
+          <span class="log-date mono">{{ $p.Date.Format "2006-01-02" }}</span>
+          <span class="log-title"{{ if $p.Title }} title="{{ $p.Title }}"{{ end }}>{{ $p.Title }}</span>
+          <span class="log-arrow mono">→</span>
+        </a>
+      </li>
       {{- end }}
     </ul>
-    {{- end }}
-  {{ else }}
-    <div class="empty-plate"><p>还没有文章。写一篇放进 <code>content/posts/</code>，构建后会出现在这里。</p></div>
-  {{ end }}
-</div>
+    {{ else }}
+    <p class="empty">还没有记录。</p>
+    {{ end }}
+  </div>
+</section>
 {{ end }}

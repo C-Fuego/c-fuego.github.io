@@ -1,11 +1,14 @@
 {{ define "main" }}
-<section class="lost">
-  <span class="ef-hollow-no" aria-hidden="true">404</span>
-  <h1>这一页不存在</h1>
-  <p>地址可能写错了，或者那篇文章已经不在了。</p>
-  <p class="ef-actions">
-    <a class="ef-btn go" href="{{ "" | relURL }}">回首页</a>
-    <a class="ef-btn" href="{{ "posts/" | relURL }}">看文章</a>
-  </p>
+<section class="page-head">
+  <div class="wrap">
+    <p class="mono">ERROR 404</p>
+    <h1 class="title" style="margin-top:16px">NOT FOUND</h1>
+  </div>
+</section>
+<section class="block" style="border-bottom:0">
+  <div class="wrap">
+    <p style="max-width:60ch">地址可能写错了，或者那条记录已经不在了。</p>
+    <p style="margin-top:32px"><a class="seam-mark" href="{{ "" | relURL }}">// BACK TO INDEX</a></p>
+  </div>
 </section>
 {{ end }}

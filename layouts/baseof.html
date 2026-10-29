@@ -1,30 +1,31 @@
 <!doctype html>
-<html lang="zh-CN" data-ef-accent="yellow" data-ef-paper="neutral" data-ef-cut="standard">
+<html lang="zh-CN">
 <head>
-  {{ partial "head.html" . }}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} — {{ site.Title }}{{ end }}</title>
+  <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ site.Params.description }}{{ end }}">
+  <meta name="theme-color" content="#0B0E0F">
+  <link rel="preload" href="{{ "css/tokens.css" | relURL }}" as="style">
+  <link rel="stylesheet" href="{{ "css/tokens.css" | relURL }}?v={{ now.Unix }}">
+  <link rel="stylesheet" href="{{ "css/global.css" | relURL }}?v={{ now.Unix }}">
 </head>
-<body class="ef ef-contours" data-index="{{ "index.json" | relURL }}">
-  <a class="skip" href="#main">跳到正文</a>
-  {{ partial "cmdbar.html" . }}
-  <main id="main">
+<body>
+  <div class="fx-layer" aria-hidden="true">
+    <span class="fx-corner tl"></span>
+    <span class="fx-corner tr"></span>
+    <span class="fx-corner bl"></span>
+    <span class="fx-corner br"></span>
+  </div>
+
+  {{ partial "statusbar.html" . }}
+
+  <main>
     {{ block "main" . }}{{ end }}
   </main>
-  {{ partial "foot.html" . }}
-  {{- if and .IsPage (eq .Section "posts") }}
-  <div class="read-dial" data-read-dial aria-hidden="true">
-    <svg viewBox="0 0 72 72" width="72" height="72">
-      <g class="dial-ticks" data-dial-ticks></g>
-      <text class="dial-num" data-dial-num x="36" y="36" text-anchor="middle" dominant-baseline="central">0</text>
-    </svg>
-  </div>
-  {{- end }}
-  {{ partial "search.html" . }}
-  <script src="{{ "js/shapes.js" | relURL }}?v={{ now.Unix }}" defer></script>
-  <script src="{{ "js/site.js" | relURL }}?v={{ now.Unix }}" defer></script>
-  <script type="module">
-    import { wireTheme, wireReadouts } from "{{ "ef/fx.js" | relURL }}?v={{ now.Unix }}";
-    wireTheme();
-    wireReadouts(document);
-  </script>
+
+  {{ partial "footer.html" . }}
+
+  <script src="{{ "js/status.js" | relURL }}?v={{ now.Unix }}" defer></script>
 </body>
 </html>

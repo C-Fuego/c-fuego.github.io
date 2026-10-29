@@ -1,0 +1,39 @@
+/* ==========================================================================
+   tokens.css — 视觉规范（DESIGN.md 的唯一实现）
+   只允许使用这里的色值、字号、间距。新增任何值 = 违规。
+   ========================================================================== */
+
+:root {
+  /* 色板 */
+  --bg: #0B0E0F;
+  --surface: #1A2126;
+  --surface-2: #121819;
+  --line: #2E3A40;
+  --text: #E6EDF0;
+  --text-dim: #8A9BA3;
+  --accent: #5FE3C0;
+  --warn: #E8C547;
+  --danger: #D9482B;
+
+  /* 字体 */
+  --font-sans: "Sarasa Gothic SC", "Source Han Sans SC", "Noto Sans SC", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "Sarasa Mono SC", ui-monospace, Menlo, Consolas, monospace;
+
+  /* 栅格与间距：一切是 4 的倍数 */
+  --u: 4px;
+  --maxw: 1280px;
+  --pad: 48px;
+  --gap: 24px;
+  --block: 96px;
+
+  /* 动效 */
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --dur: 200ms;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --pad: 20px;
+    --block: 64px;
+  }
+}

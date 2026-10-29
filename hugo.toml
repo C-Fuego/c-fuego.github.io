@@ -1,51 +1,43 @@
 baseURL = "https://c-fuego.github.io/"
 locale = "zh-CN"
 defaultContentLanguage = "zh-cn"
-title = "1GN4CI0"
+title = "C-FUEGO"
 hasCJKLanguage = true
-disableHugoGeneratorInject = true
 enableRobotsTXT = true
+disableHugoGeneratorInject = true
 timeZone = "Asia/Shanghai"
 
 [params]
   author = "1GN4CI0"
-  description = "Linux、自建服务、硬件，以及踩过的坑。"
-
-[params.ui]
-  showToc = true
-  tocDepth = 3
+  description = "技术笔记、图集、一句话碎念，混在一个日志里。"
 
 [markup]
   [markup.goldmark]
     [markup.goldmark.renderer]
       unsafe = true
   [markup.highlight]
-    noClasses = false
-    style = "github"
+    noClasses = true
+    style = "monokai"
     lineNos = false
 
 [outputs]
-  home = ["HTML", "RSS", "JSON"]
-  section = ["HTML", "RSS"]
+  home = ["HTML", "RSS"]
 
 [pagination]
-  pagerSize = 24
+  pagerSize = 50
 
 [menu]
   [[menu.main]]
-    name = "首页"
-    en = "Index"
+    name = "INDEX"
     pageRef = "/"
     weight = 10
   [[menu.main]]
-    name = "文章"
-    en = "Posts"
+    name = "LOG"
     pageRef = "/posts"
     weight = 20
   [[menu.main]]
-    name = "标签"
-    en = "Tags"
-    pageRef = "/tags"
+    name = "ABOUT"
+    url = "/#about"
     weight = 30
 
 [taxonomies]

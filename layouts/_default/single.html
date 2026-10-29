@@ -1,45 +1,24 @@
 {{ define "main" }}
-{{- $raw := "" -}}
-{{- with .File }}{{ $raw = replaceRE "^([0-9]+).*$" "$1" .ContentBaseName }}{{ end -}}
-<div class="page">
-  <article class="post">
-    <div class="shape shape-barcode" data-shape="barcode" data-shape-opts='{"seed":29}' data-fit="none" aria-hidden="true"></div>
-    <p class="ef-crumb ef-field cue cue-1">
-      <a href="{{ "posts/" | relURL }}">文章</a>
-      <span>正文</span>
-    </p>
+<article>
+  <header class="post-head">
+    <div class="wrap">
+      <div class="post-meta">
+        <span class="mono">{{ .Date.Format "2006-01-02" }}</span>
+        {{- with .Params.tags }}{{ range . }}<span class="mono">#{{ . }}</span>{{ end }}{{ end }}
+        <span class="mono">{{ .ReadingTime }} MIN</span>
+      </div>
+      <h1 class="post-title">{{ .Title }}</h1>
+    </div>
+  </header>
 
-    <p class="post-ids cue cue-1">
-      {{- if findRE "^[0-9]+$" $raw }}
-      <span class="ef-tag is-current">No.{{ printf "%03d" (int $raw) }}</span>
-      {{- end }}
-      {{- range .Params.tags }}
-      <a class="ef-tag" href="{{ "tags/" | relURL }}{{ . | urlize }}/">{{ . }}</a>
-      {{- end }}
-    </p>
-
-    <h1 class="post-title cue cue-2">{{ .Title }}</h1>
-
-    <ul class="ef-facts post-facts cue cue-3">
-      <li><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006.01.02" }}</time></li>
-      <li>{{ .WordCount }} 字</li>
-      <li>约 {{ .ReadingTime }} 分钟</li>
-    </ul>
-
-    <div class="ef-tri cue cue-3" aria-hidden="true"><i></i><i></i><i></i></div>
-
-    {{ with .Summary }}<p class="ef-lede cue cue-3">{{ . | plainify }}</p>{{ end }}
-
-    {{ if .TableOfContents }}
-    <nav class="toc-inline cue cue-4" aria-label="目录">{{ .TableOfContents }}</nav>
-    {{ end }}
-
-    <div class="ef-prose cue cue-4">{{ .Content }}</div>
-
-    <nav class="post-nav" aria-label="相邻文章">
-      {{ with .PrevInSection }}<a class="ef-btn" href="{{ .RelPermalink }}">← {{ .Title }}</a>{{ end }}
-      {{ with .NextInSection }}<a class="ef-btn" href="{{ .RelPermalink }}">{{ .Title }} →</a>{{ end }}
-    </nav>
-  </article>
-</div>
+  <div class="post-body">
+    <div class="wrap">
+      <div class="prose">{{ .Content }}</div>
+      <nav class="post-foot" aria-label="相邻文章">
+        {{ with .PrevInSection }}<a href="{{ .RelPermalink }}">← {{ .Title }}</a>{{ else }}<span></span>{{ end }}
+        {{ with .NextInSection }}<a href="{{ .RelPermalink }}">{{ .Title }} →</a>{{ else }}<span></span>{{ end }}
+      </nav>
+    </div>
+  </div>
+</article>
 {{ end }}
