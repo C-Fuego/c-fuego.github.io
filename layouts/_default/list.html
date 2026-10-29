@@ -13,8 +13,6 @@
     <p class="ef-field">共 {{ len $posts }} 篇</p>
   </header>
 
-  <div class="shape shape-hud list-hud" data-shape="hudLines" data-shape-opts='{"n":48}' data-fit="none" aria-hidden="true"></div>
-
   <ul class="ef-facts list-facts cue cue-2">
     <li>{{ len $posts }} 篇</li>
     <li>{{ $words }} 字</li>
@@ -28,6 +26,7 @@
     {{- range $posts.GroupByDate "2006" }}
     {{- $gw := 0 -}}
     {{- range .Pages }}{{ $gw = add $gw .WordCount }}{{ end -}}
+    <div class="shape shape-hud block-hud" data-shape="hudLines" data-shape-opts='{"n":40}' data-fit="none" aria-hidden="true"></div>
     <header class="ef-group-head"><span>{{ .Key }}</span><span class="ef-field">{{ len .Pages }} 篇 / {{ $gw }} 字</span></header>
     <ul class="ef-records">
       {{- range .Pages }}

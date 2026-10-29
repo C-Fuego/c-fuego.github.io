@@ -884,10 +884,6 @@ body.is-locked { overflow: hidden; }
   overflow: hidden;
 }
 
-.lost-hud {
-  margin: 0 0 1.5rem;
-  opacity: 0.85;
-}
 
 .lost > .ef-hollow-no,
 .lost > h1,
@@ -899,7 +895,6 @@ body.is-locked { overflow: hidden; }
 /* 页脚：一条带刻度的 HUD 线压在页脚上沿 */
 .site-foot {
   position: relative;
-  padding-top: 2.7rem;
 }
 
 .shape-hud {
@@ -910,48 +905,28 @@ body.is-locked { overflow: hidden; }
   color: var(--ef-ink-2);
 }
 
-/* 页脚那条：压在页脚上沿、通宽 */
-.site-foot .shape-hud {
-  position: absolute;
-  top: 0.45rem;
-  left: var(--ef-pad);
-  right: var(--ef-pad);
-  height: 1.5rem;
-  opacity: 0.9;
+/* 区块的上边框：尺子跟着那一块内容走，不单独浮在页面上 */
+.block-hud {
+  display: block;
+  height: 1.35rem;
+  margin: 1.6rem 0 0.55rem;
+  opacity: 0.85;
+}
+
+.block-hud + .ef-group-head {
+  margin-top: 0.2rem;
 }
 
 /* 首页：区块底边就是一把尺 */
 .intro-block {
   border-bottom: 0;
-  padding-bottom: clamp(2.2rem, 4vw, 3rem);
-}
-
-.intro-hud {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0.35rem;
-  height: 1.55rem;
-  opacity: 0.9;
-}
-
-/* 文章页：正文与上下篇之间 */
-.post-hud {
-  max-width: 44rem;
-  margin: clamp(2.5rem, 5vw, 3.5rem) 0 0;
-  opacity: 0.8;
+  padding-bottom: clamp(1rem, 2vw, 1.4rem);
 }
 
 .post-nav {
-  margin-top: 0.9rem;
-  padding-top: 0;
-  border-top: 0;
-}
-
-/* 列表页：页名下面 */
-.list-hud {
-  margin: 0.9rem 0 0.2rem;
-  opacity: 0.8;
+  margin-top: clamp(2.5rem, 5vw, 3.5rem);
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--ef-rule);
 }
 
 @media (max-width: 1099px) {

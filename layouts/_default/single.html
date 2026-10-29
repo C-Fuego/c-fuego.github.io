@@ -36,7 +36,6 @@
 
     <div class="ef-prose cue cue-4">{{ .Content }}</div>
 
-    <div class="shape shape-hud post-hud" data-shape="hudLines" data-shape-opts='{"n":48}' data-fit="none" aria-hidden="true"></div>
     <nav class="post-nav" aria-label="相邻文章">
       {{ with .PrevInSection }}<a class="ef-btn" href="{{ .RelPermalink }}">← {{ .Title }}</a>{{ end }}
       {{ with .NextInSection }}<a class="ef-btn" href="{{ .RelPermalink }}">{{ .Title }} →</a>{{ end }}

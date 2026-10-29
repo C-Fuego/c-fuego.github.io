@@ -7,7 +7,6 @@
 
 <div class="page">
   <section class="intro-block">
-    <div class="shape shape-hud intro-hud" data-shape="hudLines" data-shape-opts='{"n":56}' data-fit="none" aria-hidden="true"></div>
     <p class="plaque cue cue-1">
       <span>{{ site.Title }}</span>
       <span>技术笔记</span>
@@ -23,6 +22,7 @@
   </section>
 
   <section class="list-block">
+    <div class="shape shape-hud block-hud" data-shape="hudLines" data-shape-opts='{"n":40}' data-fit="none" aria-hidden="true"></div>
     <header class="ef-group-head cue cue-4">
       <span>最近写入</span>
       <a class="ef-field" href="{{ "posts/" | relURL }}">全部 {{ len $posts }} 篇</a>
@@ -40,6 +40,7 @@
 
   {{ with site.Taxonomies.tags }}
   <section class="tag-block">
+    <div class="shape shape-hud block-hud" data-shape="hudLines" data-shape-opts='{"n":40}' data-fit="none" aria-hidden="true"></div>
     <header class="ef-group-head cue cue-6">
       <span>标签</span>
       <a class="ef-field" href="{{ "tags/" | relURL }}">全部</a>
