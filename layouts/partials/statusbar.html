@@ -1,5 +1,5 @@
 <header class="ef-cmdbar site-bar">
-  <a class="brand" href="{{ "" | relURL }}"><span class="seal" aria-hidden="true">C</span>{{ site.Title }}</a>
+  <a class="brand" href="{{ "" | relURL }}"><span class="brand-mark" aria-hidden="true">//</span>{{ site.Title }}</a>
   <nav aria-label="导航">
     {{- range site.Menus.main }}
     <a href="{{ .URL | relURL }}"{{ if or ($.IsMenuCurrent "main" .) ($.HasMenuCurrent "main" .) }} aria-current="page"{{ end }}>{{ .Name }}</a>

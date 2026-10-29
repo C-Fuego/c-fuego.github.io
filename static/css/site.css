@@ -1302,3 +1302,26 @@ html:not([data-theme='dark']) .ef-tri {
     100% { transform: translateY(101%); }
   }
 }
+
+/* 品牌不再用黄色方块：黄色只留给「当前位置」，品牌用 // 前缀 + 墨色文字 */
+.site-bar .brand {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  font-family: var(--ef-font-ui);
+  font-stretch: 125%;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: inherit;
+  text-decoration: none;
+}
+
+.site-bar .brand-mark {
+  font-family: var(--ef-font-mono);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: inherit;
+  opacity: 0.55;
+}
