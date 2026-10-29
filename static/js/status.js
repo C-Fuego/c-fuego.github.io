@@ -153,4 +153,32 @@
   }
 
 
+
+  // 过场：整页压成横线再缩成点 → 跳转 → 新页从点展开
+  const vt = document.querySelector('[data-vt]');
+  if (vt) {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    document.addEventListener('click', (e) => {
+      const a = e.target.closest('a[href]');
+      if (!a) return;
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+      if (a.target && a.target !== '_self') return;
+      if (a.hasAttribute('download')) return;
+      if (a.dataset.seam !== undefined) return;
+
+      let url;
+      try { url = new URL(a.href, location.href); } catch (err) { return; }
+      if (url.origin !== location.origin) return;
+      if (url.pathname === location.pathname && url.hash) return;
+      if (url.href === location.href) return;
+      if (reduceMotion) return;
+
+      e.preventDefault();
+      vt.classList.add('is-on');
+document.documentElement.classList.add('vt-leaving');
+      try { sessionStorage.setItem('vt-go', '1'); } catch (err) {}
+      setTimeout(() => { location.href = url.href; }, 430);
+    });
+  }
 })();

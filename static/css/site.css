@@ -1240,146 +1240,6 @@ html {
   opacity: 0.55;
 }
 
-/* ---------- 过场：线条生长 → 圆环扩散 → 墨色灌满，换页时播放 ---------- */
-
-.vt {
-  position: fixed;
-  inset: 0;
-  z-index: 999;
-  pointer-events: none;
-  visibility: hidden;
-}
-
-.vt.is-on { visibility: visible; }
-
-/* 主线：一根 3px 信号黄从顶部中央垂直落下，是整个过场的起手 */
-.vt-lead {
-  position: absolute;
-  left: 50%;
-  top: 0;
-  width: 2px;
-  height: 100%;
-  margin-left: -1px;
-  background: var(--ef-signal);
-  transform: scaleY(0);
-  transform-origin: top center;
-}
-
-/* 竖线组：36 根 1px 细线从顶部落下 */
-.vt-bars {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  justify-content: space-between;
-}
-
-.vt-bars i {
-  width: 1px;
-  height: 100%;
-  background: var(--ef-ink);
-  transform: scaleY(0);
-  transform-origin: top center;
-}
-
-/* 横线组：16 根 1px 线从左边长出来，与竖线交错成栅格 */
-.vt-rows {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.vt-rows i {
-  height: 1px;
-  width: 100%;
-  background: var(--ef-ink);
-  transform: scaleX(0);
-  transform-origin: left center;
-  opacity: 0.32;
-}
-
-/* 两道黄圆环：从画面中心扩出去 */
-
-
-/* 墨色：最后从下往上灌满，把栅栏和旧页一起盖掉 */
-.vt-fill {
-  position: absolute;
-  inset: 0;
-  background: var(--ef-ink);
-  transform: scaleY(0);
-  transform-origin: bottom center;
-}
-
-/* 一条横扫的黄线，栅栏落下后穿一次 */
-
-
-@media (prefers-reduced-motion: no-preference) {
-  .vt.is-leaving .vt-lead {
-    animation: vt-lead-sweep 320ms linear both;
-  }
-
-  /* --i 已经是「离中心的距离」，所以栅格是从中线向两侧展开 */
-  .vt.is-leaving .vt-bars i {
-    animation: vt-bar-drop 200ms cubic-bezier(0.7, 0, 0.2, 1) both;
-    animation-delay: calc(var(--i, 0) * 5ms + 120ms);
-  }
-
-  .vt.is-leaving .vt-rows i {
-    animation: vt-row-grow 220ms cubic-bezier(0.7, 0, 0.2, 1) both;
-    animation-delay: calc(var(--i, 0) * 12ms + 340ms);
-  }
-
-  .vt.is-leaving .vt-fill {
-    animation: vt-fill-up 280ms cubic-bezier(0.16, 1, 0.3, 1) 600ms both;
-  }
-
-  /* 进入：墨色从上退去，新页从模糊里浮出来 */
-  .vt-entering .vt { visibility: visible; }
-
-  .vt-entering .vt-fill {
-    transform: scaleY(1);
-    animation: vt-fill-out 320ms cubic-bezier(0.65, 0, 0.35, 1) both;
-  }
-
-  .vt-entering main,
-  .vt-entering .site-bar {
-    animation: vt-page-in 420ms cubic-bezier(0.16, 1, 0.3, 1) 90ms both;
-  }
-
-  /* 扫描线：匀速贯穿，到末端淡出，不留一根停在半空的线 */
-  @keyframes vt-lead-sweep {
-    0%   { transform: scaleY(0); opacity: 1; }
-    82%  { transform: scaleY(1); opacity: 1; }
-    100% { transform: scaleY(1); opacity: 0; }
-  }
-
-  @keyframes vt-bar-drop {
-    from { transform: scaleY(0); }
-    to { transform: scaleY(1); }
-  }
-
-  @keyframes vt-row-grow {
-    from { transform: scaleX(0); }
-    to { transform: scaleX(1); }
-  }
-
-  @keyframes vt-fill-up {
-    from { transform: scaleY(0); transform-origin: bottom center; }
-    to { transform: scaleY(1); transform-origin: bottom center; }
-  }
-
-  @keyframes vt-fill-out {
-    from { transform: scaleY(1); transform-origin: top center; }
-    to { transform: scaleY(0); transform-origin: top center; }
-  }
-
-  @keyframes vt-page-in {
-    from { opacity: 0; filter: blur(8px); }
-    to { opacity: 1; filter: blur(0); }
-  }
-}
-
 /* ---------- 首屏：一屏只讲一件事，剩下一律留白 ---------- */
 
 .hero .main {
@@ -1839,5 +1699,107 @@ html {
   .seam {
     height: 44px;
     scroll-snap-align: none;
+  }
+}
+
+/* ---------- 过场：面化为线，线化为点；跳转后点展开成线，线展开成面 ---------- */
+
+.vt {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.vt.is-on,
+.vt-entering .vt,
+.vt-leaving .vt { visibility: visible; }
+
+/* 收缩/展开到的那一个点 */
+.vt-dot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
+  border-radius: 50%;
+  background: var(--ef-signal);
+  opacity: 0;
+  transform: scale(0.2);
+}
+
+.vt-chapter {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--ef-font-ui);
+  font-stretch: 125%;
+  font-size: clamp(28px, 4.4vw, 56px);
+  font-weight: 700;
+  color: var(--ef-on-signal, #161616);
+  opacity: 0;
+}
+
+/* 参与收缩的只有页面本身，过场层不跟着缩放 */
+.vt-leaving .site-bar,
+.vt-leaving main,
+.vt-leaving .site-foot,
+.vt-leaving .cut {
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* 离开：页面 → 横线 → 点 → 消失 */
+  .vt-leaving .site-bar,
+  .vt-leaving main,
+  .vt-leaving .site-foot,
+  .vt-leaving .cut {
+    animation: face-to-dot 400ms cubic-bezier(0.7, 0, 0.2, 1) both;
+  }
+
+  .vt-leaving .vt-dot {
+    animation: dot-ignite 400ms cubic-bezier(0.7, 0, 0.2, 1) both;
+  }
+
+  /* 进入：点 → 横线 → 页面 */
+  .vt-entering .site-bar,
+  .vt-entering main,
+  .vt-entering .site-foot,
+  .vt-entering .cut {
+    transform-origin: 50% 50%;
+    animation: dot-to-face 460ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .vt-entering .vt-dot {
+    animation: dot-fade 460ms ease-out both;
+  }
+
+  @keyframes face-to-dot {
+    0%   { transform: scale(1, 1); opacity: 1; }
+    42%  { transform: scale(1, 0.0035); opacity: 1; }
+    78%  { transform: scale(0.0035, 0.0035); opacity: 1; }
+    100% { transform: scale(0.0035, 0.0035); opacity: 0; }
+  }
+
+  @keyframes dot-ignite {
+    0%, 42% { opacity: 0; transform: scale(0.2); }
+    78%     { opacity: 1; transform: scale(1); }
+    100%    { opacity: 0; transform: scale(0.4); }
+  }
+
+  @keyframes dot-to-face {
+    0%   { transform: scale(0.0035, 0.0035); opacity: 0; }
+    18%  { transform: scale(0.0035, 0.0035); opacity: 1; }
+    62%  { transform: scale(1, 0.0035); opacity: 1; }
+    100% { transform: scale(1, 1); opacity: 1; }
+  }
+
+  @keyframes dot-fade {
+    0%, 12% { opacity: 1; transform: scale(1); }
+    100%    { opacity: 0; transform: scale(2.4); }
   }
 }
