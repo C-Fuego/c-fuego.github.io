@@ -488,14 +488,19 @@ html {
   background: var(--ef-paper);
 }
 
-/* 左页：跟视口等高、钉住不动，右缘斜切（斜角才看得出来） */
+/* 左页：跟视口等高、钉住不动；右缘斜切靠背景渐变，盘溢出的部分交给右页盖住 */
 .stage-side {
   position: sticky;
   top: 63px;
   align-self: start;
   height: calc(100vh - 63px);
-  clip-path: polygon(0 0, calc(100% + 1px) 0, calc(100% - 9rem) 100%, 0 100%);
-  background: var(--ef-paper);
+  z-index: 1;
+  background: linear-gradient(
+    102deg,
+    var(--ef-paper) 0,
+    var(--ef-paper) calc(100% - 9rem),
+    transparent calc(100% - 9rem)
+  );
 }
 
 .stage-side::before {
@@ -510,23 +515,27 @@ html {
   mask-image: linear-gradient(102deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.35) 22%, transparent 52%);
 }
 
-/* 斜切边：一条实线 + 一条虚线，模拟纸的厚度与折角 */
+/* 斜切边：一条实线压在盘边缘上，末端再跟一条短虚线表示纸的厚度 */
 .stage-side::after {
   content: "";
   position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(102deg, transparent calc(100% - 3px), var(--ef-ink) calc(100% - 3px) 100%);
-  clip-path: inherit;
-  opacity: 0.5;
+  top: 0;
+  right: 0;
+  width: 1px;
+  height: 100%;
+  right: -30px;
+  background: var(--ef-ink);
+  transform-origin: top right;
+  transform: rotate(11deg);
+  opacity: 0.4;
 }
 
 /* 圆盘：等距椭圆，靠刻度虚实表现前后 */
 .dial-plane {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: min(86%, 26rem);
+  top: 46%;
+  left: 60%;
+  width: min(118%, 34rem);
   aspect-ratio: 1 / 1;
   transform: translate(-50%, -50%);
 }
@@ -584,6 +593,7 @@ html {
 /* 右页：一叠纸，靠平行四边形错位 + 三色实线边表现厚度 */
 .stage-main {
   position: relative;
+  z-index: 2;
   padding: clamp(20px, 3vw, 40px) clamp(20px, 4vw, 64px) clamp(40px, 6vw, 88px) clamp(16px, 3vw, 52px);
 }
 
