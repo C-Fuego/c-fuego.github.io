@@ -10,11 +10,11 @@
         <p class="hero-kicker mono">// NOTES</p>
       </div>
 
-      <h1 class="hero-lede ef-blur-in" style="--i:1">把跑过的东西写下来，<br class="br-wide">跑不通就写卡在哪一步。</h1>
+      <h1 class="hero-lede" data-split>把跑过的东西写下来，<br class="br-wide">跑不通就写卡在哪一步。</h1>
 
       <p class="hero-fields mono ef-blur-in" style="--i:2">
         <span>{{ now.Format "2006.01.02" }}</span>
-        <span>{{ len $posts }} 篇</span>
+        <span><span data-count="{{ len $posts }}">0</span> 篇</span>
       </p>
     </div>
   </div>

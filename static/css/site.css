@@ -1507,3 +1507,34 @@ html:not([data-theme='dark']) .ef-tri {
   margin-right: 20px;
   color: var(--ef-rule);
 }
+
+/* ---------- 标题逐字推入：动的是文字本身，不是给文字加特效 ---------- */
+
+.hero-lede .ch {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  line-height: 1.16;
+}
+
+.hero-lede .ch > i {
+  display: inline-block;
+  font-style: normal;
+  transform: translateY(112%);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-lede .ch > i {
+    animation: ch-rise 440ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: calc(var(--i, 0) * 16ms + 100ms);
+  }
+
+  .hero-lede .ch.is-space > i {
+    animation: none;
+    transform: none;
+  }
+}
+
+@keyframes ch-rise {
+  to { transform: translateY(0); }
+}

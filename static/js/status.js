@@ -217,4 +217,49 @@
       setTimeout(() => { location.href = url.href; }, 860);
     });
   }
+
+  // 标题逐字拆开：每个字装进一个可裁切的壳子，内部 i 从下方推上来
+  const split = document.querySelector('[data-split]');
+  if (split) {
+    let idx = 0;
+    const walk = (node) => {
+      [...node.childNodes].forEach((n) => {
+        if (n.nodeType === 3) {
+          const frag = document.createDocumentFragment();
+          for (const ch of n.textContent) {
+            if (ch.trim() === '') {
+              frag.appendChild(document.createTextNode(ch));
+              continue;
+            }
+            const wrap = document.createElement('span');
+            wrap.className = 'ch';
+            wrap.style.setProperty('--i', idx++);
+            const inner = document.createElement('i');
+            inner.textContent = ch;
+            wrap.appendChild(inner);
+            frag.appendChild(wrap);
+          }
+          n.replaceWith(frag);
+        } else if (n.nodeType === 1 && n.tagName !== 'BR') {
+          walk(n);
+        }
+      });
+    };
+    walk(split);
+  }
+
+  // 计数：从 0 滚到真实值（数字是内容，所以让它自己在动）
+  document.querySelectorAll('[data-count]').forEach((el) => {
+    const target = parseInt(el.dataset.count, 10) || 0;
+    if (target <= 0) { el.textContent = '0'; return; }
+    const dur = 460;
+    const t0 = performance.now();
+    const step = () => {
+      const p = Math.min(1, (performance.now() - t0) / dur);
+      const eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = String(Math.round(target * eased));
+      if (p < 1) setTimeout(step, 40);
+    };
+    step();
+  });
 })();
