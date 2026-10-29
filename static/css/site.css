@@ -1513,3 +1513,35 @@ html {
   .project-grid { grid-template-columns: 1fr; }
   .hero-art { right: -40%; bottom: -22%; width: 120vw; opacity: 0.04; }
 }
+
+/* ---------- 出血裁切：元素比画布大，被边缘吃掉一角（PV 的 MOTION / 01-06） ---------- */
+
+.hero,
+.block {
+  overflow: hidden;
+}
+
+/* 大编号加大并向左顶出，左边被画布切掉一点 */
+.block-num {
+  font-size: clamp(88px, 14vw, 200px);
+  letter-spacing: -0.045em;
+  /* 顶出量要大于容器内边距（40px），否则只是贴边不算出血 */
+  margin-left: clamp(-62px, -3.6vw, -46px);
+  line-height: 0.72;
+}
+
+/* 首屏标题第一行向右溢出，右边缘被切 */
+.hero-lede {
+  max-width: none;
+}
+
+/* 04 图框向右出血 */
+.project-shot {
+  margin-right: calc(-1 * clamp(16px, 3vw, 48px));
+}
+
+@media (max-width: 768px) {
+  .block-num { font-size: 76px; margin-left: -26px; }
+  .hero-lede { margin-right: 0; }
+  .project-shot { margin-right: 0; }
+}
