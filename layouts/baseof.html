@@ -9,6 +9,7 @@
   <script>
     try { var t = localStorage.getItem('theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
   </script>
+  <link rel="preload" href="{{ "fonts/noto-sans-sc-subset.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="{{ "fonts/saira-var.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="{{ "ef/endfield.css" | relURL }}?v={{ now.Unix }}">
   <link rel="stylesheet" href="{{ "css/site.css" | relURL }}?v={{ now.Unix }}">
@@ -16,7 +17,7 @@
 <body class="ef ef-contours">
   <a class="skip" href="#main">跳到正文</a>
   {{ partial "statusbar.html" . }}
-  <div class="ef-tri" aria-hidden="true"><i></i><i></i><i></i></div>
+  <div class="ef-tri ef-in-sweep" aria-hidden="true"><i></i><i></i><i></i></div>
 
   <main id="main">
     {{ block "main" . }}{{ end }}
