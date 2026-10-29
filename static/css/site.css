@@ -474,100 +474,254 @@ html {
   color: color-mix(in srgb, var(--ef-paper) 55%, transparent);
 }
 
-/* ---------- 文章详情 ---------- */
+/* ---------- 文章页：38.2 / 61.8 斜切，伪 3D（线条 + 虚实 + 硬边阴影） ---------- */
 
-.post-head {
-  padding-block: clamp(64px, 9vw, 120px) 32px;
+.stage {
+  --split: 38.2%;
+  --c-my: #FF00F0;
+  --c-ye: #FFF500;
+  --c-cy: #00C8FF;
+  display: grid;
+  grid-template-columns: var(--split) calc(100% - var(--split));
+  min-height: calc(100vh - 63px);
+  overflow: hidden;
+  background: var(--ef-paper);
+}
+
+/* 左页：跟视口等高、钉住不动，右缘斜切（斜角才看得出来） */
+.stage-side {
+  position: sticky;
+  top: 63px;
+  align-self: start;
+  height: calc(100vh - 63px);
+  clip-path: polygon(0 0, calc(100% + 1px) 0, calc(100% - 9rem) 100%, 0 100%);
+  background: var(--ef-paper);
+}
+
+.stage-side::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    102deg,
+    color-mix(in srgb, var(--ef-ink) 30%, transparent) 0 1px,
+    transparent 1px 9px
+  );
+  mask-image: linear-gradient(102deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.35) 22%, transparent 52%);
+}
+
+/* 斜切边：一条实线 + 一条虚线，模拟纸的厚度与折角 */
+.stage-side::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(102deg, transparent calc(100% - 3px), var(--ef-ink) calc(100% - 3px) 100%);
+  clip-path: inherit;
+  opacity: 0.5;
+}
+
+/* 圆盘：等距椭圆，靠刻度虚实表现前后 */
+.dial-plane {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(86%, 26rem);
+  aspect-ratio: 1 / 1;
+  transform: translate(-50%, -50%);
+}
+
+.dial-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.dial-svg .tick {
+  stroke: var(--ef-ink);
+  stroke-width: 0.7;
+  opacity: 0.55;
+}
+
+.dial-svg .tick.is-major {
+  stroke-width: 1.15;
+  opacity: 0.8;
+}
+
+/* 远端（上半圈）更淡更细，制造"转到后面去了"的错觉 */
+.dial-svg .tick.is-far {
+  opacity: 0.22;
+  stroke-width: 0.5;
+}
+
+.dial-svg .tick.is-on {
+  stroke: var(--ef-accent-ink, #6B5D00);
+  opacity: 1;
+}
+
+.dial-svg .dial-ring {
+  fill: none;
+  stroke: var(--ef-ink);
+  stroke-width: 0.6;
+  opacity: 0.35;
+}
+
+.dial-svg .dial-ring.is-dashed {
+  stroke-dasharray: 2 2.4;
+  opacity: 0.28;
+}
+
+.dial-svg .dial-num {
+  font-family: var(--ef-font-ui);
+  font-stretch: 112%;
+  font-size: 11px;
+  font-weight: 700;
+  fill: var(--ef-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 右页：一叠纸，靠平行四边形错位 + 三色实线边表现厚度 */
+.stage-main {
+  position: relative;
+  padding: clamp(20px, 3vw, 40px) clamp(20px, 4vw, 64px) clamp(40px, 6vw, 88px) clamp(16px, 3vw, 52px);
+}
+
+.paper-stack {
+  position: relative;
+  transform: skewY(-0.6deg);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .paper-stack {
+    animation: paper-drop 380ms var(--ef-snap, cubic-bezier(0.16, 1, 0.3, 1)) 60ms both;
+  }
+  .dial-plane {
+    animation: dial-in 420ms var(--ef-snap, cubic-bezier(0.16, 1, 0.3, 1)) both;
+  }
+}
+
+@keyframes paper-drop {
+  from { opacity: 0; transform: translateY(16px) skewY(-0.6deg); }
+  to { opacity: 1; transform: skewY(-0.6deg); }
+}
+
+@keyframes dial-in {
+  from { opacity: 0; transform: translate(-50%, -46%); }
+  to { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+.paper,
+.paper-edge {
+  background: var(--ef-panel);
+  border: 1px solid var(--ef-rule);
+}
+
+.paper-edge {
+  position: absolute;
+  inset: 0;
+  border-width: 1px 1px 1px 1px;
+}
+
+/* 三层彩边往左下错开：越远越宽、颜色按品红 → 黄 → 青排 */
+.edge-3 { border-color: var(--c-my); transform: translate(-26px, 20px); z-index: 1; }
+.edge-2 { border-color: var(--c-ye); transform: translate(-17px, 13px); z-index: 2; }
+.edge-1 { border-color: var(--c-cy); transform: translate(-8px, 6px); z-index: 3; }
+
+.paper {
+  position: relative;
+  z-index: 4;
+  padding: clamp(24px, 3.4vw, 52px) clamp(22px, 3vw, 48px) clamp(28px, 4vw, 56px);
+  /* 硬边阴影：不用 blur，用一层实线 + 一层虚线表示纸的厚度 */
+  box-shadow:
+    6px 6px 0 -1px var(--ef-panel),
+    6px 6px 0 0 var(--ef-rule),
+    12px 12px 0 -1px var(--ef-panel),
+    12px 12px 0 0 var(--ef-rule);
+}
+
+.stage .post-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  margin-bottom: 18px;
+}
+
+.stage .post-head {
+  padding: 0 0 24px;
+  margin-bottom: 28px;
   border-bottom: 1px solid var(--ef-ink);
 }
 
-.post-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  margin-bottom: 20px;
-}
-
-.post-title {
-  max-width: 20em;
+.stage .post-title {
+  max-width: 22em;
   margin: 0;
   font-family: var(--ef-font-ui);
   font-stretch: 112%;
-  font-size: clamp(26px, 4.2vw, 52px);
-  line-height: 1.12;
+  font-size: clamp(26px, 3.4vw, 44px);
+  line-height: 1.16;
   letter-spacing: -0.01em;
   font-weight: 700;
 }
 
-.post-body {
-  padding-block: 48px clamp(64px, 8vw, 96px);
-}
-
-.post-body .ef-prose {
-  max-width: 68ch;
+.stage .ef-prose {
+  max-width: 62ch;
   font-size: 17px;
   line-height: 1.75;
 }
 
-.post-body .ef-prose h2 {
-  margin-top: 48px;
+.stage .ef-prose h2 {
+  margin-top: 40px;
   padding-top: 12px;
   border-top: 1px solid var(--ef-rule);
 }
 
-.post-body .ef-prose code {
-  font-family: var(--ef-font-mono);
-  font-size: 0.88em;
-}
+.stage .ef-prose code { font-family: var(--ef-font-mono); font-size: 0.88em; }
 
-.post-body .ef-prose pre {
-  background: var(--ef-panel);
+.stage .ef-prose pre {
+  background: var(--ef-paper);
   border: 1px solid var(--ef-rule);
-  padding: 20px;
+  padding: 18px;
   overflow-x: auto;
   font-size: 14px;
   line-height: 1.6;
 }
 
-.post-body .ef-prose pre code {
-  padding: 0;
-  border: 0;
-  background: none;
-}
+.stage .ef-prose pre code { padding: 0; border: 0; background: none; }
 
-.post-body .ef-prose table { width: 100%; border-collapse: collapse; font-size: 15px; }
+.stage .ef-prose table { width: 100%; border-collapse: collapse; font-size: 15px; }
 
-.post-body .ef-prose th,
-.post-body .ef-prose td {
+.stage .ef-prose th,
+.stage .ef-prose td {
   padding: 10px 12px;
   border-bottom: 1px solid var(--ef-rule);
   text-align: left;
 }
 
-.post-body .ef-prose th {
+.stage .ef-prose th {
   border-bottom-color: var(--ef-ink);
   font-family: var(--ef-font-mono);
   font-size: 12px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--ef-ink-2);
-  font-weight: 500;
+  font-weight: 400;
 }
 
-.post-body .ef-prose img { border: 1px solid var(--ef-rule); }
+.stage .ef-prose img { border: 1px solid var(--ef-rule); }
 
-.post-foot {
+.stage .post-foot {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 16px;
-  max-width: 68ch;
-  margin-top: 64px;
-  padding-top: 20px;
+  margin-top: 48px;
+  padding-top: 18px;
   border-top: 1px solid var(--ef-rule);
 }
 
-.post-foot a {
+.stage .post-foot a {
   font-family: var(--ef-font-mono);
   font-size: 12px;
   letter-spacing: 0.12em;
@@ -576,7 +730,19 @@ html {
   text-decoration: none;
 }
 
-.post-foot a:hover { color: var(--ef-ink); }
+.stage .post-foot a:hover { color: var(--ef-ink); }
+
+@media (max-width: 768px) {
+  .stage {
+    display: block;
+    min-height: auto;
+  }
+  .stage-side { display: none; }
+  .stage-main { padding: 20px var(--ef-pad) 48px; }
+  .paper-stack { transform: none; }
+  .paper-edge { display: none; }
+  .paper { box-shadow: none; }
+}
 
 /* ---------- 列表页 ---------- */
 

@@ -1,23 +1,38 @@
 {{ define "main" }}
-<article>
-  <header class="post-head">
-    <div class="wrap">
-      <div class="post-meta">
-        <span class="mono">{{ .Date.Format "2006-01-02" }}</span>
-        {{- with .Params.tags }}{{ range . }}<span class="ef-tag">{{ . }}</span>{{ end }}{{ end }}
-        <span class="mono">{{ .ReadingTime }} MIN</span>
-      </div>
-      <h1 class="post-title">{{ .Title }}</h1>
+<article class="stage">
+  <aside class="stage-side" aria-hidden="true">
+    <div class="dial-plane">
+      <svg class="dial-svg" viewBox="0 0 100 100" data-read-dial>
+        <g class="dial-ticks" data-dial-ticks></g>
+        <text class="dial-num" data-dial-num x="50" y="50" text-anchor="middle" dominant-baseline="central">0</text>
+      </svg>
     </div>
-  </header>
+    <span class="side-shadow" aria-hidden="true"></span>
+  </aside>
 
-  <div class="post-body">
-    <div class="wrap">
-      <div class="ef-prose">{{ .Content }}</div>
-      <nav class="post-foot" aria-label="相邻文章">
-        {{ with .PrevInSection }}<a href="{{ .RelPermalink }}">← {{ .Title }}</a>{{ else }}<span></span>{{ end }}
-        {{ with .NextInSection }}<a href="{{ .RelPermalink }}">{{ .Title }} →</a>{{ else }}<span></span>{{ end }}
-      </nav>
+  <div class="stage-main">
+    <div class="paper-stack">
+      <span class="paper-edge edge-3" aria-hidden="true"></span>
+      <span class="paper-edge edge-2" aria-hidden="true"></span>
+      <span class="paper-edge edge-1" aria-hidden="true"></span>
+
+      <div class="paper">
+        <header class="post-head">
+          <div class="post-meta">
+            <span class="mono">{{ .Date.Format "2006-01-02" }}</span>
+            {{- with .Params.tags }}{{ range . }}<span class="ef-tag">{{ . }}</span>{{ end }}{{ end }}
+            <span class="mono">{{ .ReadingTime }} MIN</span>
+          </div>
+          <h1 class="post-title">{{ .Title }}</h1>
+        </header>
+
+        <div class="ef-prose">{{ .Content }}</div>
+
+        <nav class="post-foot" aria-label="相邻文章">
+          {{ with .PrevInSection }}<a href="{{ .RelPermalink }}">← {{ .Title }}</a>{{ else }}<span></span>{{ end }}
+          {{ with .NextInSection }}<a href="{{ .RelPermalink }}">{{ .Title }} →</a>{{ else }}<span></span>{{ end }}
+        </nav>
+      </div>
     </div>
   </div>
 </article>
