@@ -81,10 +81,11 @@
 
   /* 斜线阴影只留在最靠里的一小片 */
   .terrain-hatch {
+    /* 密排线：间隔 2.4px，接近版画/钞票的排线密度 */
     background-image: repeating-linear-gradient(
       45deg,
-      color-mix(in srgb, var(--ink) 34%, transparent) 0 1.2px,
-      transparent 1.2px 6px
+      color-mix(in srgb, var(--ink) 36%, transparent) 0 1.1px,
+      transparent 1.1px 2.4px
     );
     opacity: 1;
     /* 覆盖范围也跟着放宽，从 10% 半径放到 22%，到 48% 完全消失 */
