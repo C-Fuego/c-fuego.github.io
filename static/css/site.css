@@ -145,6 +145,7 @@ html {
 }
 
 .site-bar .util {
+  color: #A8AAA3;
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -162,9 +163,10 @@ html {
   display: inline-block;
 }
 
+/* 顶栏两套主题都是深色：文字固定浅色，不要用会翻转的 --ef-paper */
 .site-bar .clock {
   font-variant-numeric: tabular-nums;
-  color: var(--ef-paper);
+  color: #EDEDED;
 }
 
 /* ---------- 首屏 ---------- */
@@ -1461,3 +1463,31 @@ html {
   .ef-dial .core { font-size: 46px; }
   .ef-dial .core .unit { font-size: 15px; }
 }
+
+/* ---------- 清单校对后的修补 ---------- */
+
+/* 深色顶栏：读数与次级信息对比不足，提亮 */
+[data-theme='dark'] .site-bar .util {
+  color: rgba(237, 237, 237, 0.78);
+}
+[data-theme='dark'] .site-bar .util [data-theme-toggle] {
+  border-color: rgba(237, 237, 237, 0.28);
+}
+
+/* 跑马灯是循环动效：悬停或聚焦时停下，尊重减少动态 */
+.ef-ticker:hover .track,
+.ef-ticker:focus-within .track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ef-ticker .track { animation: none; }
+  .ef-ticker { overflow-x: auto; }
+}
+
+/* 立方体在画框里偏上，底部斜线纹影子被挤掉：整体下移一点 */
+.hero .ef-frame .window {
+  display: grid;
+  place-items: center;
+}
+.hero .ef-frame svg { max-height: 100%; }
