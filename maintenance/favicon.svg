@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="1GN4CI0">
+  <!-- 墨底 + 信号黄切角块，负空间切出 1 -->
+  <rect width="32" height="32" fill="#161616"/>
+  <path d="M4.5 4.5 H27.5 V22.5 L22.5 27.5 H4.5 Z" fill="#FFFA00"/>
+  <rect x="14.1" y="9.4" width="3.8" height="13.6" fill="#161616"/>
+  <rect x="9.6" y="9.4" width="8.3" height="3.1" fill="#161616"/>
+</svg>
