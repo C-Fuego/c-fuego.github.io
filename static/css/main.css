@@ -35,7 +35,7 @@
   --ef-accent-text: #6b5d00;
 
   /* 等高线是装饰层：压到刚好能看见，不跟文字抢对比度 */
-  --ef-contour: color-mix(in srgb, var(--ef-ink) 3%, transparent);
+  --ef-contour: color-mix(in srgb, var(--ef-ink) 4.5%, transparent);
 
   font-variant-numeric: tabular-nums;
 }
@@ -845,16 +845,6 @@ body.is-locked { overflow: hidden; }
   overflow: hidden;
 }
 
-.shape-concentric {
-  position: absolute;
-  top: 50%;
-  right: -7rem;
-  width: 26rem;
-  height: 26rem;
-  transform: translateY(-50%);
-  opacity: 0.1;
-}
-
 .intro-block > .plaque,
 .intro-block > .lede-line,
 .intro-block > .intro-facts {
@@ -888,26 +878,15 @@ body.is-locked { overflow: hidden; }
 
 .empty-plate > p { position: relative; z-index: 1; }
 
-/* 404：同心圆 + 射线 */
+/* 404：一把 HUD 尺压在标题上方 */
 .lost {
   position: relative;
   overflow: hidden;
 }
 
-.shape-404 {
-  position: absolute;
-  top: 50%;
-  right: -7rem;
-  width: 26rem;
-  height: 26rem;
-  transform: translateY(-50%);
-  opacity: 0.15;
-}
-
-.shape-404 > span {
-  position: absolute;
-  inset: 0;
-  display: block;
+.lost-hud {
+  margin: 0 0 1.5rem;
+  opacity: 0.85;
 }
 
 .lost > .ef-hollow-no,
@@ -980,8 +959,6 @@ body.is-locked { overflow: hidden; }
 }
 
 @media (max-width: 719px) {
-  .shape-concentric { width: 18rem; height: 18rem; top: -18%; right: -18%; opacity: 0.1; }
-  .shape-404 { width: 18rem; height: 18rem; right: -8rem; opacity: 0.12; }
 }
 
 @media print {
