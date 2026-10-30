@@ -1,0 +1,4 @@
+站点维护中。
+
+这个文件存在时，GitHub Actions 会用 maintenance/index.html 覆盖整个站点产物，
+所有页面只返回维护页。删掉这个文件并 push，下一次构建恢复完整站点。
