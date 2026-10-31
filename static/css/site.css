@@ -957,6 +957,10 @@ html {
 .theme-toggle {
   margin-left: 16px;
   min-width: 62px;
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 4px 12px;
   background: transparent;
   border: 1px solid rgba(237, 237, 237, 0.3);
@@ -1300,6 +1304,9 @@ html {
     white-space: nowrap;
     font-size: 0.7rem;
   }
+
+  /* 画框上的标签别越出页边：-1.25rem 的负偏移在窄屏会吃到 16px 内边距外面 */
+  .ef-plate { left: 0; }
 
   /* 首屏收紧 */
   .hero { padding-top: 0.75rem; }
